@@ -3,15 +3,13 @@ import { useRef, useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { AnimatedSection, StaggerContainer, StaggerItem } from '@/components/AnimatedSection';
-import { Zap, Shield, Battery, Cpu, Plug, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Zap, Shield, Cpu, Plug, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const categories = [
   { id: 'aterramento', label: 'Aterramento', icon: Plug },
   { id: 'filtro-de-linha', label: 'Filtros de Linha', icon: Shield },
   { id: 'autotransformadores', label: 'Transformadores', icon: Cpu },
-  { id: 'estabilizadores', label: 'Estabilizadores', icon: Zap },
-  { id: 'nobreaks', label: 'Nobreaks', icon: Battery },
   { id: 'protetores', label: 'Protetores', icon: Shield },
 ];
 
@@ -45,32 +43,6 @@ const products = {
       image: 'https://involtsbrasil.com.br/images/filtrometal.png',
       features: ['20A', '5 Tomadas', 'Estrutura Metálica'],
     },
-    {
-      name: 'Filtro para Rack 19"',
-      description: 'Modelos de 9 e 12 tomadas',
-      image: 'https://involtsbrasil.com.br/images/321c464e45782f830505a3ee84ab7092581.png',
-      features: ['Rack 19"', '9-12 Tomadas', 'Profissional'],
-    },
-    {
-      name: 'Multiplicadores de Tomadas',
-      description: 'Expansão de tomadas com segurança',
-      image: 'https://involtsbrasil.com.br/images/multiplicadores-de-tomadas.png',
-      features: ['Compacto', 'Prático', 'Seguro'],
-    },
-    {
-      name: 'Extensão 2P+T e 2P',
-      description: 'Modelos de 3, 5 e 10 metros',
-      image: 'https://involtsbrasil.com.br/images/estencao.png',
-      features: ['3 a 10 metros', '2P+T', 'Resistente'],
-    },
-  ],
-  estabilizadores: [
-    {
-      name: 'Estabilizador Eletrônico',
-      description: 'Para eletrodomésticos',
-      image: 'https://involtsbrasil.com.br/images/6a43631b3d8df48271ec069ce5a6cafd232.png',
-      features: ['Microprocessado', 'Display Digital', 'Proteção Total'],
-    },
   ],
   protetores: [
     {
@@ -78,15 +50,6 @@ const products = {
       description: 'Proteção completa para seus equipamentos',
       image: 'https://involtsbrasil.com.br/images/a9d35e8e2616ac9f7bcf689276694614493.png',
       features: ['Multifuncional', 'DPS Integrado', 'Indicador LED'],
-    },
-  ],
-  nobreaks: [
-    {
-      name: 'Nobreaks',
-      description: 'Lançamento em Breve',
-      image: null,
-      features: ['Senoidal Puro', 'Alta Potência', 'Em Breve'],
-      comingSoon: true,
     },
   ],
 };
@@ -222,14 +185,7 @@ const Produtos = () => {
                       <div className="relative bg-card border border-border rounded-3xl overflow-hidden h-full flex flex-col">
                         {/* Image Container */}
                         <div className="relative aspect-square bg-gradient-to-br from-secondary/20 to-primary/20 flex items-center justify-center p-6">
-                          {product.comingSoon ? (
-                            <div className="text-center">
-                              <Battery className="w-20 h-20 text-primary/40 mx-auto mb-4" />
-                              <span className="bg-primary/20 text-primary px-4 py-2 rounded-full text-sm font-medium">
-                                Em Breve
-                              </span>
-                            </div>
-                          ) : product.image ? (
+                          {product.image ? (
                             <img
                               src={product.image}
                               alt={product.name}
@@ -262,15 +218,13 @@ const Produtos = () => {
                           </div>
 
                           {/* CTA */}
-                          {!product.comingSoon && (
-                            <motion.button
-                              whileHover={{ scale: 1.02 }}
-                              whileTap={{ scale: 0.98 }}
-                              className="w-full bg-gradient-primary text-primary-foreground py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-primary/30 transition-all duration-300"
-                            >
-                              Ver Detalhes
-                            </motion.button>
-                          )}
+                          <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="w-full bg-gradient-primary text-primary-foreground py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-primary/30 transition-all duration-300"
+                          >
+                            Ver Detalhes
+                          </motion.button>
                         </div>
                       </div>
                     </motion.div>
