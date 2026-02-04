@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import logo from '@/assets/logo.svg';
 
 const navItems = [
   { label: 'A Involts', href: '/sobre' },
@@ -37,22 +39,14 @@ export const Header = () => {
         <div className="container mx-auto px-6">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <motion.a
-              href="#"
-              className="flex items-center gap-2"
+            <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <div className="relative">
-                <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
-                  <span className="font-display font-bold text-primary-foreground text-xl">I</span>
-                </div>
-                <div className="absolute -inset-1 bg-gradient-primary opacity-30 blur-lg rounded-lg" />
-              </div>
-              <span className="font-display font-bold text-2xl text-foreground">
-                Involts
-              </span>
-            </motion.a>
+              <Link to="/" className="flex items-center">
+                <img src={logo} alt="Involts" className="h-12" />
+              </Link>
+            </motion.div>
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-8">
