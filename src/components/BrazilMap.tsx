@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 import { motion } from 'framer-motion';
 
-const BRAZIL_TOPO_JSON = "https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/brazil-states.geojson";
+const BRAZIL_TOPO_JSON = "/data/brazil-states.geojson";
 
 // Mapeamento de nomes dos estados para siglas
 const stateNameToCode: Record<string, string> = {
