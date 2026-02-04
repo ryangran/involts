@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -42,6 +42,11 @@ const ProductDetail = () => {
   
   const product = slug ? getProductBySlug(slug) : undefined;
   const relatedProducts = slug ? getRelatedProducts(slug, 3) : [];
+
+  // Scroll to top when navigating to product detail
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [slug]);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
