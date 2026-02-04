@@ -70,7 +70,7 @@ export const Header = () => {
                 </motion.a>
               ))}
               <motion.a
-                href="#revendedor"
+                href="/revendedor"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.5 }}
@@ -112,7 +112,7 @@ export const Header = () => {
                 </a>
               ))}
               <a
-                href="#revendedor"
+                href="/revendedor"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="bg-gradient-primary text-primary-foreground px-8 py-3 rounded-full font-semibold mt-4"
               >
