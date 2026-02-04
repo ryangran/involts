@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import { AnimatedSection } from './AnimatedSection';
@@ -8,34 +8,10 @@ import { Shield, Zap, Cpu, Plug, ArrowRight, Sparkles } from 'lucide-react';
 import { productsData } from '@/data/products';
 
 const categories = [
-  {
-    id: 'protetores',
-    title: 'Protetores Eletrônicos',
-    description: 'Proteção contra surtos e oscilações',
-    icon: Shield,
-    products: productsData.filter(p => p.categorySlug === 'protetores'),
-  },
-  {
-    id: 'filtros',
-    title: 'Filtros de Linha',
-    description: 'Filtragem contra interferências',
-    icon: Zap,
-    products: productsData.filter(p => p.categorySlug === 'filtro-de-linha'),
-  },
-  {
-    id: 'transformadores',
-    title: 'Autotransformadores',
-    description: 'Conversão de voltagem eficiente',
-    icon: Cpu,
-    products: productsData.filter(p => p.categorySlug === 'autotransformadores'),
-  },
-  {
-    id: 'aterramento',
-    title: 'Aterramento',
-    description: 'Sistema de proteção completa',
-    icon: Plug,
-    products: productsData.filter(p => p.categorySlug === 'aterramento'),
-  },
+  { id: 'protetores', title: 'Protetores', icon: Shield },
+  { id: 'filtros', title: 'Filtros', icon: Zap },
+  { id: 'transformadores', title: 'Autotransf.', icon: Cpu },
+  { id: 'aterramento', title: 'Aterramento', icon: Plug },
 ];
 
 const ProductCard = ({ product }: { product: typeof productsData[0] }) => {
@@ -57,7 +33,8 @@ const ProductCard = ({ product }: { product: typeof productsData[0] }) => {
         
         {/* Content */}
         <div className="p-4">
-          <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors text-sm leading-tight">
+          <span className="text-xs text-primary font-medium">{product.category}</span>
+          <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors text-sm leading-tight mt-1">
             {product.name}
           </h4>
           
@@ -71,9 +48,7 @@ const ProductCard = ({ product }: { product: typeof productsData[0] }) => {
   );
 };
 
-const CategoryCarousel = ({ category, index }: { category: typeof categories[0]; index: number }) => {
-  const Icon = category.icon;
-  
+export const ProductsSection = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { 
       loop: true, 
@@ -81,69 +56,12 @@ const CategoryCarousel = ({ category, index }: { category: typeof categories[0];
       slidesToScroll: 1,
       dragFree: true,
     },
-    [Autoplay({ delay: 3000 + index * 500, stopOnInteraction: false, stopOnMouseEnter: true })]
+    [Autoplay({ delay: 2500, stopOnInteraction: false, stopOnMouseEnter: true })]
   );
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-100px' }}
-      transition={{ delay: index * 0.1, duration: 0.5 }}
-      className="mb-14 last:mb-0"
-    >
-      {/* Category Header */}
-      <div className="flex items-center gap-4 mb-6">
-        <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center">
-          <Icon className="w-6 h-6 text-primary-foreground" />
-        </div>
-        <div className="flex-1">
-          <h3 className="text-xl md:text-2xl font-display font-bold text-foreground">
-            {category.title}
-          </h3>
-          <p className="text-foreground/50 text-sm">
-            {category.description}
-          </p>
-        </div>
-        
-        {/* Navigation arrows */}
-        <div className="flex items-center gap-2">
-          <button
-            onClick={scrollPrev}
-            className="w-10 h-10 rounded-full bg-muted hover:bg-primary/10 flex items-center justify-center transition-colors"
-          >
-            <ArrowRight className="w-4 h-4 text-foreground rotate-180" />
-          </button>
-          <button
-            onClick={scrollNext}
-            className="w-10 h-10 rounded-full bg-muted hover:bg-primary/10 flex items-center justify-center transition-colors"
-          >
-            <ArrowRight className="w-4 h-4 text-foreground" />
-          </button>
-        </div>
-      </div>
-
-      {/* Carousel */}
-      <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex gap-4">
-          {category.products.map((product) => (
-            <div 
-              key={product.id} 
-              className="flex-none w-[160px] sm:w-[180px] md:w-[200px] lg:w-[220px]"
-            >
-              <ProductCard product={product} />
-            </div>
-          ))}
-        </div>
-      </div>
-    </motion.div>
-  );
-};
-
-export const ProductsSection = () => {
   return (
     <section id="produtos" className="relative py-20 md:py-28 bg-background">
       {/* Subtle background */}
@@ -151,7 +69,7 @@ export const ProductsSection = () => {
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Header */}
-        <AnimatedSection className="text-center mb-16">
+        <AnimatedSection className="text-center mb-10">
           <motion.div
             initial={{ scale: 0 }}
             whileInView={{ scale: 1 }}
@@ -172,11 +90,53 @@ export const ProductsSection = () => {
           </p>
         </AnimatedSection>
 
-        {/* All Categories with Carousels */}
-        <div className="max-w-6xl mx-auto">
-          {categories.map((category, index) => (
-            <CategoryCarousel key={category.id} category={category} index={index} />
+        {/* Category Icons */}
+        <div className="flex justify-center gap-3 md:gap-6 mb-10 flex-wrap">
+          {categories.map((cat) => (
+            <div key={cat.id} className="flex items-center gap-2 bg-muted/50 px-4 py-2 rounded-full">
+              <cat.icon className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium text-foreground/70">{cat.title}</span>
+            </div>
           ))}
+        </div>
+
+        {/* Single Carousel with All Products */}
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center justify-between mb-6">
+            <p className="text-foreground/50 text-sm">
+              {productsData.length} produtos
+            </p>
+            
+            {/* Navigation arrows */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={scrollPrev}
+                className="w-10 h-10 rounded-full bg-muted hover:bg-primary/10 flex items-center justify-center transition-colors"
+              >
+                <ArrowRight className="w-4 h-4 text-foreground rotate-180" />
+              </button>
+              <button
+                onClick={scrollNext}
+                className="w-10 h-10 rounded-full bg-muted hover:bg-primary/10 flex items-center justify-center transition-colors"
+              >
+                <ArrowRight className="w-4 h-4 text-foreground" />
+              </button>
+            </div>
+          </div>
+
+          {/* Carousel */}
+          <div className="overflow-hidden" ref={emblaRef}>
+            <div className="flex gap-4">
+              {productsData.map((product) => (
+                <div 
+                  key={product.id} 
+                  className="flex-none w-[180px] sm:w-[200px] md:w-[220px]"
+                >
+                  <ProductCard product={product} />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* CTA */}
