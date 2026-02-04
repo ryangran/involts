@@ -5,6 +5,7 @@ import { Footer } from '@/components/Footer';
 import { AnimatedSection, StaggerContainer, StaggerItem } from '@/components/AnimatedSection';
 import { Zap, Shield, Cpu, Plug, ArrowRight, Sparkles, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { productsData } from '@/data/products';
 
 const categories = [
   { id: 'todos', label: 'Todos', icon: Sparkles },
@@ -12,59 +13,6 @@ const categories = [
   { id: 'filtro-de-linha', label: 'Filtros de Linha', icon: Shield },
   { id: 'autotransformadores', label: 'Transformadores', icon: Cpu },
   { id: 'protetores', label: 'Protetores', icon: Shield },
-];
-
-const allProducts = [
-  {
-    id: 1,
-    name: 'Terra Lux',
-    subtitle: 'Aterramento Involts',
-    description: 'Sistema de aterramento inteligente para proteção completa dos seus equipamentos eletrônicos',
-    image: 'https://involtsbrasil.com.br/images/two-power-plug.png',
-    features: ['Proteção Completa', 'Fácil Instalação', 'Certificado INMETRO'],
-    category: 'aterramento',
-    highlight: true,
-  },
-  {
-    id: 2,
-    name: 'Auto Transformador',
-    subtitle: 'Linha Premium',
-    description: 'Conversão de voltagem com máxima eficiência e proteção térmica integrada',
-    image: 'https://involtsbrasil.com.br/images/produto3.png',
-    features: ['100 a 5000 VA', '110V/220V', 'Proteção Térmica'],
-    category: 'autotransformadores',
-    highlight: false,
-  },
-  {
-    id: 3,
-    name: 'Filtro de Linha ABS',
-    subtitle: 'Proteção Essencial',
-    description: 'Proteção inteligente contra surtos com design moderno e compacto',
-    image: 'https://involtsbrasil.com.br/images/filtro-normal.png',
-    features: ['3 a 10 Tomadas', 'Proteção DPS', 'Design Moderno'],
-    category: 'filtro-de-linha',
-    highlight: true,
-  },
-  {
-    id: 4,
-    name: 'Filtro Metálico 20A',
-    subtitle: 'Alta Potência',
-    description: 'Estrutura robusta em metal para ambientes profissionais e alta demanda',
-    image: 'https://involtsbrasil.com.br/images/filtrometal.png',
-    features: ['20A', '5 Tomadas', 'Estrutura Metálica'],
-    category: 'filtro-de-linha',
-    highlight: false,
-  },
-  {
-    id: 5,
-    name: 'Protetor Multifuncional',
-    subtitle: 'Proteção Total',
-    description: 'Proteção completa contra surtos, raios e oscilações de energia',
-    image: 'https://involtsbrasil.com.br/images/a9d35e8e2616ac9f7bcf689276694614493.png',
-    features: ['Multifuncional', 'DPS Integrado', 'Indicador LED'],
-    category: 'protetores',
-    highlight: true,
-  },
 ];
 
 const FloatingParticle = ({ delay }: { delay: number }) => (
@@ -86,7 +34,7 @@ const FloatingParticle = ({ delay }: { delay: number }) => (
   />
 );
 
-const ProductCard = ({ product, index }: { product: typeof allProducts[0]; index: number }) => {
+const ProductCard = ({ product, index }: { product: typeof productsData[0]; index: number }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -222,25 +170,27 @@ const ProductCard = ({ product, index }: { product: typeof allProducts[0]; index
           </div>
 
           {/* CTA Button */}
-          <motion.button
-            whileHover={{ scale: 1.02, x: 5 }}
-            whileTap={{ scale: 0.98 }}
-            className="w-full bg-gradient-primary text-primary-foreground py-3.5 rounded-xl font-semibold flex items-center justify-center gap-2 group/btn overflow-hidden relative"
-          >
-            <span className="relative z-10">Ver Detalhes</span>
-            <motion.span
-              animate={{ x: isHovered ? 5 : 0 }}
-              className="relative z-10"
+          <Link to={`/produto/${product.slug}`}>
+            <motion.button
+              whileHover={{ scale: 1.02, x: 5 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full bg-gradient-primary text-primary-foreground py-3.5 rounded-xl font-semibold flex items-center justify-center gap-2 group/btn overflow-hidden relative"
             >
-              <ArrowRight className="w-4 h-4" />
-            </motion.span>
-            <motion.div
-              initial={{ x: '-100%' }}
-              whileHover={{ x: 0 }}
-              transition={{ duration: 0.3 }}
-              className="absolute inset-0 bg-gradient-to-r from-secondary to-primary"
-            />
-          </motion.button>
+              <span className="relative z-10">Ver Detalhes</span>
+              <motion.span
+                animate={{ x: isHovered ? 5 : 0 }}
+                className="relative z-10"
+              >
+                <ArrowRight className="w-4 h-4" />
+              </motion.span>
+              <motion.div
+                initial={{ x: '-100%' }}
+                whileHover={{ x: 0 }}
+                transition={{ duration: 0.3 }}
+                className="absolute inset-0 bg-gradient-to-r from-secondary to-primary"
+              />
+            </motion.button>
+          </Link>
         </div>
       </motion.div>
     </motion.div>
@@ -267,8 +217,8 @@ const Produtos = () => {
   const heroScale = useTransform(heroProgress, [0, 0.5], [1, 0.95]);
 
   const filteredProducts = activeCategory === 'todos' 
-    ? allProducts 
-    : allProducts.filter(p => p.category === activeCategory);
+    ? productsData 
+    : productsData.filter(p => p.categorySlug === activeCategory);
 
   return (
     <div ref={containerRef} className="min-h-screen bg-background overflow-x-hidden">
