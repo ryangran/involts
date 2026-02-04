@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { AnimatedSection } from './AnimatedSection';
 import { Zap, Phone, Mail, MapPin, Instagram, Facebook, Linkedin } from 'lucide-react';
+import logo2 from '@/assets/logo-2.svg';
 const footerLinks = {
   produtos: [{
     label: 'Nobreaks',
@@ -58,12 +59,8 @@ export const Footer = () => {
         <div className="py-16 grid md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
           <AnimatedSection delay={0} className="lg:col-span-1">
-            <div className="flex items-center gap-2 mb-6">
-              <div className="relative">
-                <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
-                  <span className="font-display font-bold text-primary-foreground text-xl">I</span>
-                </div>
-              </div>
+            <div className="flex items-center gap-3 mb-6">
+              <img src={logo2} alt="Involts" className="h-12 w-auto" />
               <span className="font-display font-bold text-2xl text-foreground">
                 Involts
               </span>
