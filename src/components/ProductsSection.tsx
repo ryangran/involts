@@ -1,7 +1,7 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { motion, useScroll, useTransform, useInView } from 'framer-motion';
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { AnimatedSection, StaggerContainer, StaggerItem } from './AnimatedSection';
+import { AnimatedSection } from './AnimatedSection';
 import { Shield, Zap, Cpu, Plug, ArrowRight, Sparkles } from 'lucide-react';
 import { productsData } from '@/data/products';
 
@@ -100,10 +100,15 @@ const ProductCard = ({ product, index }: { product: typeof productsData[0]; inde
 };
 
 const CategorySection = ({ category, index }: { category: typeof categories[0]; index: number }) => {
-  const [isExpanded, setIsExpanded] = useState(index === 0);
+  const categoryRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(categoryRef, { 
+    margin: '-30% 0px -30% 0px',
+    amount: 0.3
+  });
   
   return (
     <motion.div
+      ref={categoryRef}
       initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: '-100px' }}
@@ -112,7 +117,6 @@ const CategorySection = ({ category, index }: { category: typeof categories[0]; 
     >
       {/* Category Header */}
       <motion.div
-        onClick={() => setIsExpanded(!isExpanded)}
         whileHover={{ scale: 1.01 }}
         className="cursor-pointer group"
       >
@@ -120,16 +124,19 @@ const CategorySection = ({ category, index }: { category: typeof categories[0]; 
           {/* Background glow */}
           <motion.div
             className={`absolute -top-20 -right-20 w-60 h-60 ${category.bgGlow} rounded-full blur-3xl`}
-            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-            transition={{ duration: 4, repeat: Infinity }}
+            animate={{ 
+              scale: isInView ? [1, 1.3, 1] : 1, 
+              opacity: isInView ? [0.3, 0.6, 0.3] : 0.2 
+            }}
+            transition={{ duration: 2, repeat: isInView ? Infinity : 0 }}
           />
           
           <div className="relative z-10 flex items-center justify-between">
             <div className="flex items-center gap-6">
               {/* Icon */}
               <motion.div
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.8 }}
+                animate={{ rotate: isInView ? 360 : 0 }}
+                transition={{ duration: 1.5, ease: 'easeInOut' }}
                 className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${category.color} flex items-center justify-center shadow-lg shadow-primary/20`}
               >
                 <category.icon className="w-10 h-10 text-primary-foreground" />
@@ -147,10 +154,11 @@ const CategorySection = ({ category, index }: { category: typeof categories[0]; 
 
             {/* Expand indicator */}
             <motion.div
-              animate={{ rotate: isExpanded ? 180 : 0 }}
+              animate={{ rotate: isInView ? 90 : 0 }}
+              transition={{ duration: 0.4 }}
               className="w-12 h-12 rounded-full bg-muted flex items-center justify-center"
             >
-              <ArrowRight className={`w-5 h-5 text-primary transform ${isExpanded ? 'rotate-90' : ''}`} />
+              <ArrowRight className="w-5 h-5 text-primary" />
             </motion.div>
           </div>
 
@@ -167,11 +175,11 @@ const CategorySection = ({ category, index }: { category: typeof categories[0]; 
       <motion.div
         initial={false}
         animate={{ 
-          height: isExpanded ? 'auto' : 0,
-          opacity: isExpanded ? 1 : 0,
-          marginTop: isExpanded ? 24 : 0
+          height: isInView ? 'auto' : 0,
+          opacity: isInView ? 1 : 0,
+          marginTop: isInView ? 24 : 0
         }}
-        transition={{ duration: 0.4, ease: 'easeInOut' }}
+        transition={{ duration: 0.5, ease: 'easeInOut' }}
         className="overflow-hidden"
       >
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -182,8 +190,9 @@ const CategorySection = ({ category, index }: { category: typeof categories[0]; 
         
         {/* View all link */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isExpanded ? 1 : 0 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
+          transition={{ delay: 0.3 }}
           className="text-center mt-8"
         >
           <Link to="/produtos">
