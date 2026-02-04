@@ -5,6 +5,11 @@ export interface ProductIdeal {
   label: string;
 }
 
+export interface ProductModel {
+  name: string;
+  type: 'mono' | 'bivolt';
+}
+
 export interface ProductData {
   id: string;
   slug: string;
@@ -19,6 +24,7 @@ export interface ProductData {
   features: string[];
   characteristics: string[];
   idealFor: ProductIdeal[];
+  models?: ProductModel[];
   specSheet?: string;
   highlight?: boolean;
 }
@@ -167,6 +173,14 @@ export const productsData: ProductData[] = [
       { icon: 'monitor', label: 'Computadores' },
       { icon: 'wifi', label: 'Modem e Roteador' },
       { icon: 'smartphone', label: 'Celular e Telefones' },
+    ],
+    models: [
+      { name: '330 Mono', type: 'mono' },
+      { name: '500 Mono', type: 'mono' },
+      { name: '1000 Mono', type: 'mono' },
+      { name: '330 Bivolt', type: 'bivolt' },
+      { name: '500 Bivolt', type: 'bivolt' },
+      { name: '600 Bivolt', type: 'bivolt' },
     ],
     specSheet: 'https://involtsbrasil.com.br/files/protetor-multi.jpeg',
     highlight: true,
