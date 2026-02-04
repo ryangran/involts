@@ -433,41 +433,47 @@ const ProductDetail = () => {
                       <Box className="w-5 h-5 text-primary" />
                       <span className="text-foreground font-semibold">Modelos Disponíveis</span>
                     </div>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                      {product.models.map((model, index) => (
-                        <motion.div
-                          key={model.name}
-                          initial={{ opacity: 0, scale: 0.9 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: 0.6 + index * 0.05 }}
-                          whileHover={{ scale: 1.05, y: -3 }}
-                          className={`relative p-4 rounded-xl border text-center cursor-pointer overflow-hidden ${
-                            model.type === 'bivolt' 
-                              ? 'border-secondary/30 bg-gradient-to-br from-secondary/10 to-secondary/5' 
-                              : 'border-primary/30 bg-gradient-to-br from-primary/10 to-primary/5'
-                          }`}
-                        >
-                          <motion.div
-                            className={`absolute inset-0 ${
-                              model.type === 'bivolt' 
-                                ? 'bg-gradient-to-r from-secondary/0 via-secondary/10 to-secondary/0' 
-                                : 'bg-gradient-to-r from-primary/0 via-primary/10 to-primary/0'
-                            }`}
-                            animate={{ x: ['-100%', '200%'] }}
-                            transition={{ duration: 3, repeat: Infinity, ease: 'linear', delay: index * 0.2 }}
-                          />
-                          <span className={`font-bold relative z-10 ${
-                            model.type === 'bivolt' ? 'text-secondary' : 'text-primary'
-                          }`}>
-                            {model.name}
-                          </span>
-                          <span className={`block text-xs mt-1 relative z-10 ${
-                            model.type === 'bivolt' ? 'text-secondary/70' : 'text-primary/70'
-                          }`}>
-                            {model.type === 'bivolt' ? 'Bivolt' : 'Mono'}
-                          </span>
-                        </motion.div>
-                      ))}
+                    <div className="grid grid-cols-2 gap-6">
+                      {/* Mono Column */}
+                      <div className="space-y-2">
+                        <span className="text-sm font-semibold text-primary mb-2 block">Mono</span>
+                        {product.models
+                          .filter(m => m.type === 'mono')
+                          .map((model, index) => (
+                            <motion.div
+                              key={model.name}
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: 0.6 + index * 0.05 }}
+                              whileHover={{ scale: 1.02, x: 5 }}
+                              className="relative p-3 rounded-lg border border-primary/30 bg-gradient-to-r from-primary/10 to-primary/5 overflow-hidden"
+                            >
+                              <span className="font-medium text-primary relative z-10 text-sm">
+                                {model.name}
+                              </span>
+                            </motion.div>
+                          ))}
+                      </div>
+                      {/* Bivolt Column */}
+                      <div className="space-y-2">
+                        <span className="text-sm font-semibold text-secondary mb-2 block">Bivolt</span>
+                        {product.models
+                          .filter(m => m.type === 'bivolt')
+                          .map((model, index) => (
+                            <motion.div
+                              key={model.name}
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: 0.6 + index * 0.05 }}
+                              whileHover={{ scale: 1.02, x: 5 }}
+                              className="relative p-3 rounded-lg border border-secondary/30 bg-gradient-to-r from-secondary/10 to-secondary/5 overflow-hidden"
+                            >
+                              <span className="font-medium text-secondary relative z-10 text-sm">
+                                {model.name}
+                              </span>
+                            </motion.div>
+                          ))}
+                      </div>
                     </div>
                   </motion.div>
                 )}
