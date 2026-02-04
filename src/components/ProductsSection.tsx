@@ -1,8 +1,5 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { useCallback } from 'react';
-import useEmblaCarousel from 'embla-carousel-react';
-import Autoplay from 'embla-carousel-autoplay';
 import { AnimatedSection } from './AnimatedSection';
 import { Shield, Zap, Cpu, Plug, ArrowRight, Sparkles } from 'lucide-react';
 import { productsData } from '@/data/products';
@@ -20,7 +17,7 @@ const ProductCard = ({ product }: { product: typeof productsData[0] }) => {
       <motion.div
         whileHover={{ y: -6, boxShadow: '0 20px 40px -15px rgba(0,0,0,0.15)' }}
         transition={{ duration: 0.25 }}
-        className="group bg-card border border-border/50 rounded-xl overflow-hidden h-full hover:border-primary/30"
+        className="group bg-card border border-border/50 rounded-xl overflow-hidden h-full hover:border-primary/30 w-[180px] sm:w-[200px] md:w-[220px] flex-shrink-0"
       >
         {/* Image */}
         <div className="aspect-square bg-gradient-to-br from-muted/80 to-muted p-5 relative">
@@ -48,20 +45,10 @@ const ProductCard = ({ product }: { product: typeof productsData[0] }) => {
   );
 };
 
+// Duplicar produtos para loop infinito
+const duplicatedProducts = [...productsData, ...productsData, ...productsData];
+
 export const ProductsSection = () => {
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    { 
-      loop: true, 
-      align: 'start',
-      slidesToScroll: 1,
-      dragFree: true,
-    },
-    [Autoplay({ delay: 2500, stopOnInteraction: false, stopOnMouseEnter: true })]
-  );
-
-  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
-  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
-
   return (
     <section id="produtos" className="relative py-20 md:py-28 bg-background">
       {/* Subtle background */}
@@ -100,42 +87,37 @@ export const ProductsSection = () => {
           ))}
         </div>
 
-        {/* Single Carousel with All Products */}
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-between mb-6">
-            <p className="text-foreground/50 text-sm">
-              {productsData.length} produtos
-            </p>
-            
-            {/* Navigation arrows */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={scrollPrev}
-                className="w-10 h-10 rounded-full bg-muted hover:bg-primary/10 flex items-center justify-center transition-colors"
-              >
-                <ArrowRight className="w-4 h-4 text-foreground rotate-180" />
-              </button>
-              <button
-                onClick={scrollNext}
-                className="w-10 h-10 rounded-full bg-muted hover:bg-primary/10 flex items-center justify-center transition-colors"
-              >
-                <ArrowRight className="w-4 h-4 text-foreground" />
-              </button>
-            </div>
-          </div>
+        {/* Infinite Scrolling Carousel */}
+        <div className="max-w-6xl mx-auto mb-10">
+          <p className="text-foreground/50 text-sm mb-6 text-center">
+            {productsData.length} produtos
+          </p>
 
-          {/* Carousel */}
-          <div className="overflow-hidden" ref={emblaRef}>
-            <div className="flex gap-4">
-              {productsData.map((product) => (
-                <div 
-                  key={product.id} 
-                  className="flex-none w-[180px] sm:w-[200px] md:w-[220px]"
-                >
-                  <ProductCard product={product} />
-                </div>
+          {/* Carousel Container */}
+          <div className="overflow-hidden relative">
+            {/* Fade edges */}
+            <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+            
+            {/* Scrolling track */}
+            <motion.div
+              className="flex gap-4"
+              animate={{ x: [0, -((productsData.length) * 236)] }}
+              transition={{
+                x: {
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  duration: productsData.length * 3,
+                  ease: "linear",
+                },
+              }}
+              whileHover={{ animationPlayState: "paused" }}
+              style={{ width: "fit-content" }}
+            >
+              {duplicatedProducts.map((product, index) => (
+                <ProductCard key={`${product.id}-${index}`} product={product} />
               ))}
-            </div>
+            </motion.div>
           </div>
         </div>
 
