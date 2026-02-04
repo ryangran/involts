@@ -19,16 +19,17 @@ export const HeroSection = () => {
   useEffect(() => {
     const duration = 2000;
     const target = 25;
-    const increment = target / (duration / 16);
-    let current = 0;
+    const startTime = Date.now();
 
     const timer = setInterval(() => {
-      current += increment;
-      if (current >= target) {
-        setCount(target);
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const currentValue = Math.round(progress * target);
+      
+      setCount(currentValue);
+      
+      if (progress >= 1) {
         clearInterval(timer);
-      } else {
-        setCount(Math.floor(current));
       }
     }, 16);
 
