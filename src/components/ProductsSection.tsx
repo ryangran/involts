@@ -1,212 +1,161 @@
-import { motion, useScroll, useTransform, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatedSection } from './AnimatedSection';
-import { Shield, Zap, Cpu, Plug, ArrowRight, Sparkles } from 'lucide-react';
+import { Shield, Zap, Cpu, Plug, ArrowRight, Sparkles, ChevronRight } from 'lucide-react';
 import { productsData } from '@/data/products';
 
 const categories = [
   {
     id: 'protetores',
     title: 'Protetor Eletrônico',
-    description: 'Proteção inteligente contra surtos, raios e oscilações para seus equipamentos',
+    description: 'Proteção inteligente contra surtos, raios e oscilações',
     icon: Shield,
-    color: 'from-primary via-primary to-secondary',
-    bgGlow: 'bg-primary/20',
+    gradient: 'from-orange-500 via-amber-500 to-yellow-400',
+    bgImage: 'bg-gradient-to-br from-orange-500/20 to-amber-500/10',
     products: productsData.filter(p => p.categorySlug === 'protetores'),
   },
   {
     id: 'filtros',
     title: 'Filtros de Linha',
-    description: 'Filtragem avançada contra interferências e proteção DPS integrada',
+    description: 'Filtragem avançada contra interferências',
     icon: Zap,
-    color: 'from-secondary via-secondary to-primary',
-    bgGlow: 'bg-secondary/20',
+    gradient: 'from-blue-500 via-cyan-500 to-teal-400',
+    bgImage: 'bg-gradient-to-br from-blue-500/20 to-cyan-500/10',
     products: productsData.filter(p => p.categorySlug === 'filtro-de-linha'),
   },
   {
     id: 'transformadores',
     title: 'Autotransformadores',
-    description: 'Conversão de voltagem com máxima eficiência e proteção térmica',
+    description: 'Conversão de voltagem com máxima eficiência',
     icon: Cpu,
-    color: 'from-primary via-secondary to-primary',
-    bgGlow: 'bg-primary/20',
+    gradient: 'from-purple-500 via-violet-500 to-indigo-400',
+    bgImage: 'bg-gradient-to-br from-purple-500/20 to-violet-500/10',
     products: productsData.filter(p => p.categorySlug === 'autotransformadores'),
   },
   {
     id: 'aterramento',
     title: 'Aterramento',
-    description: 'Sistema inteligente de aterramento para proteção completa',
+    description: 'Sistema inteligente de proteção completa',
     icon: Plug,
-    color: 'from-secondary via-primary to-secondary',
-    bgGlow: 'bg-secondary/20',
+    gradient: 'from-emerald-500 via-green-500 to-lime-400',
+    bgImage: 'bg-gradient-to-br from-emerald-500/20 to-green-500/10',
     products: productsData.filter(p => p.categorySlug === 'aterramento'),
   },
 ];
 
-const ProductCard = ({ product, index }: { product: typeof productsData[0]; index: number }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.1 }}
-      whileHover={{ y: -10, scale: 1.02 }}
-      className="group relative"
-    >
-      <Link to={`/produto/${product.slug}`}>
-        <div className="relative bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl overflow-hidden">
-          {/* Product Image */}
-          <div className="aspect-square bg-gradient-to-br from-muted/50 to-muted p-6 relative overflow-hidden">
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5"
-              animate={{ opacity: [0.3, 0.6, 0.3] }}
-              transition={{ duration: 3, repeat: Infinity }}
-            />
-            <motion.img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-full object-contain relative z-10"
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              transition={{ duration: 0.4 }}
-            />
-            {/* Glow effect on hover */}
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-16 bg-primary/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-          </div>
-          
-          {/* Product Info */}
-          <div className="p-5">
-            <span className="text-xs text-primary font-semibold uppercase tracking-wider">
-              {product.category}
-            </span>
-            <h4 className="text-lg font-display font-bold text-foreground mt-1 group-hover:text-primary transition-colors">
-              {product.name}
-            </h4>
-            <p className="text-sm text-foreground/60 mt-1 line-clamp-2">
-              {product.description}
-            </p>
-            <motion.div 
-              className="flex items-center gap-2 text-primary font-semibold text-sm mt-3"
-              whileHover={{ x: 5 }}
-            >
-              Ver detalhes
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </motion.div>
-          </div>
-        </div>
-      </Link>
-    </motion.div>
-  );
-};
-
-const CategorySection = ({ category, index }: { category: typeof categories[0]; index: number }) => {
-  const categoryRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(categoryRef, { 
-    margin: '-30% 0px -30% 0px',
-    amount: 0.3
-  });
+const CategoryCard = ({ category, index }: { category: typeof categories[0]; index: number }) => {
+  const [isHovered, setIsHovered] = useState(false);
   
   return (
     <motion.div
-      ref={categoryRef}
-      initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: '-100px' }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="relative"
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.15, duration: 0.6 }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="group relative"
     >
-      {/* Category Header */}
-      <motion.div
-        whileHover={{ scale: 1.01 }}
-        className="cursor-pointer group"
-      >
-        <div className="relative bg-card/80 backdrop-blur-xl border border-border rounded-3xl p-8 overflow-hidden">
-          {/* Background glow */}
+      <Link to="/produtos">
+        <div className={`relative overflow-hidden rounded-3xl ${category.bgImage} backdrop-blur-sm border border-white/10 transition-all duration-500 hover:border-white/20`}>
+          {/* Animated gradient overlay */}
           <motion.div
-            className={`absolute -top-20 -right-20 w-60 h-60 ${category.bgGlow} rounded-full blur-3xl`}
-            animate={{ 
-              scale: isInView ? [1, 1.3, 1] : 1, 
-              opacity: isInView ? [0.3, 0.6, 0.3] : 0.2 
-            }}
-            transition={{ duration: 2, repeat: isInView ? Infinity : 0 }}
+            className={`absolute inset-0 bg-gradient-to-r ${category.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
           />
           
-          <div className="relative z-10 flex items-center justify-between">
-            <div className="flex items-center gap-6">
-              {/* Icon */}
-              <motion.div
-                animate={{ rotate: isInView ? 360 : 0 }}
-                transition={{ duration: 1.5, ease: 'easeInOut' }}
-                className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${category.color} flex items-center justify-center shadow-lg shadow-primary/20`}
-              >
-                <category.icon className="w-10 h-10 text-primary-foreground" />
-              </motion.div>
+          {/* Shine effect */}
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full"
+            animate={{ x: isHovered ? '200%' : '-100%' }}
+            transition={{ duration: 0.8, ease: 'easeInOut' }}
+          />
+
+          <div className="relative z-10 p-8 md:p-10 flex flex-col md:flex-row items-center gap-8">
+            {/* Icon container */}
+            <motion.div
+              animate={{ 
+                rotate: isHovered ? 10 : 0,
+                scale: isHovered ? 1.1 : 1 
+              }}
+              transition={{ type: 'spring', stiffness: 300 }}
+              className={`relative flex-shrink-0 w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-gradient-to-br ${category.gradient} p-[2px] shadow-2xl`}
+            >
+              <div className="w-full h-full rounded-2xl bg-background/90 flex items-center justify-center">
+                <category.icon className={`w-12 h-12 md:w-16 md:h-16 text-transparent bg-gradient-to-br ${category.gradient} bg-clip-text`} style={{ stroke: 'url(#gradient)', strokeWidth: 1.5 }} />
+                <category.icon className={`w-12 h-12 md:w-16 md:h-16 absolute bg-gradient-to-br ${category.gradient} bg-clip-text`} strokeWidth={1.5} stroke="currentColor" style={{ color: 'hsl(var(--primary))' }} />
+              </div>
               
-              <div>
-                <h3 className="text-2xl md:text-3xl font-display font-bold text-foreground group-hover:text-primary transition-colors">
-                  {category.title}
-                </h3>
-                <p className="text-foreground/60 mt-1 max-w-md">
-                  {category.description}
-                </p>
+              {/* Glow effect */}
+              <motion.div
+                className={`absolute -inset-4 bg-gradient-to-br ${category.gradient} opacity-20 blur-2xl rounded-full`}
+                animate={{ scale: isHovered ? 1.3 : 1, opacity: isHovered ? 0.4 : 0.2 }}
+              />
+            </motion.div>
+
+            {/* Content */}
+            <div className="flex-1 text-center md:text-left">
+              <motion.span 
+                className={`inline-block text-xs font-bold uppercase tracking-widest mb-2 bg-gradient-to-r ${category.gradient} bg-clip-text text-transparent`}
+              >
+                {category.products.length} {category.products.length === 1 ? 'produto' : 'produtos'}
+              </motion.span>
+              
+              <h3 className="text-2xl md:text-3xl lg:text-4xl font-display font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
+                {category.title}
+              </h3>
+              
+              <p className="text-foreground/60 text-lg max-w-md">
+                {category.description}
+              </p>
+
+              {/* Products preview */}
+              <div className="flex items-center gap-3 mt-6 justify-center md:justify-start">
+                <div className="flex -space-x-3">
+                  {category.products.slice(0, 3).map((product, i) => (
+                    <motion.div
+                      key={product.id}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.3 + i * 0.1 }}
+                      className="w-12 h-12 rounded-full border-2 border-background bg-muted overflow-hidden shadow-lg"
+                    >
+                      <img 
+                        src={product.image} 
+                        alt={product.name}
+                        className="w-full h-full object-contain p-1"
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+                {category.products.length > 3 && (
+                  <span className="text-sm text-foreground/50 font-medium">
+                    +{category.products.length - 3} mais
+                  </span>
+                )}
               </div>
             </div>
 
-            {/* Expand indicator */}
+            {/* Arrow */}
             <motion.div
-              animate={{ rotate: isInView ? 90 : 0 }}
-              transition={{ duration: 0.4 }}
-              className="w-12 h-12 rounded-full bg-muted flex items-center justify-center"
+              animate={{ x: isHovered ? 10 : 0 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+              className={`flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-br ${category.gradient} flex items-center justify-center shadow-xl`}
             >
-              <ArrowRight className="w-5 h-5 text-primary" />
+              <ChevronRight className="w-8 h-8 text-white" />
             </motion.div>
           </div>
 
-          {/* Product count badge */}
-          <div className="absolute top-4 right-4">
-            <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-semibold">
-              {category.products.length} {category.products.length === 1 ? 'produto' : 'produtos'}
-            </span>
-          </div>
+          {/* Bottom gradient line */}
+          <motion.div
+            className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${category.gradient}`}
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: isHovered ? 1 : 0 }}
+            transition={{ duration: 0.4 }}
+            style={{ transformOrigin: 'left' }}
+          />
         </div>
-      </motion.div>
-
-      {/* Products Grid */}
-      <motion.div
-        initial={false}
-        animate={{ 
-          height: isInView ? 'auto' : 0,
-          opacity: isInView ? 1 : 0,
-          marginTop: isInView ? 24 : 0
-        }}
-        transition={{ duration: 0.5, ease: 'easeInOut' }}
-        className="overflow-hidden"
-      >
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {category.products.map((product, productIndex) => (
-            <ProductCard key={product.id} product={product} index={productIndex} />
-          ))}
-        </div>
-        
-        {/* View all link */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
-          transition={{ delay: 0.3 }}
-          className="text-center mt-8"
-        >
-          <Link to="/produtos">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center gap-2 bg-muted hover:bg-muted/80 text-foreground px-6 py-3 rounded-full font-semibold transition-colors"
-            >
-              Ver linha completa
-              <ArrowRight className="w-4 h-4" />
-            </motion.button>
-          </Link>
-        </motion.div>
-      </motion.div>
+      </Link>
     </motion.div>
   );
 };
@@ -233,14 +182,25 @@ export const ProductsSection = () => {
         className="absolute inset-0 bg-gradient-radial pointer-events-none"
       />
       
-      {/* Animated grid */}
-      <div 
-        className="absolute inset-0 opacity-5"
-        style={{
-          backgroundImage: 'linear-gradient(hsl(var(--primary)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)',
-          backgroundSize: '80px 80px',
-        }}
-      />
+      {/* Floating orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div
+          className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl"
+          animate={{ 
+            x: [0, 50, 0],
+            y: [0, 30, 0],
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <motion.div
+          className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-secondary/5 rounded-full blur-3xl"
+          animate={{ 
+            x: [0, -40, 0],
+            y: [0, -50, 0],
+          }}
+          transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+        />
+      </div>
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Section Header */}
@@ -264,19 +224,34 @@ export const ProductsSection = () => {
           </h2>
           <p className="text-foreground/60 text-lg max-w-2xl mx-auto">
             Tecnologia de ponta com placas montadas em SMD para máxima eficiência e durabilidade. 
-            Clique em cada categoria para explorar.
+            Explore nossas categorias.
           </p>
         </AnimatedSection>
 
-        {/* Categories */}
-        <div className="space-y-6 max-w-6xl mx-auto">
+        {/* Categories Grid */}
+        <div className="grid gap-6 max-w-5xl mx-auto">
           {categories.map((category, index) => (
-            <CategorySection key={category.id} category={category} index={index} />
+            <CategoryCard key={category.id} category={category} index={index} />
           ))}
         </div>
 
+        {/* CTA Button */}
+        <AnimatedSection delay={0.4} className="text-center mt-16">
+          <Link to="/produtos">
+            <motion.button
+              whileHover={{ scale: 1.05, boxShadow: '0 25px 50px -12px rgba(249, 115, 22, 0.4)' }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-gradient-primary text-primary-foreground px-10 py-5 rounded-full font-bold text-lg inline-flex items-center gap-3 shadow-2xl"
+            >
+              <Sparkles className="w-5 h-5" />
+              Ver Todos os Produtos
+              <ArrowRight className="w-5 h-5" />
+            </motion.button>
+          </Link>
+        </AnimatedSection>
+
         {/* SMD Technology Badge */}
-        <AnimatedSection delay={0.4} className="mt-24">
+        <AnimatedSection delay={0.5} className="mt-24">
           <motion.div
             whileHover={{ scale: 1.02 }}
             className="relative bg-gradient-to-r from-card via-muted to-card border border-border rounded-3xl p-8 md:p-12 max-w-5xl mx-auto overflow-hidden"
@@ -297,7 +272,7 @@ export const ProductsSection = () => {
                 <Cpu className="w-12 h-12 text-primary-foreground" />
               </motion.div>
               
-              <div className="text-center md:text-left">
+              <div className="text-center md:text-left flex-1">
                 <div className="inline-flex items-center gap-2 bg-primary/20 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
                   <Sparkles className="w-4 h-4" />
                   Tecnologia SMD
@@ -310,17 +285,6 @@ export const ProductsSection = () => {
                   menor consumo de energia e vida útil prolongada para todos os nossos equipamentos.
                 </p>
               </div>
-
-              <Link to="/produtos" className="flex-shrink-0">
-                <motion.button
-                  whileHover={{ scale: 1.05, boxShadow: '0 20px 40px -10px rgba(249, 115, 22, 0.4)' }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-gradient-primary text-primary-foreground px-8 py-4 rounded-full font-semibold flex items-center gap-2"
-                >
-                  Explorar Tudo
-                  <ArrowRight className="w-5 h-5" />
-                </motion.button>
-              </Link>
             </div>
           </motion.div>
         </AnimatedSection>
