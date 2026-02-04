@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 
 const navItems = [
-  { label: 'A Involts', href: '#sobre' },
+  { label: 'A Involts', href: '/sobre' },
   { label: 'Produtos', href: '/produtos' },
   { label: 'Assistência', href: '/assistencia' },
   { label: 'Contato', href: '/contato' },
