@@ -62,7 +62,8 @@ export const Footer = () => {
             <div className="flex items-center gap-3 mb-6">
               <img src={logo2} alt="Involts" className="h-12 w-auto" />
               <span className="font-display font-bold text-2xl text-foreground">
-                Involts
+                ​
+
               </span>
             </div>
             <p className="text-foreground/60 mb-6">
