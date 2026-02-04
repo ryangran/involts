@@ -192,7 +192,7 @@ const Assistencia = () => {
               {/* Interactive Map */}
               <AnimatedSection animation="slideLeft">
                 <div className="relative">
-                  <div className="bg-card border border-border rounded-3xl p-8 relative overflow-hidden">
+                  <div className="bg-card border border-border rounded-3xl p-6 md:p-8 relative overflow-hidden">
                     {/* Glow effect */}
                     <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-secondary" />
                     
@@ -201,8 +201,8 @@ const Assistencia = () => {
                       Selecione seu Estado
                     </h2>
 
-                    {/* Brazil Map SVG */}
-                    <div className="relative bg-gradient-to-br from-primary/5 to-secondary/5 rounded-2xl p-4 overflow-hidden">
+                    {/* Brazil Map */}
+                    <div className="relative bg-gradient-to-br from-primary/5 to-secondary/5 rounded-2xl overflow-hidden" style={{ minHeight: '400px' }}>
                       <BrazilMap
                         onStateClick={setEstadoSelecionado}
                         selectedState={estadoSelecionado}
@@ -355,7 +355,7 @@ const Assistencia = () => {
                             >
                               <div className="flex items-start justify-between mb-3">
                                 <div className="flex-1">
-                                  <div className="flex items-center gap-2 mb-1">
+                                  <div className="flex items-center gap-2 mb-1 flex-wrap">
                                     <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors">
                                       {assistencia.nome}
                                     </h4>
