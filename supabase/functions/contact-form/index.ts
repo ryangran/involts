@@ -6,6 +6,49 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+// In-memory rate limiting store (resets on function cold start)
+// For production, consider using Redis or database-backed rate limiting
+const rateLimitStore = new Map<string, number[]>();
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+const MAX_REQUESTS_PER_WINDOW = 5;
+
+function checkRateLimit(clientIP: string): { allowed: boolean; retryAfter?: number } {
+  const now = Date.now();
+  const requests = rateLimitStore.get(clientIP) || [];
+  
+  // Filter to only include requests within the time window
+  const recentRequests = requests.filter((timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS);
+  
+  if (recentRequests.length >= MAX_REQUESTS_PER_WINDOW) {
+    const oldestRequest = Math.min(...recentRequests);
+    const retryAfter = Math.ceil((oldestRequest + RATE_LIMIT_WINDOW_MS - now) / 1000);
+    return { allowed: false, retryAfter };
+  }
+  
+  // Add current request timestamp
+  recentRequests.push(now);
+  rateLimitStore.set(clientIP, recentRequests);
+  
+  return { allowed: true };
+}
+
+function getClientIP(req: Request): string {
+  // Try to get the real client IP from various headers
+  const forwardedFor = req.headers.get("x-forwarded-for");
+  if (forwardedFor) {
+    // x-forwarded-for can contain multiple IPs, take the first one (original client)
+    return forwardedFor.split(",")[0].trim();
+  }
+  
+  const realIP = req.headers.get("x-real-ip");
+  if (realIP) {
+    return realIP.trim();
+  }
+  
+  // Fallback - use a generic identifier
+  return "unknown";
+}
+
 // Server-side validation - mirrors client-side Zod schema
 function validateContactForm(data: unknown): { success: true; data: ContactFormData } | { success: false; error: string } {
   if (!data || typeof data !== 'object') {
@@ -96,6 +139,28 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
+    // Rate limiting check
+    const clientIP = getClientIP(req);
+    const rateLimitResult = checkRateLimit(clientIP);
+    
+    if (!rateLimitResult.allowed) {
+      console.log(`Rate limit exceeded for IP: ${clientIP}`);
+      return new Response(
+        JSON.stringify({ 
+          error: "Muitas tentativas. Por favor, aguarde alguns minutos antes de tentar novamente.",
+          retryAfter: rateLimitResult.retryAfter 
+        }),
+        { 
+          status: 429, 
+          headers: { 
+            "Content-Type": "application/json",
+            "Retry-After": String(rateLimitResult.retryAfter),
+            ...corsHeaders 
+          } 
+        }
+      );
+    }
+
     const body = await req.json();
 
     // Server-side validation
@@ -111,20 +176,20 @@ const handler = async (req: Request): Promise<Response> => {
 
     const { nome, email, telefone, assunto, mensagem } = validation.data;
 
-    // Log validated submission (in production, you would save to DB or send email)
+    // Log validated submission with IP for abuse detection
     console.log("Contact form submission received:", {
       nome,
       email,
       telefone,
       assunto,
       mensagemLength: mensagem.length,
+      clientIP,
       timestamp: new Date().toISOString(),
     });
 
     // TODO: In the future, you can add:
     // - Save to database
     // - Send email notification using Resend
-    // - Rate limiting
 
     return new Response(
       JSON.stringify({ 
