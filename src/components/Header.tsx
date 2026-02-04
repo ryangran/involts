@@ -6,7 +6,7 @@ const navItems = [
   { label: 'A Involts', href: '#sobre' },
   { label: 'Produtos', href: '/produtos' },
   { label: 'Assistência', href: '/assistencia' },
-  { label: 'Contato', href: '#contato' },
+  { label: 'Contato', href: '/contato' },
 ];
 
 export const Header = () => {
