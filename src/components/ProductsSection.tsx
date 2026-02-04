@@ -1,292 +1,224 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatedSection } from './AnimatedSection';
-import { Shield, Zap, Cpu, Plug, ArrowRight, Sparkles, ChevronRight } from 'lucide-react';
+import { Shield, Zap, Cpu, Plug, ArrowRight, Sparkles } from 'lucide-react';
 import { productsData } from '@/data/products';
 
 const categories = [
   {
     id: 'protetores',
-    title: 'Protetor Eletrônico',
-    description: 'Proteção inteligente contra surtos, raios e oscilações',
+    title: 'Protetores',
+    fullTitle: 'Protetor Eletrônico',
     icon: Shield,
-    gradient: 'from-orange-500 via-amber-500 to-yellow-400',
-    bgImage: 'bg-gradient-to-br from-orange-500/20 to-amber-500/10',
     products: productsData.filter(p => p.categorySlug === 'protetores'),
   },
   {
     id: 'filtros',
-    title: 'Filtros de Linha',
-    description: 'Filtragem avançada contra interferências',
+    title: 'Filtros',
+    fullTitle: 'Filtros de Linha',
     icon: Zap,
-    gradient: 'from-blue-500 via-cyan-500 to-teal-400',
-    bgImage: 'bg-gradient-to-br from-blue-500/20 to-cyan-500/10',
     products: productsData.filter(p => p.categorySlug === 'filtro-de-linha'),
   },
   {
     id: 'transformadores',
-    title: 'Autotransformadores',
-    description: 'Conversão de voltagem com máxima eficiência',
+    title: 'Autotransf.',
+    fullTitle: 'Autotransformadores',
     icon: Cpu,
-    gradient: 'from-purple-500 via-violet-500 to-indigo-400',
-    bgImage: 'bg-gradient-to-br from-purple-500/20 to-violet-500/10',
     products: productsData.filter(p => p.categorySlug === 'autotransformadores'),
   },
   {
     id: 'aterramento',
     title: 'Aterramento',
-    description: 'Sistema inteligente de proteção completa',
+    fullTitle: 'Aterramento',
     icon: Plug,
-    gradient: 'from-emerald-500 via-green-500 to-lime-400',
-    bgImage: 'bg-gradient-to-br from-emerald-500/20 to-green-500/10',
     products: productsData.filter(p => p.categorySlug === 'aterramento'),
   },
 ];
 
-const CategoryCard = ({ category, index }: { category: typeof categories[0]; index: number }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  
+const ProductCard = ({ product, index }: { product: typeof productsData[0]; index: number }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.15, duration: 0.6 }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="group relative"
+      layout
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.8 }}
+      transition={{ delay: index * 0.05, type: 'spring', stiffness: 300, damping: 25 }}
     >
-      <Link to="/produtos">
-        <div className={`relative overflow-hidden rounded-3xl ${category.bgImage} backdrop-blur-sm border border-white/10 transition-all duration-500 hover:border-white/20`}>
-          {/* Animated gradient overlay */}
-          <motion.div
-            className={`absolute inset-0 bg-gradient-to-r ${category.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
-          />
-          
-          {/* Shine effect */}
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full"
-            animate={{ x: isHovered ? '200%' : '-100%' }}
-            transition={{ duration: 0.8, ease: 'easeInOut' }}
-          />
-
-          <div className="relative z-10 p-8 md:p-10 flex flex-col md:flex-row items-center gap-8">
-            {/* Icon container */}
-            <motion.div
-              animate={{ 
-                rotate: isHovered ? 10 : 0,
-                scale: isHovered ? 1.1 : 1 
-              }}
-              transition={{ type: 'spring', stiffness: 300 }}
-              className={`relative flex-shrink-0 w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-gradient-to-br ${category.gradient} p-[2px] shadow-2xl`}
-            >
-              <div className="w-full h-full rounded-2xl bg-background/90 flex items-center justify-center">
-                <category.icon className={`w-12 h-12 md:w-16 md:h-16 text-transparent bg-gradient-to-br ${category.gradient} bg-clip-text`} style={{ stroke: 'url(#gradient)', strokeWidth: 1.5 }} />
-                <category.icon className={`w-12 h-12 md:w-16 md:h-16 absolute bg-gradient-to-br ${category.gradient} bg-clip-text`} strokeWidth={1.5} stroke="currentColor" style={{ color: 'hsl(var(--primary))' }} />
-              </div>
-              
-              {/* Glow effect */}
-              <motion.div
-                className={`absolute -inset-4 bg-gradient-to-br ${category.gradient} opacity-20 blur-2xl rounded-full`}
-                animate={{ scale: isHovered ? 1.3 : 1, opacity: isHovered ? 0.4 : 0.2 }}
-              />
-            </motion.div>
-
-            {/* Content */}
-            <div className="flex-1 text-center md:text-left">
-              <motion.span 
-                className={`inline-block text-xs font-bold uppercase tracking-widest mb-2 bg-gradient-to-r ${category.gradient} bg-clip-text text-transparent`}
-              >
-                {category.products.length} {category.products.length === 1 ? 'produto' : 'produtos'}
-              </motion.span>
-              
-              <h3 className="text-2xl md:text-3xl lg:text-4xl font-display font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
-                {category.title}
-              </h3>
-              
-              <p className="text-foreground/60 text-lg max-w-md">
-                {category.description}
-              </p>
-
-              {/* Products preview */}
-              <div className="flex items-center gap-3 mt-6 justify-center md:justify-start">
-                <div className="flex -space-x-3">
-                  {category.products.slice(0, 3).map((product, i) => (
-                    <motion.div
-                      key={product.id}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.3 + i * 0.1 }}
-                      className="w-12 h-12 rounded-full border-2 border-background bg-muted overflow-hidden shadow-lg"
-                    >
-                      <img 
-                        src={product.image} 
-                        alt={product.name}
-                        className="w-full h-full object-contain p-1"
-                      />
-                    </motion.div>
-                  ))}
-                </div>
-                {category.products.length > 3 && (
-                  <span className="text-sm text-foreground/50 font-medium">
-                    +{category.products.length - 3} mais
-                  </span>
-                )}
-              </div>
-            </div>
-
-            {/* Arrow */}
-            <motion.div
-              animate={{ x: isHovered ? 10 : 0 }}
-              transition={{ type: 'spring', stiffness: 300 }}
-              className={`flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-br ${category.gradient} flex items-center justify-center shadow-xl`}
-            >
-              <ChevronRight className="w-8 h-8 text-white" />
-            </motion.div>
+      <Link to={`/produto/${product.slug}`}>
+        <motion.div
+          whileHover={{ y: -8 }}
+          className="group relative bg-card border border-border rounded-2xl overflow-hidden h-full"
+        >
+          {/* Image */}
+          <div className="aspect-square bg-gradient-to-br from-muted to-muted/50 p-6 relative overflow-hidden">
+            <motion.img
+              src={product.image}
+              alt={product.name}
+              className="w-full h-full object-contain relative z-10"
+              whileHover={{ scale: 1.1 }}
+              transition={{ duration: 0.3 }}
+            />
+            
+            {/* Hover overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </div>
-
-          {/* Bottom gradient line */}
-          <motion.div
-            className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${category.gradient}`}
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: isHovered ? 1 : 0 }}
-            transition={{ duration: 0.4 }}
-            style={{ transformOrigin: 'left' }}
-          />
-        </div>
+          
+          {/* Content */}
+          <div className="p-5">
+            <h4 className="font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2">
+              {product.name}
+            </h4>
+            <p className="text-sm text-foreground/50 mt-1 line-clamp-1">
+              {product.description}
+            </p>
+            
+            <div className="flex items-center gap-1 text-primary text-sm font-medium mt-3 group-hover:gap-2 transition-all">
+              Ver produto
+              <ArrowRight className="w-4 h-4" />
+            </div>
+          </div>
+        </motion.div>
       </Link>
     </motion.div>
   );
 };
 
 export const ProductsSection = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start end', 'end start'],
-  });
-
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
+  const [activeTab, setActiveTab] = useState(0);
+  const activeCategory = categories[activeTab];
 
   return (
-    <section
-      id="produtos"
-      ref={containerRef}
-      className="relative py-32 overflow-hidden"
-    >
-      {/* Background */}
-      <motion.div
-        style={{ y: backgroundY }}
-        className="absolute inset-0 bg-gradient-radial pointer-events-none"
-      />
-      
-      {/* Floating orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl"
-          animate={{ 
-            x: [0, 50, 0],
-            y: [0, 30, 0],
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-secondary/5 rounded-full blur-3xl"
-          animate={{ 
-            x: [0, -40, 0],
-            y: [0, -50, 0],
-          }}
-          transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-        />
+    <section id="produtos" className="relative py-24 md:py-32 overflow-hidden bg-muted/30">
+      {/* Background pattern */}
+      <div className="absolute inset-0 opacity-50">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--primary) / 0.15) 1px, transparent 0)`,
+          backgroundSize: '40px 40px'
+        }} />
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
-        {/* Section Header */}
-        <AnimatedSection className="text-center mb-20">
+        {/* Header */}
+        <AnimatedSection className="text-center mb-12">
           <motion.div
             initial={{ scale: 0 }}
             whileInView={{ scale: 1 }}
             viewport={{ once: true }}
-            transition={{ type: 'spring', stiffness: 200 }}
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full px-6 py-3 mb-6"
+            className="inline-flex items-center gap-2 bg-primary/10 rounded-full px-5 py-2 mb-6"
           >
-            <Sparkles className="w-5 h-5 text-primary" />
-            <span className="text-primary font-semibold text-sm uppercase tracking-widest">
-              Nossos Produtos
+            <Sparkles className="w-4 h-4 text-primary" />
+            <span className="text-primary font-semibold text-sm uppercase tracking-wider">
+              Catálogo
             </span>
           </motion.div>
           
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-foreground mb-6">
-            Soluções em{' '}
-            <span className="text-gradient">Energia</span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-foreground mb-4">
+            Nossos <span className="text-gradient">Produtos</span>
           </h2>
-          <p className="text-foreground/60 text-lg max-w-2xl mx-auto">
-            Tecnologia de ponta com placas montadas em SMD para máxima eficiência e durabilidade. 
-            Explore nossas categorias.
-          </p>
         </AnimatedSection>
 
-        {/* Categories Grid */}
-        <div className="grid gap-6 max-w-5xl mx-auto">
-          {categories.map((category, index) => (
-            <CategoryCard key={category.id} category={category} index={index} />
-          ))}
+        {/* Tabs */}
+        <div className="flex justify-center mb-12">
+          <div className="inline-flex bg-card border border-border rounded-2xl p-2 gap-2 flex-wrap justify-center">
+            {categories.map((category, index) => (
+              <motion.button
+                key={category.id}
+                onClick={() => setActiveTab(index)}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={`relative flex items-center gap-2 px-5 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                  activeTab === index 
+                    ? 'text-primary-foreground' 
+                    : 'text-foreground/60 hover:text-foreground'
+                }`}
+              >
+                {activeTab === index && (
+                  <motion.div
+                    layoutId="activeTab"
+                    className="absolute inset-0 bg-gradient-primary rounded-xl"
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <category.icon className="w-5 h-5 relative z-10" />
+                <span className="relative z-10 hidden sm:inline">{category.title}</span>
+                <span className="relative z-10 text-xs bg-background/20 px-2 py-0.5 rounded-full">
+                  {category.products.length}
+                </span>
+              </motion.button>
+            ))}
+          </div>
         </div>
 
-        {/* CTA Button */}
-        <AnimatedSection delay={0.4} className="text-center mt-16">
+        {/* Category Title */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeCategory.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="text-center mb-10"
+          >
+            <h3 className="text-2xl md:text-3xl font-display font-bold text-foreground">
+              {activeCategory.fullTitle}
+            </h3>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Products Grid */}
+        <div className="max-w-6xl mx-auto">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeCategory.id}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
+            >
+              {activeCategory.products.map((product, index) => (
+                <ProductCard key={product.id} product={product} index={index} />
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* View All CTA */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mt-12"
+        >
           <Link to="/produtos">
             <motion.button
-              whileHover={{ scale: 1.05, boxShadow: '0 25px 50px -12px rgba(249, 115, 22, 0.4)' }}
+              whileHover={{ scale: 1.05, boxShadow: '0 20px 40px -10px rgba(249, 115, 22, 0.4)' }}
               whileTap={{ scale: 0.95 }}
-              className="bg-gradient-primary text-primary-foreground px-10 py-5 rounded-full font-bold text-lg inline-flex items-center gap-3 shadow-2xl"
+              className="bg-gradient-primary text-primary-foreground px-8 py-4 rounded-full font-bold inline-flex items-center gap-2"
             >
-              <Sparkles className="w-5 h-5" />
-              Ver Todos os Produtos
+              Ver Linha Completa
               <ArrowRight className="w-5 h-5" />
             </motion.button>
           </Link>
-        </AnimatedSection>
+        </motion.div>
 
-        {/* SMD Technology Badge */}
-        <AnimatedSection delay={0.5} className="mt-24">
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="relative bg-gradient-to-r from-card via-muted to-card border border-border rounded-3xl p-8 md:p-12 max-w-5xl mx-auto overflow-hidden"
-          >
-            {/* Animated background */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5"
-              animate={{ x: ['-100%', '100%'] }}
-              transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
-            />
-            
-            <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-                className="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0"
-              >
-                <Cpu className="w-12 h-12 text-primary-foreground" />
-              </motion.div>
-              
-              <div className="text-center md:text-left flex-1">
-                <div className="inline-flex items-center gap-2 bg-primary/20 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
-                  <Sparkles className="w-4 h-4" />
-                  Tecnologia SMD
-                </div>
-                <h3 className="text-2xl md:text-3xl font-display font-bold text-foreground mb-3">
-                  Ainda mais tecnologia em cada produto
-                </h3>
-                <p className="text-foreground/60 max-w-xl">
-                  Placas montadas em SMD (Surface Mount Device) garantem maior confiabilidade, 
-                  menor consumo de energia e vida útil prolongada para todos os nossos equipamentos.
+        {/* SMD Badge */}
+        <AnimatedSection delay={0.3} className="mt-20">
+          <div className="bg-card border border-border rounded-2xl p-8 max-w-4xl mx-auto">
+            <div className="flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-primary flex items-center justify-center flex-shrink-0">
+                <Cpu className="w-8 h-8 text-primary-foreground" />
+              </div>
+              <div>
+                <h4 className="text-xl font-bold text-foreground mb-2">
+                  Tecnologia SMD em todos os produtos
+                </h4>
+                <p className="text-foreground/60">
+                  Maior confiabilidade, menor consumo e vida útil prolongada.
                 </p>
               </div>
             </div>
-          </motion.div>
+          </div>
         </AnimatedSection>
       </div>
     </section>
