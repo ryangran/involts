@@ -9,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
+import { supabase } from '@/integrations/supabase/client';
 
 const contactSchema = z.object({
   nome: z.string().trim().min(1, 'Nome é obrigatório').max(100, 'Nome muito longo'),
@@ -58,6 +59,7 @@ const Contato = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Client-side validation first
     const result = contactSchema.safeParse(formData);
     if (!result.success) {
       toast({
@@ -70,22 +72,42 @@ const Contato = () => {
 
     setIsSubmitting(true);
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    toast({
-      title: "Mensagem enviada!",
-      description: "Entraremos em contato em breve.",
-    });
-    
-    setFormData({
-      nome: '',
-      email: '',
-      telefone: '',
-      assunto: '',
-      mensagem: '',
-    });
-    setIsSubmitting(false);
+    try {
+      // Call edge function with server-side validation
+      const { data, error } = await supabase.functions.invoke('contact-form', {
+        body: formData,
+      });
+
+      if (error) {
+        throw new Error(error.message || 'Erro ao enviar mensagem');
+      }
+
+      if (!data?.success) {
+        throw new Error(data?.error || 'Erro ao processar formulário');
+      }
+
+      toast({
+        title: "Mensagem enviada!",
+        description: data.message || "Entraremos em contato em breve.",
+      });
+      
+      setFormData({
+        nome: '',
+        email: '',
+        telefone: '',
+        assunto: '',
+        mensagem: '',
+      });
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Erro ao enviar mensagem';
+      toast({
+        title: "Erro",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const openWhatsApp = () => {
