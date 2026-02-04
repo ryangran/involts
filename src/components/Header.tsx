@@ -4,7 +4,7 @@ import { Menu, X } from 'lucide-react';
 
 const navItems = [
   { label: 'A Involts', href: '#sobre' },
-  { label: 'Produtos', href: 'https://involtsbrasil.com.br/produtos', external: true },
+  { label: 'Produtos', href: '/produtos' },
   { label: 'Assistência', href: '#assistencia' },
   { label: 'Contato', href: '#contato' },
 ];
@@ -60,8 +60,6 @@ export const Header = () => {
                 <motion.a
                   key={item.label}
                   href={item.href}
-                  target={item.external ? '_blank' : undefined}
-                  rel={item.external ? 'noopener noreferrer' : undefined}
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * index }}
@@ -107,9 +105,7 @@ export const Header = () => {
                 <a
                   key={item.label}
                   href={item.href}
-                  target={item.external ? '_blank' : undefined}
-                  rel={item.external ? 'noopener noreferrer' : undefined}
-                  onClick={() => !item.external && setIsMobileMenuOpen(false)}
+                  onClick={() => setIsMobileMenuOpen(false)}
                   className="text-foreground text-xl font-medium"
                 >
                   {item.label}
