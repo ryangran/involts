@@ -433,46 +433,108 @@ const ProductDetail = () => {
                       <Box className="w-5 h-5 text-primary" />
                       <span className="text-foreground font-semibold">Modelos Disponíveis</span>
                     </div>
-                    <div className="grid grid-cols-2 gap-6">
-                      {/* Mono Column */}
-                      <div className="space-y-2">
-                        <span className="text-sm font-semibold text-primary mb-2 block">Mono</span>
-                        {product.models
-                          .filter(m => m.type === 'mono')
-                          .map((model, index) => (
-                            <motion.div
-                              key={model.name}
-                              initial={{ opacity: 0, x: -20 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: 0.6 + index * 0.05 }}
-                              whileHover={{ scale: 1.02, x: 5 }}
-                              className="relative p-3 rounded-lg border border-primary/30 bg-gradient-to-r from-primary/10 to-primary/5 overflow-hidden"
-                            >
-                              <span className="font-medium text-primary relative z-10 text-sm">
-                                {model.name}
-                              </span>
-                            </motion.div>
-                          ))}
+                    
+                    {/* Mono Models */}
+                    <div className="mb-4">
+                      <span className="text-sm font-semibold text-primary mb-3 block">Mono</span>
+                      <div className="grid grid-cols-3 gap-3">
+                        {/* 330 */}
+                        <div className="space-y-2">
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.6 }}
+                            whileHover={{ scale: 1.05, y: -3 }}
+                            className="relative p-3 rounded-xl border border-primary/30 bg-gradient-to-br from-primary/10 to-primary/5 text-center overflow-hidden"
+                          >
+                            <span className="font-bold text-primary text-sm">330 - 110V</span>
+                          </motion.div>
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.65 }}
+                            whileHover={{ scale: 1.05, y: -3 }}
+                            className="relative p-3 rounded-xl border border-primary/30 bg-gradient-to-br from-primary/10 to-primary/5 text-center overflow-hidden"
+                          >
+                            <span className="font-bold text-primary text-sm">330 - 220V</span>
+                          </motion.div>
+                        </div>
+                        {/* 500 */}
+                        <div className="space-y-2">
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.7 }}
+                            whileHover={{ scale: 1.05, y: -3 }}
+                            className="relative p-3 rounded-xl border border-primary/30 bg-gradient-to-br from-primary/10 to-primary/5 text-center overflow-hidden"
+                          >
+                            <span className="font-bold text-primary text-sm">500 - 110V</span>
+                          </motion.div>
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.75 }}
+                            whileHover={{ scale: 1.05, y: -3 }}
+                            className="relative p-3 rounded-xl border border-primary/30 bg-gradient-to-br from-primary/10 to-primary/5 text-center overflow-hidden"
+                          >
+                            <span className="font-bold text-primary text-sm">500 - 220V</span>
+                          </motion.div>
+                        </div>
+                        {/* 1000 */}
+                        <div className="space-y-2">
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.8 }}
+                            whileHover={{ scale: 1.05, y: -3 }}
+                            className="relative p-3 rounded-xl border border-primary/30 bg-gradient-to-br from-primary/10 to-primary/5 text-center overflow-hidden"
+                          >
+                            <span className="font-bold text-primary text-sm">1000 - 110V</span>
+                          </motion.div>
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.85 }}
+                            whileHover={{ scale: 1.05, y: -3 }}
+                            className="relative p-3 rounded-xl border border-primary/30 bg-gradient-to-br from-primary/10 to-primary/5 text-center overflow-hidden"
+                          >
+                            <span className="font-bold text-primary text-sm">1000 - 220V</span>
+                          </motion.div>
+                        </div>
                       </div>
-                      {/* Bivolt Column */}
-                      <div className="space-y-2">
-                        <span className="text-sm font-semibold text-secondary mb-2 block">Bivolt</span>
-                        {product.models
-                          .filter(m => m.type === 'bivolt')
-                          .map((model, index) => (
-                            <motion.div
-                              key={model.name}
-                              initial={{ opacity: 0, x: -20 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: 0.6 + index * 0.05 }}
-                              whileHover={{ scale: 1.02, x: 5 }}
-                              className="relative p-3 rounded-lg border border-secondary/30 bg-gradient-to-r from-secondary/10 to-secondary/5 overflow-hidden"
-                            >
-                              <span className="font-medium text-secondary relative z-10 text-sm">
-                                {model.name}
-                              </span>
-                            </motion.div>
-                          ))}
+                    </div>
+
+                    {/* Bivolt Models */}
+                    <div>
+                      <span className="text-sm font-semibold text-secondary mb-3 block">Bivolt</span>
+                      <div className="grid grid-cols-3 gap-3">
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 0.9 }}
+                          whileHover={{ scale: 1.05, y: -3 }}
+                          className="relative p-3 rounded-xl border border-secondary/30 bg-gradient-to-br from-secondary/10 to-secondary/5 text-center overflow-hidden"
+                        >
+                          <span className="font-bold text-secondary text-sm">330</span>
+                        </motion.div>
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 0.95 }}
+                          whileHover={{ scale: 1.05, y: -3 }}
+                          className="relative p-3 rounded-xl border border-secondary/30 bg-gradient-to-br from-secondary/10 to-secondary/5 text-center overflow-hidden"
+                        >
+                          <span className="font-bold text-secondary text-sm">500</span>
+                        </motion.div>
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 1 }}
+                          whileHover={{ scale: 1.05, y: -3 }}
+                          className="relative p-3 rounded-xl border border-secondary/30 bg-gradient-to-br from-secondary/10 to-secondary/5 text-center overflow-hidden"
+                        >
+                          <span className="font-bold text-secondary text-sm">600</span>
+                        </motion.div>
                       </div>
                     </div>
                   </motion.div>
