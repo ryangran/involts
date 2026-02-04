@@ -1,5 +1,8 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useEffect, useCallback } from 'react';
+import useEmblaCarousel from 'embla-carousel-react';
+import Autoplay from 'embla-carousel-autoplay';
 import { AnimatedSection } from './AnimatedSection';
 import { Shield, Zap, Cpu, Plug, ArrowRight, Sparkles } from 'lucide-react';
 import { productsData } from '@/data/products';
@@ -35,63 +38,69 @@ const categories = [
   },
 ];
 
-const ProductCard = ({ product, index }: { product: typeof productsData[0]; index: number }) => {
+const ProductCard = ({ product }: { product: typeof productsData[0] }) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ delay: index * 0.03, duration: 0.4 }}
-    >
-      <Link to={`/produto/${product.slug}`}>
-        <motion.div
-          whileHover={{ y: -6, boxShadow: '0 20px 40px -15px rgba(0,0,0,0.15)' }}
-          transition={{ duration: 0.25 }}
-          className="group bg-card border border-border/50 rounded-xl overflow-hidden h-full hover:border-primary/30"
-        >
-          {/* Image */}
-          <div className="aspect-square bg-gradient-to-br from-muted/80 to-muted p-5 relative">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
-            />
-          </div>
+    <Link to={`/produto/${product.slug}`}>
+      <motion.div
+        whileHover={{ y: -6, boxShadow: '0 20px 40px -15px rgba(0,0,0,0.15)' }}
+        transition={{ duration: 0.25 }}
+        className="group bg-card border border-border/50 rounded-xl overflow-hidden h-full hover:border-primary/30"
+      >
+        {/* Image */}
+        <div className="aspect-square bg-gradient-to-br from-muted/80 to-muted p-5 relative">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+        
+        {/* Content */}
+        <div className="p-4">
+          <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors text-sm leading-tight">
+            {product.name}
+          </h4>
           
-          {/* Content */}
-          <div className="p-4">
-            <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors text-sm leading-tight">
-              {product.name}
-            </h4>
-            
-            <div className="flex items-center gap-1 text-primary text-xs font-medium mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              Ver detalhes
-              <ArrowRight className="w-3 h-3" />
-            </div>
+          <div className="flex items-center gap-1 text-primary text-xs font-medium mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            Ver detalhes
+            <ArrowRight className="w-3 h-3" />
           </div>
-        </motion.div>
-      </Link>
-    </motion.div>
+        </div>
+      </motion.div>
+    </Link>
   );
 };
 
-const CategoryBlock = ({ category, index }: { category: typeof categories[0]; index: number }) => {
+const CategoryCarousel = ({ category, index }: { category: typeof categories[0]; index: number }) => {
   const Icon = category.icon;
   
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { 
+      loop: true, 
+      align: 'start',
+      slidesToScroll: 1,
+      dragFree: true,
+    },
+    [Autoplay({ delay: 3000 + index * 500, stopOnInteraction: false, stopOnMouseEnter: true })]
+  );
+
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-100px' }}
       transition={{ delay: index * 0.1, duration: 0.5 }}
-      className="mb-16 last:mb-0"
+      className="mb-14 last:mb-0"
     >
       {/* Category Header */}
       <div className="flex items-center gap-4 mb-6">
         <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center">
           <Icon className="w-6 h-6 text-primary-foreground" />
         </div>
-        <div>
+        <div className="flex-1">
           <h3 className="text-xl md:text-2xl font-display font-bold text-foreground">
             {category.title}
           </h3>
@@ -99,18 +108,36 @@ const CategoryBlock = ({ category, index }: { category: typeof categories[0]; in
             {category.description}
           </p>
         </div>
-        <div className="ml-auto">
-          <span className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
-            {category.products.length} {category.products.length === 1 ? 'produto' : 'produtos'}
-          </span>
+        
+        {/* Navigation arrows */}
+        <div className="flex items-center gap-2">
+          <button
+            onClick={scrollPrev}
+            className="w-10 h-10 rounded-full bg-muted hover:bg-primary/10 flex items-center justify-center transition-colors"
+          >
+            <ArrowRight className="w-4 h-4 text-foreground rotate-180" />
+          </button>
+          <button
+            onClick={scrollNext}
+            className="w-10 h-10 rounded-full bg-muted hover:bg-primary/10 flex items-center justify-center transition-colors"
+          >
+            <ArrowRight className="w-4 h-4 text-foreground" />
+          </button>
         </div>
       </div>
 
-      {/* Products Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        {category.products.map((product, productIndex) => (
-          <ProductCard key={product.id} product={product} index={productIndex} />
-        ))}
+      {/* Carousel */}
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex gap-4">
+          {category.products.map((product) => (
+            <div 
+              key={product.id} 
+              className="flex-none w-[160px] sm:w-[180px] md:w-[200px] lg:w-[220px]"
+            >
+              <ProductCard product={product} />
+            </div>
+          ))}
+        </div>
       </div>
     </motion.div>
   );
@@ -145,10 +172,10 @@ export const ProductsSection = () => {
           </p>
         </AnimatedSection>
 
-        {/* All Categories */}
+        {/* All Categories with Carousels */}
         <div className="max-w-6xl mx-auto">
           {categories.map((category, index) => (
-            <CategoryBlock key={category.id} category={category} index={index} />
+            <CategoryCarousel key={category.id} category={category} index={index} />
           ))}
         </div>
 
