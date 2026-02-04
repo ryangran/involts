@@ -17,43 +17,109 @@ const assistenciasData: Record<string, Array<{
   horario: string;
   certificada: boolean;
 }>> = {
-  'SP': [
-    { nome: 'TechFix São Paulo Centro', endereco: 'Av. Paulista, 1000 - Bela Vista', cidade: 'São Paulo', telefone: '(11) 3456-7890', horario: '08h às 18h', certificada: true },
-    { nome: 'Eletro Service Campinas', endereco: 'Rua Barão de Jaguara, 500', cidade: 'Campinas', telefone: '(19) 3234-5678', horario: '08h às 17h', certificada: true },
-    { nome: 'Involts Assistência Ribeirão', endereco: 'Av. Francisco Junqueira, 1200', cidade: 'Ribeirão Preto', telefone: '(16) 3621-4567', horario: '09h às 18h', certificada: false },
+  'AC': [
+    { nome: 'Rio Branco Eletro Service', endereco: 'Av. Ceará, 1500 - Centro', cidade: 'Rio Branco', telefone: '(68) 3223-4567', horario: '08h às 17h', certificada: true },
   ],
-  'RJ': [
-    { nome: 'Rio Eletro Assistência', endereco: 'Rua da Assembleia, 100 - Centro', cidade: 'Rio de Janeiro', telefone: '(21) 2345-6789', horario: '08h às 17h', certificada: true },
-    { nome: 'Niterói Tech Service', endereco: 'Av. Amaral Peixoto, 300', cidade: 'Niterói', telefone: '(21) 2622-3456', horario: '09h às 18h', certificada: true },
+  'AL': [
+    { nome: 'Maceió Tech Assistência', endereco: 'Av. Fernandes Lima, 800', cidade: 'Maceió', telefone: '(82) 3336-7890', horario: '08h às 18h', certificada: true },
+  ],
+  'AP': [
+    { nome: 'Macapá Eletro Fix', endereco: 'Av. FAB, 1200 - Centro', cidade: 'Macapá', telefone: '(96) 3223-4567', horario: '08h às 17h', certificada: true },
+  ],
+  'AM': [
+    { nome: 'Manaus Tech Service', endereco: 'Av. Eduardo Ribeiro, 500 - Centro', cidade: 'Manaus', telefone: '(92) 3234-5678', horario: '08h às 18h', certificada: true },
+    { nome: 'Amazonas Eletro Assistência', endereco: 'Av. Djalma Batista, 1000', cidade: 'Manaus', telefone: '(92) 3456-7890', horario: '09h às 17h', certificada: false },
+  ],
+  'BA': [
+    { nome: 'Salvador Eletro Service', endereco: 'Av. Sete de Setembro, 1500', cidade: 'Salvador', telefone: '(71) 3456-7890', horario: '08h às 17h', certificada: true },
+    { nome: 'Feira Tech Fix', endereco: 'Av. Getúlio Vargas, 800', cidade: 'Feira de Santana', telefone: '(75) 3221-4567', horario: '08h às 18h', certificada: true },
+  ],
+  'CE': [
+    { nome: 'Fortaleza Eletro Assistência', endereco: 'Av. Beira Mar, 1000', cidade: 'Fortaleza', telefone: '(85) 3456-7890', horario: '08h às 17h', certificada: true },
+    { nome: 'Ceará Tech Service', endereco: 'Av. Dom Luís, 500', cidade: 'Fortaleza', telefone: '(85) 3234-5678', horario: '09h às 18h', certificada: true },
+  ],
+  'DF': [
+    { nome: 'Brasília Eletro Fix', endereco: 'SCS Quadra 1, Bloco A', cidade: 'Brasília', telefone: '(61) 3456-7890', horario: '08h às 18h', certificada: true },
+    { nome: 'Taguatinga Tech Service', endereco: 'QNA 15, Loja 30', cidade: 'Taguatinga', telefone: '(61) 3352-4567', horario: '08h às 17h', certificada: true },
+  ],
+  'ES': [
+    { nome: 'Vitória Eletro Assistência', endereco: 'Av. Nossa Senhora da Penha, 1500', cidade: 'Vitória', telefone: '(27) 3345-6789', horario: '08h às 18h', certificada: true },
+    { nome: 'Vila Velha Tech Fix', endereco: 'Av. Champagnat, 800', cidade: 'Vila Velha', telefone: '(27) 3229-4567', horario: '08h às 17h', certificada: true },
+  ],
+  'GO': [
+    { nome: 'Goiânia Tech Service', endereco: 'Av. 85, 500 - Setor Marista', cidade: 'Goiânia', telefone: '(62) 3456-7890', horario: '08h às 18h', certificada: true },
+    { nome: 'Anápolis Eletro Fix', endereco: 'Av. Brasil, 1200', cidade: 'Anápolis', telefone: '(62) 3321-4567', horario: '08h às 17h', certificada: true },
+  ],
+  'MA': [
+    { nome: 'São Luís Eletro Service', endereco: 'Av. Colares Moreira, 500', cidade: 'São Luís', telefone: '(98) 3235-6789', horario: '08h às 17h', certificada: true },
+  ],
+  'MT': [
+    { nome: 'Cuiabá Tech Assistência', endereco: 'Av. do CPA, 1000', cidade: 'Cuiabá', telefone: '(65) 3624-5678', horario: '08h às 18h', certificada: true },
+    { nome: 'Rondonópolis Eletro Fix', endereco: 'Av. Lions Internacional, 800', cidade: 'Rondonópolis', telefone: '(66) 3423-4567', horario: '08h às 17h', certificada: true },
+  ],
+  'MS': [
+    { nome: 'Campo Grande Eletro Service', endereco: 'Av. Afonso Pena, 2000', cidade: 'Campo Grande', telefone: '(67) 3325-6789', horario: '08h às 18h', certificada: true },
+    { nome: 'Dourados Tech Fix', endereco: 'Av. Marcelino Pires, 1500', cidade: 'Dourados', telefone: '(67) 3421-4567', horario: '08h às 17h', certificada: true },
   ],
   'MG': [
     { nome: 'BH Eletro Service', endereco: 'Av. Afonso Pena, 1500 - Centro', cidade: 'Belo Horizonte', telefone: '(31) 3456-7890', horario: '08h às 18h', certificada: true },
-    { nome: 'Uberlândia Tech Fix', endereco: 'Av. Rondon Pacheco, 800', cidade: 'Uberlândia', telefone: '(34) 3234-5678', horario: '08h às 17h', certificada: false },
+    { nome: 'Uberlândia Tech Fix', endereco: 'Av. Rondon Pacheco, 800', cidade: 'Uberlândia', telefone: '(34) 3234-5678', horario: '08h às 17h', certificada: true },
+    { nome: 'Juiz de Fora Eletro', endereco: 'Av. Rio Branco, 2000', cidade: 'Juiz de Fora', telefone: '(32) 3215-4567', horario: '09h às 18h', certificada: true },
   ],
-  'RS': [
-    { nome: 'Porto Alegre Eletro', endereco: 'Av. Borges de Medeiros, 500', cidade: 'Porto Alegre', telefone: '(51) 3456-7890', horario: '08h às 18h', certificada: true },
+  'PA': [
+    { nome: 'Belém Eletro Assistência', endereco: 'Av. Presidente Vargas, 1000', cidade: 'Belém', telefone: '(91) 3224-5678', horario: '08h às 17h', certificada: true },
+    { nome: 'Santarém Tech Fix', endereco: 'Av. Rui Barbosa, 500', cidade: 'Santarém', telefone: '(93) 3522-4567', horario: '08h às 17h', certificada: true },
+  ],
+  'PB': [
+    { nome: 'João Pessoa Eletro Service', endereco: 'Av. Epitácio Pessoa, 1500', cidade: 'João Pessoa', telefone: '(83) 3244-5678', horario: '08h às 18h', certificada: true },
+    { nome: 'Campina Grande Tech', endereco: 'Av. Floriano Peixoto, 800', cidade: 'Campina Grande', telefone: '(83) 3321-4567', horario: '08h às 17h', certificada: true },
   ],
   'PR': [
     { nome: 'Curitiba Tech Service', endereco: 'Rua XV de Novembro, 1000', cidade: 'Curitiba', telefone: '(41) 3234-5678', horario: '08h às 17h', certificada: true },
     { nome: 'Londrina Eletro Fix', endereco: 'Av. Higienópolis, 300', cidade: 'Londrina', telefone: '(43) 3322-4455', horario: '09h às 18h', certificada: true },
-  ],
-  'SC': [
-    { nome: 'Floripa Assistência Técnica', endereco: 'Av. Beira Mar Norte, 800', cidade: 'Florianópolis', telefone: '(48) 3456-7890', horario: '08h às 18h', certificada: true },
-  ],
-  'BA': [
-    { nome: 'Salvador Eletro Service', endereco: 'Av. Sete de Setembro, 1500', cidade: 'Salvador', telefone: '(71) 3456-7890', horario: '08h às 17h', certificada: true },
+    { nome: 'Maringá Tech Assistência', endereco: 'Av. Brasil, 2000', cidade: 'Maringá', telefone: '(44) 3225-6789', horario: '08h às 18h', certificada: true },
   ],
   'PE': [
     { nome: 'Recife Tech Fix', endereco: 'Av. Boa Viagem, 500', cidade: 'Recife', telefone: '(81) 3456-7890', horario: '08h às 18h', certificada: true },
+    { nome: 'Caruaru Eletro Service', endereco: 'Av. Agamenon Magalhães, 1000', cidade: 'Caruaru', telefone: '(81) 3721-4567', horario: '08h às 17h', certificada: true },
   ],
-  'CE': [
-    { nome: 'Fortaleza Eletro Assistência', endereco: 'Av. Beira Mar, 1000', cidade: 'Fortaleza', telefone: '(85) 3456-7890', horario: '08h às 17h', certificada: true },
+  'PI': [
+    { nome: 'Teresina Eletro Assistência', endereco: 'Av. Frei Serafim, 1500', cidade: 'Teresina', telefone: '(86) 3221-5678', horario: '08h às 17h', certificada: true },
   ],
-  'GO': [
-    { nome: 'Goiânia Tech Service', endereco: 'Av. 85, 500 - Setor Marista', cidade: 'Goiânia', telefone: '(62) 3456-7890', horario: '08h às 18h', certificada: true },
+  'RJ': [
+    { nome: 'Rio Eletro Assistência', endereco: 'Rua da Assembleia, 100 - Centro', cidade: 'Rio de Janeiro', telefone: '(21) 2345-6789', horario: '08h às 17h', certificada: true },
+    { nome: 'Niterói Tech Service', endereco: 'Av. Amaral Peixoto, 300', cidade: 'Niterói', telefone: '(21) 2622-3456', horario: '09h às 18h', certificada: true },
+    { nome: 'Campos dos Goytacazes Eletro', endereco: 'Av. 28 de Março, 800', cidade: 'Campos dos Goytacazes', telefone: '(22) 2733-4567', horario: '08h às 17h', certificada: true },
   ],
-  'DF': [
-    { nome: 'Brasília Eletro Fix', endereco: 'SCS Quadra 1, Bloco A', cidade: 'Brasília', telefone: '(61) 3456-7890', horario: '08h às 18h', certificada: true },
+  'RN': [
+    { nome: 'Natal Eletro Service', endereco: 'Av. Engenheiro Roberto Freire, 1000', cidade: 'Natal', telefone: '(84) 3211-5678', horario: '08h às 18h', certificada: true },
+    { nome: 'Mossoró Tech Fix', endereco: 'Av. Presidente Dutra, 500', cidade: 'Mossoró', telefone: '(84) 3315-4567', horario: '08h às 17h', certificada: true },
+  ],
+  'RS': [
+    { nome: 'Porto Alegre Eletro', endereco: 'Av. Borges de Medeiros, 500', cidade: 'Porto Alegre', telefone: '(51) 3456-7890', horario: '08h às 18h', certificada: true },
+    { nome: 'Caxias do Sul Tech', endereco: 'Rua Sinimbu, 1000', cidade: 'Caxias do Sul', telefone: '(54) 3221-4567', horario: '08h às 17h', certificada: true },
+    { nome: 'Pelotas Eletro Fix', endereco: 'Av. Bento Gonçalves, 800', cidade: 'Pelotas', telefone: '(53) 3225-6789', horario: '09h às 18h', certificada: true },
+  ],
+  'RO': [
+    { nome: 'Porto Velho Eletro Service', endereco: 'Av. Sete de Setembro, 1500', cidade: 'Porto Velho', telefone: '(69) 3224-5678', horario: '08h às 17h', certificada: true },
+  ],
+  'SC': [
+    { nome: 'Floripa Assistência Técnica', endereco: 'Av. Beira Mar Norte, 800', cidade: 'Florianópolis', telefone: '(48) 3456-7890', horario: '08h às 18h', certificada: true },
+    { nome: 'Joinville Tech Service', endereco: 'Rua do Príncipe, 500', cidade: 'Joinville', telefone: '(47) 3433-4567', horario: '08h às 17h', certificada: true },
+    { nome: 'Blumenau Eletro Fix', endereco: 'Rua XV de Novembro, 1000', cidade: 'Blumenau', telefone: '(47) 3322-6789', horario: '09h às 18h', certificada: true },
+  ],
+  'SP': [
+    { nome: 'TechFix São Paulo Centro', endereco: 'Av. Paulista, 1000 - Bela Vista', cidade: 'São Paulo', telefone: '(11) 3456-7890', horario: '08h às 18h', certificada: true },
+    { nome: 'Eletro Service Campinas', endereco: 'Rua Barão de Jaguara, 500', cidade: 'Campinas', telefone: '(19) 3234-5678', horario: '08h às 17h', certificada: true },
+    { nome: 'Involts Assistência Ribeirão', endereco: 'Av. Francisco Junqueira, 1200', cidade: 'Ribeirão Preto', telefone: '(16) 3621-4567', horario: '09h às 18h', certificada: true },
+    { nome: 'Santos Tech Fix', endereco: 'Av. Ana Costa, 800', cidade: 'Santos', telefone: '(13) 3219-4567', horario: '08h às 17h', certificada: true },
+    { nome: 'Sorocaba Eletro', endereco: 'Av. General Carneiro, 500', cidade: 'Sorocaba', telefone: '(15) 3233-6789', horario: '08h às 18h', certificada: true },
+  ],
+  'SE': [
+    { nome: 'Aracaju Eletro Assistência', endereco: 'Av. Beira Mar, 1000', cidade: 'Aracaju', telefone: '(79) 3211-5678', horario: '08h às 17h', certificada: true },
+  ],
+  'TO': [
+    { nome: 'Palmas Tech Service', endereco: 'Av. JK, Quadra 104 Sul', cidade: 'Palmas', telefone: '(63) 3215-4567', horario: '08h às 18h', certificada: true },
   ],
 };
 
