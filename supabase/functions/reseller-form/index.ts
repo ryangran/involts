@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { Resend } from "https://esm.sh/resend@2.0.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -50,6 +51,34 @@ interface ResellerFormData {
   prioridade?: string;
 }
 
+const segmentoLabels: Record<string, string> = {
+  eletrica: "Material Elétrico",
+  construcao: "Construção Civil",
+  informatica: "Informática",
+  outro: "Outro",
+};
+
+const tempoMercadoLabels: Record<string, string> = {
+  iniciante: "Menos de 1 ano",
+  "1-3": "1 a 3 anos",
+  "3-10": "3 a 10 anos",
+  "10+": "Mais de 10 anos",
+};
+
+const volumeVendasLabels: Record<string, string> = {
+  pequeno: "Até R$ 10 mil",
+  medio: "R$ 10 mil a R$ 50 mil",
+  grande: "R$ 50 mil a R$ 200 mil",
+  enterprise: "Acima de R$ 200 mil",
+};
+
+const prioridadeLabels: Record<string, string> = {
+  preco: "Melhor Preço",
+  qualidade: "Qualidade Premium",
+  entrega: "Entrega Rápida",
+  suporte: "Suporte Técnico",
+};
+
 function validateResellerForm(data: unknown): { success: true; data: ResellerFormData } | { success: false; error: string } {
   if (!data || typeof data !== 'object') {
     return { success: false, error: 'Dados inválidos' };
@@ -57,7 +86,6 @@ function validateResellerForm(data: unknown): { success: true; data: ResellerFor
 
   const { nome, email, telefone, empresa, cidade, cnpj, segmento, outro_segmento, tempo_mercado, volume_vendas, prioridade } = data as Record<string, unknown>;
 
-  // Required fields
   if (typeof nome !== 'string' || nome.trim().length === 0) {
     return { success: false, error: 'Nome é obrigatório' };
   }
@@ -96,6 +124,105 @@ function validateResellerForm(data: unknown): { success: true; data: ResellerFor
       prioridade: sanitizeOptional(prioridade),
     },
   };
+}
+
+async function sendEmailNotification(data: ResellerFormData) {
+  const resendApiKey = Deno.env.get("RESEND_API_KEY");
+  if (!resendApiKey) {
+    console.error("RESEND_API_KEY not configured");
+    return;
+  }
+
+  const resend = new Resend(resendApiKey);
+
+  const segmentoDisplay = data.segmento === 'outro' 
+    ? data.outro_segmento || 'Não informado'
+    : segmentoLabels[data.segmento || ''] || 'Não informado';
+
+  const emailHtml = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <div style="background: linear-gradient(135deg, #f97316, #eab308); padding: 20px; border-radius: 10px 10px 0 0;">
+        <h1 style="color: white; margin: 0; font-size: 24px;">🤝 Novo Revendedor Interessado!</h1>
+      </div>
+      
+      <div style="background: #1a1a1a; padding: 30px; border-radius: 0 0 10px 10px; color: #ffffff;">
+        <h2 style="color: #f97316; margin-top: 0;">Dados do Revendedor</h2>
+        
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr>
+            <td style="padding: 10px 0; border-bottom: 1px solid #333; color: #888; width: 40%;">Nome:</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #333; color: #fff; font-weight: bold;">${data.nome}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px 0; border-bottom: 1px solid #333; color: #888;">Empresa:</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #333; color: #fff;">${data.empresa || 'Não informada'}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px 0; border-bottom: 1px solid #333; color: #888;">Email:</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #333;">
+              <a href="mailto:${data.email}" style="color: #f97316; text-decoration: none;">${data.email}</a>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 10px 0; border-bottom: 1px solid #333; color: #888;">Telefone:</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #333;">
+              <a href="tel:${data.telefone}" style="color: #f97316; text-decoration: none;">${data.telefone}</a>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 10px 0; border-bottom: 1px solid #333; color: #888;">Cidade:</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #333; color: #fff;">${data.cidade || 'Não informada'}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px 0; border-bottom: 1px solid #333; color: #888;">CNPJ:</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #333; color: #fff;">${data.cnpj || 'Não informado'}</td>
+          </tr>
+        </table>
+        
+        <h3 style="color: #f97316; margin-top: 25px;">Perfil do Revendedor</h3>
+        <div style="background: #2a2a2a; padding: 15px; border-radius: 8px; border-left: 4px solid #f97316;">
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+              <td style="padding: 8px 0; color: #888;">📦 Segmento:</td>
+              <td style="padding: 8px 0; color: #fff;">${segmentoDisplay}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; color: #888;">⏱️ Tempo de Mercado:</td>
+              <td style="padding: 8px 0; color: #fff;">${tempoMercadoLabels[data.tempo_mercado || ''] || 'Não informado'}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; color: #888;">💰 Volume de Vendas:</td>
+              <td style="padding: 8px 0; color: #fff;">${volumeVendasLabels[data.volume_vendas || ''] || 'Não informado'}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; color: #888;">⭐ Prioridade:</td>
+              <td style="padding: 8px 0; color: #fff;">${prioridadeLabels[data.prioridade || ''] || 'Não informado'}</td>
+            </tr>
+          </table>
+        </div>
+        
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #333; text-align: center;">
+          <p style="color: #666; font-size: 12px; margin: 0;">
+            Este email foi enviado automaticamente pelo site Involts<br>
+            ${new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}
+          </p>
+        </div>
+      </div>
+    </div>
+  `;
+
+  try {
+    await resend.emails.send({
+      from: "Involts <noreply@involtsbrasil.com.br>",
+      to: ["administrativo@involtsbrasil.com.br"],
+      subject: `🤝 Novo Revendedor: ${data.nome} - ${data.empresa || 'Empresa não informada'}`,
+      html: emailHtml,
+      reply_to: data.email,
+    });
+    console.log("Email notification sent successfully");
+  } catch (error) {
+    console.error("Error sending email notification:", error);
+  }
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -165,6 +292,9 @@ const handler = async (req: Request): Promise<Response> => {
         { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
       );
     }
+
+    // Send email notification
+    await sendEmailNotification(formData);
 
     console.log("Reseller form submission saved:", {
       nome: formData.nome,
