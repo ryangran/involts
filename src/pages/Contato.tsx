@@ -112,7 +112,7 @@ const Contato = () => {
 
   const openWhatsApp = () => {
     const message = encodeURIComponent('Olá Involts');
-    window.open(`https://api.whatsapp.com/send?phone=5511949000505&text=${message}`, '_blank');
+    window.open(`https://api.whatsapp.com/send?phone=5511968469454&text=${message}`, '_blank');
   };
 
   return (
@@ -199,7 +199,7 @@ const Contato = () => {
                         </div>
                         <div>
                           <p className="text-sm text-foreground/60 mb-1">Telefone</p>
-                          <p className="text-lg font-semibold text-foreground">11 4024-1212 | 11 94900-0505</p>
+                          <p className="text-lg font-semibold text-foreground">(11) 96846-9454</p>
                         </div>
                       </motion.div>
 
