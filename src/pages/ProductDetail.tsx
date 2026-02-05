@@ -647,9 +647,7 @@ const ProductDetail = () => {
                   
                   <video
                     src={protetorVideo}
-                    autoPlay
-                    loop
-                    muted
+                    controls
                     playsInline
                     className="max-w-full max-h-full object-contain relative z-10 rounded-2xl"
                   />
