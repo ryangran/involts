@@ -36,21 +36,28 @@ function getClientIP(req: Request): string {
   return "unknown";
 }
 
-interface ContactFormData {
+interface ResellerFormData {
   nome: string;
   email: string;
   telefone: string;
-  assunto: string;
-  mensagem: string;
+  empresa?: string;
+  cidade?: string;
+  cnpj?: string;
+  segmento?: string;
+  outro_segmento?: string;
+  tempo_mercado?: string;
+  volume_vendas?: string;
+  prioridade?: string;
 }
 
-function validateContactForm(data: unknown): { success: true; data: ContactFormData } | { success: false; error: string } {
+function validateResellerForm(data: unknown): { success: true; data: ResellerFormData } | { success: false; error: string } {
   if (!data || typeof data !== 'object') {
     return { success: false, error: 'Dados inválidos' };
   }
 
-  const { nome, email, telefone, assunto, mensagem } = data as Record<string, unknown>;
+  const { nome, email, telefone, empresa, cidade, cnpj, segmento, outro_segmento, tempo_mercado, volume_vendas, prioridade } = data as Record<string, unknown>;
 
+  // Required fields
   if (typeof nome !== 'string' || nome.trim().length === 0) {
     return { success: false, error: 'Nome é obrigatório' };
   }
@@ -65,41 +72,28 @@ function validateContactForm(data: unknown): { success: true; data: ContactFormD
   if (!emailRegex.test(email.trim())) {
     return { success: false, error: 'Email inválido' };
   }
-  if (email.trim().length > 255) {
-    return { success: false, error: 'Email muito longo (máximo 255 caracteres)' };
-  }
 
   if (typeof telefone !== 'string' || telefone.trim().length === 0) {
     return { success: false, error: 'Telefone é obrigatório' };
   }
-  if (telefone.trim().length > 20) {
-    return { success: false, error: 'Telefone muito longo (máximo 20 caracteres)' };
-  }
 
-  if (typeof assunto !== 'string' || assunto.trim().length === 0) {
-    return { success: false, error: 'Assunto é obrigatório' };
-  }
-  if (assunto.trim().length > 200) {
-    return { success: false, error: 'Assunto muito longo (máximo 200 caracteres)' };
-  }
-
-  if (typeof mensagem !== 'string' || mensagem.trim().length === 0) {
-    return { success: false, error: 'Mensagem é obrigatória' };
-  }
-  if (mensagem.trim().length > 1000) {
-    return { success: false, error: 'Mensagem muito longa (máximo 1000 caracteres)' };
-  }
-
-  const sanitize = (str: string) => str.trim().replace(/<[^>]*>/g, '');
+  const sanitize = (str: string | undefined) => str?.trim().replace(/<[^>]*>/g, '') || '';
+  const sanitizeOptional = (val: unknown) => typeof val === 'string' ? sanitize(val) : undefined;
 
   return {
     success: true,
     data: {
-      nome: sanitize(nome),
-      email: sanitize(email),
-      telefone: sanitize(telefone),
-      assunto: sanitize(assunto),
-      mensagem: sanitize(mensagem),
+      nome: sanitize(nome as string),
+      email: sanitize(email as string),
+      telefone: sanitize(telefone as string),
+      empresa: sanitizeOptional(empresa),
+      cidade: sanitizeOptional(cidade),
+      cnpj: sanitizeOptional(cnpj),
+      segmento: sanitizeOptional(segmento),
+      outro_segmento: sanitizeOptional(outro_segmento),
+      tempo_mercado: sanitizeOptional(tempo_mercado),
+      volume_vendas: sanitizeOptional(volume_vendas),
+      prioridade: sanitizeOptional(prioridade),
     },
   };
 }
@@ -139,7 +133,7 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     const body = await req.json();
-    const validation = validateContactForm(body);
+    const validation = validateResellerForm(body);
     
     if (!validation.success) {
       console.log("Validation failed:", validation.error);
@@ -149,7 +143,7 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    const { nome, email, telefone, assunto, mensagem } = validation.data;
+    const formData = validation.data;
 
     // Create Supabase client with service role
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
@@ -158,27 +152,24 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Insert into database
     const { error: dbError } = await supabase
-      .from("contact_leads")
+      .from("reseller_leads")
       .insert({
-        nome,
-        email,
-        telefone,
-        assunto,
-        mensagem,
+        ...formData,
         status: "novo",
       });
 
     if (dbError) {
       console.error("Database error:", dbError);
       return new Response(
-        JSON.stringify({ error: "Erro ao salvar mensagem. Tente novamente." }),
+        JSON.stringify({ error: "Erro ao salvar cadastro. Tente novamente." }),
         { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
       );
     }
 
-    console.log("Contact form submission saved:", {
-      nome,
-      email,
+    console.log("Reseller form submission saved:", {
+      nome: formData.nome,
+      email: formData.email,
+      empresa: formData.empresa,
       clientIP,
       timestamp: new Date().toISOString(),
     });
@@ -186,13 +177,13 @@ const handler = async (req: Request): Promise<Response> => {
     return new Response(
       JSON.stringify({ 
         success: true, 
-        message: "Mensagem enviada com sucesso! Entraremos em contato em breve." 
+        message: "Cadastro enviado com sucesso! Nossa equipe entrará em contato em breve." 
       }),
       { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
     );
 
   } catch (error) {
-    console.error("Error processing contact form:", error);
+    console.error("Error processing reseller form:", error);
     return new Response(
       JSON.stringify({ error: "Erro interno do servidor" }),
       { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }

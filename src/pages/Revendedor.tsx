@@ -26,6 +26,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Progress } from '@/components/ui/progress';
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 interface QuizQuestion {
   id: number;
@@ -151,6 +153,7 @@ const stats = [
 ];
 
 export default function Revendedor() {
+  const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(0); // 0 = intro, 1-4 = quiz, 5 = form, 6 = success
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [outroSegmento, setOutroSegmento] = useState('');
@@ -189,11 +192,45 @@ export default function Revendedor() {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setCurrentStep(6);
-    setIsSubmitting(false);
+    try {
+      // Prepare data with quiz answers
+      const submitData = {
+        ...formData,
+        segmento: answers[1] || '',
+        outro_segmento: answers[1] === 'outro' ? outroSegmento : '',
+        tempo_mercado: answers[2] || '',
+        volume_vendas: answers[3] || '',
+        prioridade: answers[4] || '',
+      };
+
+      const { data, error } = await supabase.functions.invoke('reseller-form', {
+        body: submitData,
+      });
+
+      if (error) {
+        throw new Error(error.message || 'Erro ao enviar cadastro');
+      }
+
+      if (!data?.success) {
+        throw new Error(data?.error || 'Erro ao processar formulário');
+      }
+
+      toast({
+        title: "Cadastro enviado!",
+        description: data.message || "Nossa equipe entrará em contato em breve.",
+      });
+      
+      setCurrentStep(6);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Erro ao enviar cadastro';
+      toast({
+        title: "Erro",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const FloatingOrb = ({ delay = 0, size = 300, x = 0, y = 0 }: { delay?: number; size?: number; x?: number; y?: number }) => (
