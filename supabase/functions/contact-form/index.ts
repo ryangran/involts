@@ -163,7 +163,7 @@ async function sendEmailNotification(data: ContactFormData) {
 
   try {
     await resend.emails.send({
-      from: "Involts <noreply@involtsbrasil.com.br>",
+      from: "Involts <onboarding@resend.dev>",
       to: ["administrativo@involtsbrasil.com.br"],
       subject: `📩 Novo Contato: ${data.assunto}`,
       html: emailHtml,
