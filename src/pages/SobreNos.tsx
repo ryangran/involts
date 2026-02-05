@@ -569,7 +569,7 @@ const SobreNos = () => {
             </div>
             
             <motion.a
-              href="https://wa.me/551140241212"
+              href="https://wa.me/5511968469454"
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
