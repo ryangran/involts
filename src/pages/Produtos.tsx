@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { AnimatedSection, StaggerContainer, StaggerItem } from '@/components/AnimatedSection';
@@ -198,9 +199,28 @@ const ProductCard = ({ product, index }: { product: typeof productsData[0]; inde
 };
 
 const Produtos = () => {
-  const [activeCategory, setActiveCategory] = useState('todos');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const categoryFromUrl = searchParams.get('categoria') || 'todos';
+  const [activeCategory, setActiveCategory] = useState(categoryFromUrl);
   const containerRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
+  
+  // Sync category with URL
+  useEffect(() => {
+    const categoria = searchParams.get('categoria');
+    if (categoria && categories.some(c => c.id === categoria)) {
+      setActiveCategory(categoria);
+    }
+  }, [searchParams]);
+
+  const handleCategoryChange = (categoryId: string) => {
+    setActiveCategory(categoryId);
+    if (categoryId === 'todos') {
+      setSearchParams({});
+    } else {
+      setSearchParams({ categoria: categoryId });
+    }
+  };
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -343,7 +363,7 @@ const Produtos = () => {
                 return (
                   <motion.button
                     key={category.id}
-                    onClick={() => setActiveCategory(category.id)}
+                    onClick={() => handleCategoryChange(category.id)}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 * index }}

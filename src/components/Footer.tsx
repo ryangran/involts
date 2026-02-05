@@ -1,37 +1,22 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { AnimatedSection } from './AnimatedSection';
 import { Zap, Phone, Mail, MapPin, Instagram, Facebook, Linkedin } from 'lucide-react';
 import logo2 from '@/assets/logo-2.svg';
+
 const footerLinks = {
-  produtos: [{
-    label: 'Nobreaks',
-    href: '#'
-  }, {
-    label: 'Estabilizadores',
-    href: '#'
-  }, {
-    label: 'Filtros de Linha',
-    href: '#'
-  }, {
-    label: 'Autotransformadores',
-    href: '#'
-  }, {
-    label: 'Aterramento',
-    href: '#'
-  }],
-  empresa: [{
-    label: 'Sobre a Involts',
-    href: '#sobre'
-  }, {
-    label: 'Rede de Assistência',
-    href: '#assistencia'
-  }, {
-    label: 'Seja Revendedor',
-    href: '#revendedor'
-  }, {
-    label: 'Contato',
-    href: '#contato'
-  }]
+  produtos: [
+    { label: 'Protetores', href: '/produtos?categoria=protetores' },
+    { label: 'Filtros de Linha', href: '/produtos?categoria=filtro-de-linha' },
+    { label: 'Autotransformadores', href: '/produtos?categoria=autotransformadores' },
+    { label: 'Aterramento', href: '/produtos?categoria=aterramento' },
+  ],
+  empresa: [
+    { label: 'Sobre a Involts', href: '/sobre' },
+    { label: 'Rede de Assistência', href: '/assistencia' },
+    { label: 'Seja Revendedor', href: '/revendedor' },
+    { label: 'Contato', href: '/contato' },
+  ]
 };
 const socialLinks = [{
   icon: Instagram,
@@ -87,11 +72,13 @@ export const Footer = () => {
           <AnimatedSection delay={0.1}>
             <h4 className="font-display font-semibold text-foreground mb-6">Produtos</h4>
             <ul className="space-y-3">
-              {footerLinks.produtos.map(link => <li key={link.label}>
-                  <a href={link.href} className="text-foreground/60 hover:text-primary transition-colors">
+              {footerLinks.produtos.map(link => (
+                <li key={link.label}>
+                  <Link to={link.href} className="text-foreground/60 hover:text-primary transition-colors">
                     {link.label}
-                  </a>
-                </li>)}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </AnimatedSection>
 
@@ -99,11 +86,13 @@ export const Footer = () => {
           <AnimatedSection delay={0.2}>
             <h4 className="font-display font-semibold text-foreground mb-6">Empresa</h4>
             <ul className="space-y-3">
-              {footerLinks.empresa.map(link => <li key={link.label}>
-                  <a href={link.href} className="text-foreground/60 hover:text-primary transition-colors">
+              {footerLinks.empresa.map(link => (
+                <li key={link.label}>
+                  <Link to={link.href} className="text-foreground/60 hover:text-primary transition-colors">
                     {link.label}
-                  </a>
-                </li>)}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </AnimatedSection>
 
