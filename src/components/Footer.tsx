@@ -57,7 +57,7 @@ export const Footer = () => {
             </p>
             {/* Social Links */}
             <div className="flex gap-4">
-              {socialLinks.map(social => <motion.a key={social.label} href={social.href} whileHover={{
+              {socialLinks.map(social => <motion.a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" whileHover={{
               scale: 1.1,
               y: -2
             }} whileTap={{
