@@ -412,35 +412,36 @@ export default function Revendedor() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.1 }}
+                      className="h-full"
                     >
                       <Label
                         htmlFor={option.value}
-                        className="cursor-pointer block"
+                        className="cursor-pointer block h-full"
                       >
                         <motion.div
                           whileHover={{ scale: 1.02, y: -2 }}
                           whileTap={{ scale: 0.98 }}
-                          className={`relative p-6 rounded-2xl border-2 transition-all duration-300 ${
+                          className={`relative p-6 rounded-2xl border-2 transition-all duration-300 h-full min-h-[120px] ${
                             answers[currentStep] === option.value
                               ? 'border-primary bg-primary/10 shadow-lg shadow-primary/20'
                               : 'border-border bg-card/50 hover:border-primary/50'
                           }`}
                         >
                           <div className="flex items-start gap-4">
-                            <div className={`p-3 rounded-xl ${
+                            <div className={`p-3 rounded-xl flex-shrink-0 ${
                               answers[currentStep] === option.value
                                 ? 'bg-primary text-primary-foreground'
                                 : 'bg-muted text-muted-foreground'
                             } transition-colors`}>
                               {option.icon}
                             </div>
-                            <div className="flex-1">
+                            <div className="flex-1 min-w-0">
                               <div className="font-semibold text-lg mb-1">{option.label}</div>
                               {option.description && (
-                                <div className="text-sm text-muted-foreground">{option.description}</div>
+                                <div className="text-sm text-muted-foreground line-clamp-1">{option.description}</div>
                               )}
                             </div>
-                            <RadioGroupItem value={option.value} id={option.value} className="mt-1" />
+                            <RadioGroupItem value={option.value} id={option.value} className="mt-1 flex-shrink-0" />
                           </div>
                           
                           {answers[currentStep] === option.value && (
