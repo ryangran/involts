@@ -153,6 +153,7 @@ const stats = [
 export default function Revendedor() {
   const [currentStep, setCurrentStep] = useState(0); // 0 = intro, 1-4 = quiz, 5 = form, 6 = success
   const [answers, setAnswers] = useState<Record<number, string>>({});
+  const [outroSegmento, setOutroSegmento] = useState('');
   const [formData, setFormData] = useState({
     nome: '',
     email: '',
@@ -167,9 +168,21 @@ export default function Revendedor() {
 
   const handleAnswer = (questionId: number, value: string) => {
     setAnswers(prev => ({ ...prev, [questionId]: value }));
+    // Se for a pergunta 1 e o valor for "outro", não avança automaticamente
+    if (questionId === 1 && value === 'outro') {
+      return;
+    }
     setTimeout(() => {
       setCurrentStep(prev => prev + 1);
     }, 400);
+  };
+
+  const handleOutroSegmentoSubmit = () => {
+    if (outroSegmento.trim()) {
+      setTimeout(() => {
+        setCurrentStep(prev => prev + 1);
+      }, 400);
+    }
   };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -444,6 +457,48 @@ export default function Revendedor() {
                     </motion.div>
                   ))}
                 </RadioGroup>
+
+                {/* Campo de texto para "Outro Segmento" */}
+                {currentStep === 1 && answers[1] === 'outro' && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="col-span-1 md:col-span-2 mt-4"
+                  >
+                    <div className="relative p-6 rounded-2xl border-2 border-primary bg-primary/10 shadow-lg shadow-primary/20">
+                      <div className="flex items-start gap-4">
+                        <div className="p-3 rounded-xl bg-primary text-primary-foreground">
+                          <Users className="w-5 h-5" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="font-semibold text-lg mb-2">
+                            Qual é o seu ramo de atuação?
+                          </div>
+                          <Input
+                            type="text"
+                            placeholder="Digite seu segmento..."
+                            value={outroSegmento}
+                            onChange={(e) => setOutroSegmento(e.target.value)}
+                            className="bg-background/50 border-border/50"
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' && outroSegmento.trim()) {
+                                handleOutroSegmentoSubmit();
+                              }
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <Button
+                        onClick={handleOutroSegmentoSubmit}
+                        disabled={!outroSegmento.trim()}
+                        className="w-full mt-4 bg-gradient-primary text-primary-foreground"
+                      >
+                        Continuar
+                        <ArrowRight className="ml-2 w-4 h-4" />
+                      </Button>
+                    </div>
+                  </motion.div>
+                )}
 
                 {/* Back Button */}
                 {currentStep > 1 && (
