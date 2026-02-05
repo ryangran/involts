@@ -458,12 +458,12 @@ export default function Revendedor() {
                   ))}
                 </RadioGroup>
 
-                {/* Campo de texto para "Outro Segmento" */}
+                {/* Campo de texto para "Outro Segmento" - aparece no grid com mesmo tamanho */}
                 {currentStep === 1 && answers[1] === 'outro' && (
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="col-span-1 md:col-span-2 mt-4"
+                    className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4"
                   >
                     <div className="relative p-6 rounded-2xl border-2 border-primary bg-primary/10 shadow-lg shadow-primary/20">
                       <div className="flex items-start gap-4">
@@ -471,12 +471,13 @@ export default function Revendedor() {
                           <Users className="w-5 h-5" />
                         </div>
                         <div className="flex-1">
-                          <div className="font-semibold text-lg mb-2">
-                            Qual é o seu ramo de atuação?
+                          <div className="font-semibold text-lg mb-1">
+                            Qual é o seu ramo?
                           </div>
+                          <div className="text-sm text-muted-foreground mb-2">Digite abaixo</div>
                           <Input
                             type="text"
-                            placeholder="Digite seu segmento..."
+                            placeholder="Ex: Atacadista, Varejo..."
                             value={outroSegmento}
                             onChange={(e) => setOutroSegmento(e.target.value)}
                             className="bg-background/50 border-border/50"
@@ -488,13 +489,16 @@ export default function Revendedor() {
                           />
                         </div>
                       </div>
+                    </div>
+                    <div className="flex items-center justify-center">
                       <Button
                         onClick={handleOutroSegmentoSubmit}
                         disabled={!outroSegmento.trim()}
-                        className="w-full mt-4 bg-gradient-primary text-primary-foreground"
+                        size="lg"
+                        className="bg-gradient-primary text-primary-foreground px-8 py-6 rounded-2xl"
                       >
                         Continuar
-                        <ArrowRight className="ml-2 w-4 h-4" />
+                        <ArrowRight className="ml-2 w-5 h-5" />
                       </Button>
                     </div>
                   </motion.div>
