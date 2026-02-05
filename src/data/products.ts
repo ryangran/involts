@@ -1,5 +1,10 @@
 import { Printer, Monitor, Gamepad2, Speaker, Wifi, Smartphone, Microwave } from 'lucide-react';
 import protetorDigitalImg from '@/assets/protetor-digital.png';
+import terraLuxImg from '@/assets/products/terra-lux.png';
+import autoTransformadorImg from '@/assets/products/auto-transformador.png';
+import filtroLinhaAbsImg from '@/assets/products/filtro-linha-abs.png';
+import filtroMetalicoImg from '@/assets/products/filtro-metalico.png';
+import protetorMultifuncionalImg from '@/assets/products/protetor-multifuncional.png';
 
 export interface ProductIdeal {
   icon: string;
@@ -40,9 +45,9 @@ export const productsData: ProductData[] = [
     subtitle: 'Aterramento Involts',
     description: 'Sistema de aterramento inteligente para proteção completa dos seus equipamentos eletrônicos',
     fullDescription: 'O Terra Lux é a solução definitiva em aterramento para seus equipamentos eletrônicos. Desenvolvido com tecnologia de ponta, oferece proteção completa contra surtos e interferências, garantindo a longevidade dos seus dispositivos.',
-    image: 'https://involtsbrasil.com.br/images/two-power-plug.png',
+    image: terraLuxImg,
     gallery: [
-      'https://involtsbrasil.com.br/images/two-power-plug.png',
+      terraLuxImg,
     ],
     features: ['Proteção Completa', 'Fácil Instalação', 'Certificado INMETRO'],
     characteristics: [
@@ -59,7 +64,7 @@ export const productsData: ProductData[] = [
       { icon: 'wifi', label: 'Modem e Roteador' },
       { icon: 'smartphone', label: 'Celular e Telefones' },
     ],
-    specSheet: 'https://involtsbrasil.com.br/files/terralux.jpg',
+    specSheet: undefined,
     highlight: true,
   },
   {
@@ -71,9 +76,9 @@ export const productsData: ProductData[] = [
     subtitle: 'Linha Premium',
     description: 'Conversão de voltagem com máxima eficiência e proteção térmica integrada',
     fullDescription: 'O Auto Transformador Involts oferece conversão de voltagem segura e eficiente, disponível em modelos de 100 a 5000 VA. Ideal para equipamentos que necessitam de tensão diferente da rede elétrica local.',
-    image: 'https://involtsbrasil.com.br/images/produto3.png',
+    image: autoTransformadorImg,
     gallery: [
-      'https://involtsbrasil.com.br/images/produto3.png',
+      autoTransformadorImg,
     ],
     features: ['100 a 5000 VA', '110V/220V', 'Proteção Térmica'],
     characteristics: [
@@ -88,7 +93,7 @@ export const productsData: ProductData[] = [
       { icon: 'monitor', label: 'Computadores' },
       { icon: 'microwave', label: 'Eletrodomésticos' },
     ],
-    specSheet: 'https://involtsbrasil.com.br/files/autotrasnformador.jpg',
+    specSheet: undefined,
     highlight: false,
   },
   {
@@ -100,9 +105,9 @@ export const productsData: ProductData[] = [
     subtitle: 'Proteção Essencial',
     description: 'Proteção inteligente contra surtos com design moderno e compacto',
     fullDescription: 'O Filtro de Linha ABS oferece proteção completa contra surtos de tensão e interferências eletromagnéticas. Disponível em modelos de 3, 4, 5, 6 e 10 tomadas para atender todas as suas necessidades.',
-    image: 'https://involtsbrasil.com.br/images/filtro-normal.png',
+    image: filtroLinhaAbsImg,
     gallery: [
-      'https://involtsbrasil.com.br/images/filtro-normal.png',
+      filtroLinhaAbsImg,
     ],
     features: ['3 a 10 Tomadas', 'Proteção DPS', 'Design Moderno'],
     characteristics: [
@@ -118,7 +123,7 @@ export const productsData: ProductData[] = [
       { icon: 'monitor', label: 'Computadores' },
       { icon: 'smartphone', label: 'Eletrônicos' },
     ],
-    specSheet: 'https://involtsbrasil.com.br/files/filtro-de-linha.jpg',
+    specSheet: undefined,
     highlight: true,
   },
   {
@@ -130,9 +135,9 @@ export const productsData: ProductData[] = [
     subtitle: 'Alta Potência',
     description: 'Estrutura robusta em metal para ambientes profissionais e alta demanda',
     fullDescription: 'O Filtro Metálico 20A foi projetado para ambientes que exigem alta potência e durabilidade. Com estrutura totalmente metálica, oferece proteção profissional para seus equipamentos.',
-    image: 'https://involtsbrasil.com.br/images/filtrometal.png',
+    image: filtroMetalicoImg,
     gallery: [
-      'https://involtsbrasil.com.br/images/filtrometal.png',
+      filtroMetalicoImg,
     ],
     features: ['20A', '5 Tomadas', 'Estrutura Metálica'],
     characteristics: [
@@ -157,9 +162,9 @@ export const productsData: ProductData[] = [
     subtitle: 'Proteção Total',
     description: 'Proteção completa contra surtos, raios e oscilações de energia',
     fullDescription: 'O Protetor Multifuncional foi desenvolvido e testado em laboratório para garantir qualidade e fornecimento confiável de energia elétrica protegida e filtrada, aumentando assim a vida útil dos equipamentos a ele conectados.',
-    image: 'https://involtsbrasil.com.br/images/a9d35e8e2616ac9f7bcf689276694614493.png',
+    image: protetorMultifuncionalImg,
     gallery: [
-      'https://involtsbrasil.com.br/images/a9d35e8e2616ac9f7bcf689276694614493.png',
+      protetorMultifuncionalImg,
     ],
     features: ['Multifuncional', 'DPS Integrado', 'Indicador LED'],
     characteristics: [
@@ -186,7 +191,7 @@ export const productsData: ProductData[] = [
       { name: '500 Bivolt', type: 'bivolt' },
       { name: '600 Bivolt', type: 'bivolt' },
     ],
-    specSheet: 'https://involtsbrasil.com.br/files/protetor-multi.jpeg',
+    specSheet: undefined,
     highlight: true,
   },
   {
