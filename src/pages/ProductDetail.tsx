@@ -593,38 +593,40 @@ const ProductDetail = () => {
         <section className="py-12 md:py-24 relative">
           <div className="container mx-auto px-6">
             <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-              {/* Video first on mobile */}
-              <AnimatedSection delay={0.1} className="order-1 lg:order-2">
-                <div className={`relative rounded-2xl overflow-hidden ${isMobile ? 'bg-muted/30' : 'bg-gradient-to-br from-primary/10 via-secondary/5 to-primary/10 p-6'}`}>
-                  {/* Animated rings - desktop only */}
-                  {!isMobile && [...Array(3)].map((_, i) => (
-                    <motion.div
-                      key={i}
-                      className="absolute border border-primary/10 rounded-full"
-                      style={{
-                        width: `${60 + i * 20}%`,
-                        height: `${60 + i * 20}%`,
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                      }}
-                      animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
-                      transition={{
-                        duration: 30 + i * 15,
-                        repeat: Infinity,
-                        ease: 'linear',
-                      }}
+              {/* Video only for Protetor Digital */}
+              {product.slug === 'protetor-digital' && (
+                <AnimatedSection delay={0.1} className="order-1 lg:order-2">
+                  <div className={`relative rounded-2xl overflow-hidden ${isMobile ? 'bg-muted/30' : 'bg-gradient-to-br from-primary/10 via-secondary/5 to-primary/10 p-6'}`}>
+                    {/* Animated rings - desktop only */}
+                    {!isMobile && [...Array(3)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className="absolute border border-primary/10 rounded-full"
+                        style={{
+                          width: `${60 + i * 20}%`,
+                          height: `${60 + i * 20}%`,
+                          top: '50%',
+                          left: '50%',
+                          transform: 'translate(-50%, -50%)',
+                        }}
+                        animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
+                        transition={{
+                          duration: 30 + i * 15,
+                          repeat: Infinity,
+                          ease: 'linear',
+                        }}
+                      />
+                    ))}
+                    
+                    <video
+                      src={protetorVideo}
+                      controls
+                      playsInline
+                      className="w-full h-auto relative z-10 rounded-xl"
                     />
-                  ))}
-                  
-                  <video
-                    src={protetorVideo}
-                    controls
-                    playsInline
-                    className="w-full h-auto relative z-10 rounded-xl"
-                  />
-                </div>
-              </AnimatedSection>
+                  </div>
+                </AnimatedSection>
+              )}
 
               {/* Characteristics */}
               <AnimatedSection className="order-2 lg:order-1">
