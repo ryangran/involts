@@ -20,7 +20,7 @@ const footerLinks = {
 };
 const socialLinks = [{
   icon: Instagram,
-  href: '#',
+  href: 'https://www.instagram.com/involtsbrasil/',
   label: 'Instagram'
 }, {
   icon: Facebook,
