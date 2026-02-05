@@ -590,35 +590,13 @@ const ProductDetail = () => {
         </section>
 
         {/* Characteristics Section - Enhanced */}
-        <section className="py-24 relative">
+        <section className="py-12 md:py-24 relative">
           <div className="container mx-auto px-6">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <AnimatedSection>
-                <motion.div
-                  initial={{ opacity: 0, x: -30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full px-6 py-3 mb-6"
-                >
-                  <Battery className="w-5 h-5 text-primary" />
-                  <span className="text-primary font-semibold text-sm uppercase tracking-widest">
-                    Especificações
-                  </span>
-                </motion.div>
-                <h2 className="text-4xl md:text-5xl font-display font-bold text-foreground mb-10">
-                  Características
-                </h2>
-                
-                <ul className="space-y-5">
-                  {product.characteristics.map((char, index) => (
-                    <CharacteristicItem key={char} char={char} index={index} isMobile={isMobile} />
-                  ))}
-                </ul>
-              </AnimatedSection>
-
-              <AnimatedSection delay={0.2}>
-                <div className="relative bg-gradient-to-br from-primary/10 via-secondary/5 to-primary/10 rounded-3xl p-8 aspect-square flex items-center justify-center overflow-hidden">
-                  {/* Static rings on mobile, animated on desktop */}
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+              {/* Video first on mobile */}
+              <AnimatedSection delay={0.1} className="order-1 lg:order-2">
+                <div className={`relative rounded-2xl overflow-hidden ${isMobile ? 'bg-muted/30' : 'bg-gradient-to-br from-primary/10 via-secondary/5 to-primary/10 p-6'}`}>
+                  {/* Animated rings - desktop only */}
                   {!isMobile && [...Array(3)].map((_, i) => (
                     <motion.div
                       key={i}
@@ -626,6 +604,9 @@ const ProductDetail = () => {
                       style={{
                         width: `${60 + i * 20}%`,
                         height: `${60 + i * 20}%`,
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
                       }}
                       animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
                       transition={{
@@ -640,17 +621,33 @@ const ProductDetail = () => {
                     src={protetorVideo}
                     controls
                     playsInline
-                    className="max-w-full max-h-full object-contain relative z-10 rounded-2xl"
+                    className="w-full h-auto relative z-10 rounded-xl"
                   />
-                  
-                  {/* Decorative elements - only on desktop */}
-                  {!isMobile && (
-                    <>
-                      <div className="absolute top-8 right-8 w-24 h-24 bg-primary/10 rounded-full blur-2xl" />
-                      <div className="absolute bottom-8 left-8 w-20 h-20 bg-secondary/10 rounded-full blur-2xl" />
-                    </>
-                  )}
                 </div>
+              </AnimatedSection>
+
+              {/* Characteristics */}
+              <AnimatedSection className="order-2 lg:order-1">
+                <motion.div
+                  initial={{ opacity: 0, x: isMobile ? 0 : -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full px-4 md:px-6 py-2 md:py-3 mb-4 md:mb-6"
+                >
+                  <Battery className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+                  <span className="text-primary font-semibold text-xs md:text-sm uppercase tracking-widest">
+                    Especificações
+                  </span>
+                </motion.div>
+                <h2 className="text-2xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-6 md:mb-10">
+                  Características
+                </h2>
+                
+                <ul className="space-y-3 md:space-y-5">
+                  {product.characteristics.map((char, index) => (
+                    <CharacteristicItem key={char} char={char} index={index} isMobile={isMobile} />
+                  ))}
+                </ul>
               </AnimatedSection>
             </div>
           </div>
