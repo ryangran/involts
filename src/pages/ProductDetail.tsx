@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { getProductBySlug, getRelatedProducts, ProductIdeal, ProductModel } from '@/data/products';
 import protetorVideo from '@/assets/protetor-eletronico-involts.mp4';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const iconMap: Record<string, React.ElementType> = {
   printer: Printer,
@@ -22,11 +23,13 @@ const iconMap: Record<string, React.ElementType> = {
   microwave: Microwave,
 };
 
-// Floating particles component
-const FloatingParticles = () => {
+// Floating particles component - only renders on desktop
+const FloatingParticles = ({ isMobile }: { isMobile: boolean }) => {
+  if (isMobile) return null;
+  
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(20)].map((_, i) => (
+      {[...Array(10)].map((_, i) => (
         <motion.div
           key={i}
           className="absolute w-1 h-1 bg-primary/30 rounded-full"
@@ -39,7 +42,7 @@ const FloatingParticles = () => {
             opacity: [0, 1, 0],
           }}
           transition={{
-            duration: Math.random() * 10 + 10,
+            duration: Math.random() * 10 + 15,
             repeat: Infinity,
             delay: Math.random() * 5,
           }}
@@ -80,7 +83,7 @@ const use3DTilt = () => {
   return { rotateX, rotateY, handleMouseMove, handleMouseLeave };
 };
 
-const IdealForIcon = ({ ideal, index }: { ideal: ProductIdeal; index: number }) => {
+const IdealForIcon = ({ ideal, index, isMobile }: { ideal: ProductIdeal; index: number; isMobile: boolean }) => {
   const Icon = iconMap[ideal.icon] || Monitor;
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
@@ -88,28 +91,19 @@ const IdealForIcon = ({ ideal, index }: { ideal: ProductIdeal; index: number }) 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 50, rotateY: -30 }}
-      animate={isInView ? { opacity: 1, y: 0, rotateY: 0 } : {}}
-      transition={{ delay: index * 0.1, duration: 0.6, type: 'spring' }}
-      whileHover={{ 
+      initial={{ opacity: 0, y: isMobile ? 20 : 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ delay: isMobile ? index * 0.05 : index * 0.1, duration: 0.4 }}
+      whileHover={isMobile ? {} : { 
         scale: 1.15, 
         y: -15,
-        rotateY: 10,
         transition: { type: 'spring', stiffness: 400 }
       }}
-      className="flex flex-col items-center gap-4 p-6 cursor-pointer group perspective-1000"
+      className="flex flex-col items-center gap-4 p-6 cursor-pointer group"
     >
-      <motion.div 
-        className="relative w-20 h-20 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center overflow-hidden"
-        whileHover={{ boxShadow: '0 20px 40px -10px rgba(249, 115, 22, 0.4)' }}
-      >
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/30 to-primary/0"
-          animate={{ x: ['-200%', '200%'] }}
-          transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-        />
+      <div className="relative w-20 h-20 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center overflow-hidden">
         <Icon className="w-10 h-10 text-primary relative z-10 group-hover:scale-110 transition-transform" />
-      </motion.div>
+      </div>
       <span className="text-sm text-foreground/70 text-center font-medium group-hover:text-primary transition-colors">
         {ideal.label}
       </span>
@@ -117,26 +111,22 @@ const IdealForIcon = ({ ideal, index }: { ideal: ProductIdeal; index: number }) 
   );
 };
 
-// Animated characteristic item
-const CharacteristicItem = ({ char, index }: { char: string; index: number }) => {
+// Animated characteristic item - simplified for mobile
+const CharacteristicItem = ({ char, index, isMobile }: { char: string; index: number; isMobile: boolean }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
 
   return (
     <motion.li
       ref={ref}
-      initial={{ opacity: 0, x: -50 }}
+      initial={{ opacity: 0, x: isMobile ? -20 : -50 }}
       animate={isInView ? { opacity: 1, x: 0 } : {}}
-      transition={{ delay: index * 0.08, duration: 0.5, type: 'spring' }}
+      transition={{ delay: isMobile ? index * 0.03 : index * 0.08, duration: 0.3 }}
       className="flex items-start gap-4 group"
     >
-      <motion.div 
-        className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center flex-shrink-0 mt-0.5"
-        whileHover={{ scale: 1.2, rotate: 360 }}
-        transition={{ duration: 0.5 }}
-      >
+      <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
         <Check className="w-4 h-4 text-primary" />
-      </motion.div>
+      </div>
       <span className="text-foreground/80 group-hover:text-foreground transition-colors leading-relaxed">
         {char}
       </span>
@@ -175,6 +165,7 @@ const ProductDetail = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const { rotateX, rotateY, handleMouseMove, handleMouseLeave } = use3DTilt();
+  const isMobile = useIsMobile();
   
   const product = slug ? getProductBySlug(slug) : undefined;
   const relatedProducts = slug ? getRelatedProducts(slug, 3) : [];
@@ -189,10 +180,11 @@ const ProductDetail = () => {
     offset: ['start start', 'end start'],
   });
 
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
-  const backgroundOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const heroScale = useTransform(scrollYProgress, [0, 0.3], [1, 0.9]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0.8]);
+  // Disable parallax on mobile for performance
+  const backgroundY = useTransform(scrollYProgress, [0, 1], isMobile ? ['0%', '0%'] : ['0%', '50%']);
+  const backgroundOpacity = useTransform(scrollYProgress, [0, 0.5], [1, isMobile ? 1 : 0]);
+  const heroScale = useTransform(scrollYProgress, [0, 0.3], isMobile ? [1, 1] : [1, 0.9]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.3], [1, isMobile ? 1 : 0.8]);
 
   if (!product) {
     return <Navigate to="/produtos" replace />;
@@ -203,15 +195,17 @@ const ProductDetail = () => {
       <Header />
       
       <main className="pt-24">
-        {/* Animated Background */}
-        <motion.div 
-          style={{ y: backgroundY, opacity: backgroundOpacity }}
-          className="fixed inset-0 pointer-events-none z-0"
-        >
-          <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-secondary/5 rounded-full blur-3xl" />
-          <FloatingParticles />
-        </motion.div>
+        {/* Animated Background - simplified on mobile */}
+        {!isMobile && (
+          <motion.div 
+            style={{ y: backgroundY, opacity: backgroundOpacity }}
+            className="fixed inset-0 pointer-events-none z-0"
+          >
+            <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl" />
+            <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-secondary/5 rounded-full blur-3xl" />
+            <FloatingParticles isMobile={isMobile} />
+          </motion.div>
+        )}
 
         {/* Breadcrumb */}
         <section className="container mx-auto px-6 mb-8 relative z-10">
@@ -589,7 +583,7 @@ const ProductDetail = () => {
 
             <div className="flex flex-wrap justify-center gap-4 max-w-5xl mx-auto">
               {product.idealFor.map((ideal, index) => (
-                <IdealForIcon key={ideal.label} ideal={ideal} index={index} />
+                <IdealForIcon key={ideal.label} ideal={ideal} index={index} isMobile={isMobile} />
               ))}
             </div>
           </div>
@@ -617,18 +611,15 @@ const ProductDetail = () => {
                 
                 <ul className="space-y-5">
                   {product.characteristics.map((char, index) => (
-                    <CharacteristicItem key={char} char={char} index={index} />
+                    <CharacteristicItem key={char} char={char} index={index} isMobile={isMobile} />
                   ))}
                 </ul>
               </AnimatedSection>
 
               <AnimatedSection delay={0.2}>
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  className="relative bg-gradient-to-br from-primary/10 via-secondary/5 to-primary/10 rounded-3xl p-8 aspect-square flex items-center justify-center overflow-hidden"
-                >
-                  {/* Animated rings */}
-                  {[...Array(3)].map((_, i) => (
+                <div className="relative bg-gradient-to-br from-primary/10 via-secondary/5 to-primary/10 rounded-3xl p-8 aspect-square flex items-center justify-center overflow-hidden">
+                  {/* Static rings on mobile, animated on desktop */}
+                  {!isMobile && [...Array(3)].map((_, i) => (
                     <motion.div
                       key={i}
                       className="absolute border border-primary/10 rounded-full"
@@ -638,7 +629,7 @@ const ProductDetail = () => {
                       }}
                       animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
                       transition={{
-                        duration: 20 + i * 10,
+                        duration: 30 + i * 15,
                         repeat: Infinity,
                         ease: 'linear',
                       }}
@@ -652,18 +643,14 @@ const ProductDetail = () => {
                     className="max-w-full max-h-full object-contain relative z-10 rounded-2xl"
                   />
                   
-                  {/* Decorative elements */}
-                  <motion.div 
-                    className="absolute top-8 right-8 w-24 h-24 bg-primary/10 rounded-full blur-2xl"
-                    animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }}
-                    transition={{ duration: 4, repeat: Infinity }}
-                  />
-                  <motion.div 
-                    className="absolute bottom-8 left-8 w-20 h-20 bg-secondary/10 rounded-full blur-2xl"
-                    animate={{ scale: [1.3, 1, 1.3], opacity: [0.6, 0.3, 0.6] }}
-                    transition={{ duration: 4, repeat: Infinity }}
-                  />
-                </motion.div>
+                  {/* Decorative elements - only on desktop */}
+                  {!isMobile && (
+                    <>
+                      <div className="absolute top-8 right-8 w-24 h-24 bg-primary/10 rounded-full blur-2xl" />
+                      <div className="absolute bottom-8 left-8 w-20 h-20 bg-secondary/10 rounded-full blur-2xl" />
+                    </>
+                  )}
+                </div>
               </AnimatedSection>
             </div>
           </div>
