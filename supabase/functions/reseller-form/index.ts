@@ -214,7 +214,7 @@ async function sendEmailNotification(data: ResellerFormData) {
   try {
     await resend.emails.send({
       from: "Involts <onboarding@resend.dev>",
-      to: ["administrativo@involtsbrasil.com.br"],
+      to: ["ryanzinho.gran@gmail.com"],
       subject: `🤝 Novo Revendedor: ${data.nome} - ${data.empresa || 'Empresa não informada'}`,
       html: emailHtml,
       reply_to: data.email,
