@@ -10,6 +10,7 @@ import {
   Sparkles, Battery, Award, Star, Box
 } from 'lucide-react';
 import { getProductBySlug, getRelatedProducts, ProductIdeal, ProductModel } from '@/data/products';
+import protetorVideo from '@/assets/protetor-eletronico-involts.mp4';
 
 const iconMap: Record<string, React.ElementType> = {
   printer: Printer,
@@ -644,12 +645,13 @@ const ProductDetail = () => {
                     />
                   ))}
                   
-                  <motion.img
-                    src={product.image}
-                    alt={product.name}
-                    className="max-w-full max-h-full object-contain relative z-10"
-                    animate={{ y: [0, -10, 0] }}
-                    transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                  <video
+                    src={protetorVideo}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="max-w-full max-h-full object-contain relative z-10 rounded-2xl"
                   />
                   
                   {/* Decorative elements */}
