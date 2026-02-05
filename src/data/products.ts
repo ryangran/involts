@@ -1,4 +1,5 @@
 import { Printer, Monitor, Gamepad2, Speaker, Wifi, Smartphone, Microwave } from 'lucide-react';
+import protetorDigitalImg from '@/assets/protetor-digital.png';
 
 export interface ProductIdeal {
   icon: string;
@@ -186,6 +187,40 @@ export const productsData: ProductData[] = [
       { name: '600 Bivolt', type: 'bivolt' },
     ],
     specSheet: 'https://involtsbrasil.com.br/files/protetor-multi.jpeg',
+    highlight: true,
+  },
+  {
+    id: 'protetor-digital',
+    slug: 'protetor-digital',
+    category: 'Protetores',
+    categorySlug: 'protetores',
+    name: 'Protetor Digital',
+    subtitle: 'Controle Inteligente',
+    description: 'Protetor com delay ajustável e controle digital de tensão para máxima segurança',
+    fullDescription: 'O Protetor Digital oferece controle preciso com delay ajustável de 5 a 999 segundos e ajuste de sub e sobre tensão. Ideal para equipamentos sensíveis que necessitam de proteção personalizada contra variações de energia.',
+    image: protetorDigitalImg,
+    gallery: [
+      protetorDigitalImg,
+    ],
+    features: ['Delay 5-999s', 'Ajuste de Tensão', 'Display Digital'],
+    characteristics: [
+      'Delay ajustável de 5 a 999 segundos',
+      'Ajuste de sub tensão configurável',
+      'Ajuste de sobre tensão configurável',
+      'Display digital para monitoramento',
+      'Proteção contra variações de energia',
+      'Design compacto e moderno',
+    ],
+    idealFor: [
+      { icon: 'monitor', label: 'Computadores' },
+      { icon: 'printer', label: 'Impressoras' },
+      { icon: 'microwave', label: 'Eletrodomésticos' },
+      { icon: 'wifi', label: 'Modem e Roteador' },
+    ],
+    models: [
+      { name: '110V', type: 'mono' },
+      { name: '220V', type: 'mono' },
+    ],
     highlight: true,
   },
 ];
