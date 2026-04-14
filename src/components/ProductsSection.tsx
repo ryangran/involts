@@ -107,25 +107,15 @@ export const ProductsSection = () => {
             <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
             <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
             
-            {/* Scrolling track */}
-            <motion.div
-              className="flex gap-4"
-              animate={{ x: [0, -((productsData.length) * 236)] }}
-              transition={{
-                x: {
-                  repeat: Infinity,
-                  repeatType: "loop",
-                  duration: productsData.length * 3,
-                  ease: "linear",
-                },
-              }}
-              whileHover={{ animationPlayState: "paused" }}
+            {/* Scrolling track — CSS animation (GPU compositor, non-blocking) */}
+            <div
+              className="flex gap-4 animate-marquee-products hover:[animation-play-state:paused] will-change-transform"
               style={{ width: "fit-content" }}
             >
               {duplicatedProducts.map((product, index) => (
                 <ProductCard key={`${product.id}-${index}`} product={product} />
               ))}
-            </motion.div>
+            </div>
           </div>
         </div>
 

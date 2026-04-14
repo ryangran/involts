@@ -243,4 +243,28 @@
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
   }
+
+  /* Product carousel — runs on GPU compositor (transform only) */
+  @keyframes marquee-products {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(calc(-100% / 3), 0, 0); }
+  }
+  .animate-marquee-products {
+    animation: marquee-products 40s linear infinite;
+  }
+
+  /* Offscreen sections: browser skips render until near viewport */
+  main > section:not(:first-of-type) {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 900px;
+  }
+
+  /* Smoother scroll on all browsers */
+  html { scroll-behavior: smooth; }
+
+  /* Respect reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee-products { animation: none; }
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
 }

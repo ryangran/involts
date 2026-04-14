@@ -116,7 +116,21 @@ void main(){gl_Position=position;}`;
     resize();
     window.addEventListener('resize', resize);
 
+    let isVisible = true;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible && !animId) animId = requestAnimationFrame(loop);
+      },
+      { threshold: 0 }
+    );
+    io.observe(canvas);
+
     const loop = (now: number) => {
+      if (!isVisible) {
+        animId = 0;
+        return;
+      }
       gl.clearColor(0, 0, 0, 1);
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.useProgram(program);
@@ -130,6 +144,7 @@ void main(){gl_Position=position;}`;
 
     return () => {
       window.removeEventListener('resize', resize);
+      io.disconnect();
       cancelAnimationFrame(animId);
       gl.deleteProgram(program);
     };
