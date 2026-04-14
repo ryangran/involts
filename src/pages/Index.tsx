@@ -2,7 +2,7 @@ import { Header } from '@/components/Header';
 import { HeroSection } from '@/components/HeroSection';
 import { ProductsSection } from '@/components/ProductsSection';
 import { FeaturesSection } from '@/components/FeaturesSection';
-import { ReviewsSection } from '@/components/ReviewsSection';
+import { CinematicHero } from '@/components/ui/cinematic-hero';
 import { CTASection } from '@/components/CTASection';
 import { Footer } from '@/components/Footer';
 import { ScrollProgress } from '@/components/ScrollProgress';
@@ -16,7 +16,7 @@ const Index = () => {
         <HeroSection />
         <ProductsSection />
         <FeaturesSection />
-        <ReviewsSection />
+        <CinematicHero />
         <CTASection />
       </main>
       <Footer />
