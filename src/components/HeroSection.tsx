@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import { ChevronDown, Zap, Shield, Sparkles, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useShaderBackground } from './animated-shader-hero';
 
 // Floating orbs component
 const FloatingOrbs = () => {
@@ -101,7 +102,8 @@ const StatCounter = ({ value, suffix, label, delay }: { value: number; suffix: s
 
 export const HeroSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  
+  const canvasRef = useShaderBackground();
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end start'],
@@ -116,25 +118,14 @@ export const HeroSection = () => {
       ref={containerRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Animated Background */}
-      <motion.div
-        style={{ y }}
-        className="absolute inset-0"
-      >
-        <FloatingOrbs />
-        
-        {/* Grid Pattern */}
-        <div 
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: 'linear-gradient(hsl(var(--primary)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)',
-            backgroundSize: '60px 60px',
-          }}
-        />
-        
-        {/* Center glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-radial" />
-      </motion.div>
+      {/* WebGL Shader Background */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full"
+        style={{ touchAction: 'none' }}
+      />
+      {/* Overlay para suavizar e manter legibilidade do texto */}
+      <div className="absolute inset-0 bg-background/60" />
 
       {/* Content */}
       <motion.div
