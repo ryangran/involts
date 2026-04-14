@@ -286,8 +286,11 @@ export function CinematicHero({
 
     }, containerRef);
 
-    return () => ctx.revert();
-  }, [metricValue, tagline1Ref, tagline2Ref]);
+    return () => {
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+      ctx.revert();
+    };
+  }, [metricValue]);
 
   return (
     <div
