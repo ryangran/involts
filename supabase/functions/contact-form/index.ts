@@ -91,7 +91,11 @@ function validateContactForm(data: unknown): { success: true; data: ContactFormD
     return { success: false, error: 'Mensagem muito longa (máximo 1000 caracteres)' };
   }
 
-  const sanitize = (str: string) => str.trim().replace(/<[^>]*>/g, '');
+  const escapeHtml = (str: string): string => {
+    const map: Record<string, string> = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#x27;', '/': '&#x2F;' };
+    return str.replace(/[&<>"'\/]/g, (c) => map[c]);
+  };
+  const sanitize = (str: string) => escapeHtml(str.trim().replace(/<[^>]*>/g, ''));
 
   return {
     success: true,
