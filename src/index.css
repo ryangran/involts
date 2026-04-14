@@ -75,13 +75,6 @@
   }
 }
 
-/* ── CURSOR: esconde o padrão em dispositivos com mouse real ── */
-@media (hover: hover) and (pointer: fine) {
-  *, *::before, *::after {
-    cursor: none !important;
-  }
-}
-
 /* ── SPOTLIGHT CARD: luz que segue o mouse ── */
 .spotlight-card {
   position: relative;
