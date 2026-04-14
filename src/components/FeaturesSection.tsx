@@ -1,199 +1,177 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { motion } from 'framer-motion';
 import { AnimatedSection } from './AnimatedSection';
-import { MapPin, Users, Headphones, Clock, Shield, Award, Zap, Star } from 'lucide-react';
+import { Shield, Award, Zap, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const features = [
-  {
-    icon: MapPin,
-    title: 'Presença Nacional',
-    description: 'Rede de assistência técnica em todo o Brasil',
-    stat: '500+',
-    statLabel: 'Pontos de atendimento',
-    color: 'from-primary to-secondary',
-  },
-  {
-    icon: Users,
-    title: 'Revendedores',
-    description: 'Parceiros autorizados em todas as regiões',
-    stat: '1.000+',
-    statLabel: 'Parceiros ativos',
-    color: 'from-secondary to-primary',
-  },
-  {
-    icon: Headphones,
-    title: 'Suporte Técnico',
-    description: 'Equipe especializada para tirar suas dúvidas',
-    stat: '24/7',
-    statLabel: 'Disponibilidade',
-    color: 'from-primary to-secondary',
-  },
-  {
-    icon: Clock,
-    title: 'Garantia Estendida',
-    description: 'Proteção adicional para sua tranquilidade',
-    stat: '1 ano',
-    statLabel: 'De garantia',
-    color: 'from-secondary to-primary',
-  },
+const stats = [
+  { value: '500+', label: 'Pontos de atendimento', sub: 'em todo o Brasil' },
+  { value: '1.000+', label: 'Parceiros ativos', sub: 'revendedores autorizados' },
+  { value: '25+', label: 'Anos de mercado', sub: 'desde 1999' },
+  { value: '24/7', label: 'Suporte técnico', sub: 'disponibilidade total' },
 ];
 
 const benefits = [
-  { icon: Shield, text: 'Proteção certificada INMETRO' },
-  { icon: Award, text: 'Tecnologia SMD de ponta' },
-  { icon: Zap, text: 'Eficiência energética máxima' },
-  { icon: Star, text: '25 anos de tradição' },
+  {
+    icon: Shield,
+    title: 'Proteção certificada INMETRO',
+    description: 'Todos os produtos passam por rigoroso controle de qualidade e certificação nacional.',
+  },
+  {
+    icon: Award,
+    title: 'Tecnologia SMD de ponta',
+    description: 'Componentes Surface Mount Device garantem maior durabilidade e desempenho.',
+  },
+  {
+    icon: Zap,
+    title: 'Eficiência energética máxima',
+    description: 'Redução de perdas na conversão e filtragem elétrica com circuitos otimizados.',
+  },
+  {
+    icon: MapPin,
+    title: 'Presença nacional',
+    description: 'Rede de assistência técnica autorizada distribuída em todo o território brasileiro.',
+  },
+];
+
+// Ticker / marquee de certificações
+const certifications = [
+  'Certificado INMETRO',
+  'Tecnologia SMD',
+  'ISO 9001',
+  'Proteção DPS',
+  'NBR 14136',
+  'Garantia 12 meses',
+  'Assistência Nacional',
+  'Desde 1999',
 ];
 
 export const FeaturesSection = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start end', 'end start'],
-  });
-
-  const x1 = useTransform(scrollYProgress, [0, 1], ['-20%', '20%']);
-  const x2 = useTransform(scrollYProgress, [0, 1], ['20%', '-20%']);
-
   return (
-    <section
-      id="sobre"
-      ref={containerRef}
-      className="relative py-32 overflow-hidden bg-muted/30"
-    >
-      {/* Animated Lines */}
-      <motion.div
-        style={{ x: x1 }}
-        className="absolute top-20 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"
-      />
-      <motion.div
-        style={{ x: x2 }}
-        className="absolute bottom-20 left-0 right-0 h-px bg-gradient-to-r from-transparent via-secondary/30 to-transparent"
-      />
+    <section id="sobre" className="relative py-24 md:py-32 overflow-hidden">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
 
-      <div className="container mx-auto px-6 relative z-10">
-        {/* Section Header */}
-        <AnimatedSection className="text-center mb-20">
-          <motion.div
-            initial={{ scale: 0 }}
-            whileInView={{ scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ type: 'spring', stiffness: 200 }}
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full px-6 py-3 mb-6"
-          >
-            <Award className="w-5 h-5 text-primary" />
-            <span className="text-primary font-semibold text-sm uppercase tracking-widest">
-              Por que escolher a Involts
-            </span>
-          </motion.div>
-          
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-foreground mb-6">
-            Confiança que{' '}
-            <span className="text-gradient">energiza</span>
-          </h2>
-          <p className="text-foreground/60 text-lg max-w-2xl mx-auto">
-            Há mais de duas décadas entregando qualidade e segurança para milhões de brasileiros
-          </p>
-        </AnimatedSection>
+        {/* ─── MAIN SPLIT LAYOUT ─── */}
+        <div className="grid lg:grid-cols-[46fr_54fr] gap-16 lg:gap-20 items-start">
 
-        {/* Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
-          {features.map((feature, index) => (
-            <AnimatedSection
-              key={feature.title}
-              delay={index * 0.1}
-              animation="fadeUp"
-            >
-              <motion.div
-                whileHover={{ y: -10, scale: 1.02 }}
-                className="relative bg-card/50 backdrop-blur-sm border border-border rounded-3xl p-8 text-center group overflow-hidden"
+          {/* LEFT: Text + Benefits */}
+          <div>
+            <AnimatedSection animation="fadeUp">
+              <span className="section-label block mb-5">— Por que a Involts</span>
+              <h2
+                className="font-display font-extrabold text-foreground leading-[0.88] tracking-tight mb-6"
+                style={{ fontSize: 'clamp(2.4rem, 5vw, 4rem)' }}
               >
-                {/* Background glow on hover */}
-                <motion.div
-                  className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
-                />
-                
-                {/* Icon */}
-                <motion.div
-                  whileHover={{ scale: 1.1, rotate: 10 }}
-                  className={`w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center shadow-lg shadow-primary/20 group-hover:shadow-xl group-hover:shadow-primary/30 transition-shadow duration-300`}
-                >
-                  <feature.icon className="w-10 h-10 text-primary-foreground" />
-                </motion.div>
-
-                {/* Stat */}
-                <motion.div 
-                  className="text-4xl md:text-5xl font-display font-bold text-gradient mb-2"
-                  initial={{ scale: 1 }}
-                  whileHover={{ scale: 1.1 }}
-                >
-                  {feature.stat}
-                </motion.div>
-                <div className="text-sm text-foreground/50 mb-4">
-                  {feature.statLabel}
-                </div>
-
-                {/* Title & Description */}
-                <h3 className="text-xl font-display font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
-                  {feature.title}
-                </h3>
-                <p className="text-foreground/60 text-sm">
-                  {feature.description}
-                </p>
-              </motion.div>
+                CONFIANÇA QUE{' '}
+                <span className="text-primary">ENERGIZA</span>{' '}
+                HÁ DÉCADAS
+              </h2>
+              <p className="text-muted-foreground text-base leading-relaxed max-w-[48ch] mb-10">
+                Há mais de duas décadas entregando qualidade e segurança para milhões de brasileiros.
+                Nossa engenharia protege desde residências até ambientes industriais.
+              </p>
             </AnimatedSection>
-          ))}
-        </div>
 
-        {/* Benefits Bar */}
-        <AnimatedSection>
-          <motion.div
-            whileHover={{ scale: 1.01 }}
-            className="bg-gradient-to-r from-card via-muted to-card border border-border rounded-3xl p-8 md:p-10"
-          >
-            <div className="flex flex-wrap justify-center gap-6 md:gap-12">
-              {benefits.map((benefit, index) => (
+            {/* Benefits list */}
+            <div className="space-y-0">
+              {benefits.map((benefit, i) => (
+                <AnimatedSection key={benefit.title} animation="slideLeft" delay={i * 0.08}>
+                  <motion.div
+                    whileHover={{ x: 4 }}
+                    className="flex gap-4 py-5 border-b border-border group"
+                  >
+                    <div className="shrink-0 w-8 h-8 border border-border flex items-center justify-center group-hover:border-primary/40 transition-colors duration-200 mt-0.5">
+                      <benefit.icon className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="font-display font-semibold text-foreground text-base mb-0.5 group-hover:text-primary transition-colors duration-200">
+                        {benefit.title}
+                      </h4>
+                      <p className="text-muted-foreground text-sm leading-relaxed">
+                        {benefit.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                </AnimatedSection>
+              ))}
+            </div>
+
+            <AnimatedSection animation="fadeUp" delay={0.4} className="mt-10">
+              <Link to="/sobre">
+                <button className="btn-secondary group">
+                  Conheça nossa história
+                  <motion.span
+                    animate={{ x: [0, 4, 0] }}
+                    transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+                  >
+                    →
+                  </motion.span>
+                </button>
+              </Link>
+            </AnimatedSection>
+          </div>
+
+          {/* RIGHT: Stats grid */}
+          <AnimatedSection animation="slideRight" delay={0.15}>
+            <div className="grid grid-cols-2 gap-px bg-border">
+              {stats.map((stat, i) => (
                 <motion.div
-                  key={benefit.text}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ scale: 1.05 }}
-                  className="flex items-center gap-3 group"
+                  key={stat.label}
+                  whileHover={{ backgroundColor: 'hsl(220,32%,10%)' }}
+                  className="bg-card p-8 flex flex-col justify-between min-h-[180px] transition-colors duration-200"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                    <benefit.icon className="w-5 h-5 text-primary" />
+                  {/* Large monospace number */}
+                  <div
+                    className="stat-number leading-none mb-4"
+                    style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)' }}
+                  >
+                    {stat.value}
                   </div>
-                  <span className="text-foreground/80 font-medium group-hover:text-foreground transition-colors">
-                    {benefit.text}
-                  </span>
+
+                  {/* Label & sub */}
+                  <div>
+                    <div className="font-display font-semibold text-foreground text-base mb-1">
+                      {stat.label}
+                    </div>
+                    <div className="text-muted-foreground text-xs font-mono tracking-wide">
+                      {stat.sub}
+                    </div>
+                  </div>
+
+                  {/* Index marker */}
+                  <div className="absolute top-4 right-4 font-mono text-[10px] text-border">
+                    {String(i + 1).padStart(2, '0')}
+                  </div>
                 </motion.div>
               ))}
             </div>
-          </motion.div>
-        </AnimatedSection>
 
-        {/* CTA */}
-        <AnimatedSection delay={0.3} className="text-center mt-12">
-          <Link to="/sobre">
-            <motion.button
-              whileHover={{ scale: 1.05, boxShadow: '0 20px 40px -10px rgba(249, 115, 22, 0.3)' }}
-              whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center gap-3 bg-gradient-primary text-primary-foreground px-8 py-4 rounded-full font-semibold"
-            >
-              Conheça nossa história
-              <motion.span
-                animate={{ x: [0, 5, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              >
-                →
-              </motion.span>
-            </motion.button>
-          </Link>
-        </AnimatedSection>
+            {/* Technical note below grid */}
+            <div className="mt-4 flex items-start gap-3 px-1">
+              <div className="w-px h-8 bg-primary/50 shrink-0 mt-1" />
+              <p className="text-muted-foreground text-xs leading-relaxed font-mono">
+                Dados referentes à rede ativa de distribuição e assistência técnica
+                autorizada Involts Brasil — atualizado 2024.
+              </p>
+            </div>
+          </AnimatedSection>
+        </div>
+      </div>
+
+      {/* ─── CERTIFICATIONS TICKER ─── */}
+      <div className="mt-20 border-t border-b border-border py-4 overflow-hidden relative">
+        <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+
+        <div className="flex items-center gap-0 w-[200%] animate-marquee">
+          {[...certifications, ...certifications].map((cert, i) => (
+            <div key={i} className="flex items-center gap-6 shrink-0 px-6">
+              <span className="font-mono text-xs text-muted-foreground tracking-widest uppercase whitespace-nowrap">
+                {cert}
+              </span>
+              <span className="text-primary/30 text-xs">·</span>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
