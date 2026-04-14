@@ -197,7 +197,7 @@ export function CinematicHero({
   const mockupRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<number>(0);
   const tagline1Ref = useRef<HTMLHeadingElement>(null);
-  const tagline2Ref = useRef<HTMLHeadingElement>(null);
+  const tagline2Ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -305,11 +305,11 @@ export function CinematicHero({
 
       {/* BACKGROUND: Taglines */}
       <div className="hero-text-wrapper absolute z-10 flex flex-col items-center justify-center text-center w-screen px-4 will-change-transform">
-        <h1 ref={tagline1Ref} className="text-track text-3d-matte text-5xl md:text-7xl lg:text-[6rem] font-bold tracking-tight mb-2">
-          {tagline1}
-        </h1>
-        <h1 ref={tagline2Ref} className="text-days text-silver-matte text-5xl md:text-7xl lg:text-[6rem] font-extrabold tracking-tighter">
-          {tagline2}
+        <h1 ref={tagline1Ref} className="text-track text-3d-matte text-5xl md:text-7xl lg:text-[6rem] font-bold tracking-tight leading-[1.05]">
+          <span className="block">{tagline1}</span>
+          <span ref={tagline2Ref} className="text-days text-silver-matte block font-extrabold tracking-tighter">
+            {tagline2}
+          </span>
         </h1>
       </div>
 
