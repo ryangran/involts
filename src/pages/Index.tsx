@@ -4,10 +4,14 @@ import { ProductsSection } from '@/components/ProductsSection';
 import { FeaturesSection } from '@/components/FeaturesSection';
 import { CTASection } from '@/components/CTASection';
 import { Footer } from '@/components/Footer';
+import { CustomCursor } from '@/components/CustomCursor';
+import { ScrollProgress } from '@/components/ScrollProgress';
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
+      <CustomCursor />
+      <ScrollProgress />
       <Header />
       <main>
         <HeroSection />

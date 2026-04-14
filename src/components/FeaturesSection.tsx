@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { AnimatedSection } from './AnimatedSection';
 import { MapPin, Users, Headphones, Clock, Shield, Award, Zap, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useSpotlight } from '@/hooks/useSpotlight';
 
 const features = [
   {
@@ -46,9 +47,57 @@ const benefits = [
   { icon: Star, text: '25 anos de tradição' },
 ];
 
+type Feature = typeof features[number];
+
+const FeatureCard = ({ feature }: { feature: Feature }) => {
+  const { onMouseMove } = useSpotlight();
+
+  return (
+    <motion.div
+      onMouseMove={onMouseMove}
+      whileHover={{ y: -8 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+      className="spotlight-card group relative bg-card border border-border rounded-3xl p-8 text-center overflow-hidden"
+    >
+      {/* Background glow on hover */}
+      <motion.div
+        className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
+      />
+
+      {/* Icon */}
+      <motion.div
+        whileHover={{ scale: 1.1, rotate: 10 }}
+        className={`w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center shadow-lg shadow-primary/20 group-hover:shadow-xl group-hover:shadow-primary/30 transition-shadow duration-300`}
+      >
+        <feature.icon className="w-10 h-10 text-primary-foreground" />
+      </motion.div>
+
+      {/* Stat */}
+      <motion.div
+        className="text-4xl md:text-5xl font-display font-bold text-gradient mb-2"
+        initial={{ scale: 1 }}
+        whileHover={{ scale: 1.1 }}
+      >
+        {feature.stat}
+      </motion.div>
+      <div className="text-sm text-foreground/50 mb-4">
+        {feature.statLabel}
+      </div>
+
+      {/* Title & Description */}
+      <h3 className="text-xl font-display font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
+        {feature.title}
+      </h3>
+      <p className="text-foreground/60 text-sm">
+        {feature.description}
+      </p>
+    </motion.div>
+  );
+};
+
 export const FeaturesSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start end', 'end start'],
@@ -88,7 +137,7 @@ export const FeaturesSection = () => {
               Por que escolher a Involts
             </span>
           </motion.div>
-          
+
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-foreground mb-6">
             Confiança que{' '}
             <span className="text-gradient">energiza</span>
@@ -106,43 +155,7 @@ export const FeaturesSection = () => {
               delay={index * 0.1}
               animation="fadeUp"
             >
-              <motion.div
-                whileHover={{ y: -10, scale: 1.02 }}
-                className="relative bg-card/50 backdrop-blur-sm border border-border rounded-3xl p-8 text-center group overflow-hidden"
-              >
-                {/* Background glow on hover */}
-                <motion.div
-                  className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
-                />
-                
-                {/* Icon */}
-                <motion.div
-                  whileHover={{ scale: 1.1, rotate: 10 }}
-                  className={`w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center shadow-lg shadow-primary/20 group-hover:shadow-xl group-hover:shadow-primary/30 transition-shadow duration-300`}
-                >
-                  <feature.icon className="w-10 h-10 text-primary-foreground" />
-                </motion.div>
-
-                {/* Stat */}
-                <motion.div 
-                  className="text-4xl md:text-5xl font-display font-bold text-gradient mb-2"
-                  initial={{ scale: 1 }}
-                  whileHover={{ scale: 1.1 }}
-                >
-                  {feature.stat}
-                </motion.div>
-                <div className="text-sm text-foreground/50 mb-4">
-                  {feature.statLabel}
-                </div>
-
-                {/* Title & Description */}
-                <h3 className="text-xl font-display font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
-                  {feature.title}
-                </h3>
-                <p className="text-foreground/60 text-sm">
-                  {feature.description}
-                </p>
-              </motion.div>
+              <FeatureCard feature={feature} />
             </AnimatedSection>
           ))}
         </div>

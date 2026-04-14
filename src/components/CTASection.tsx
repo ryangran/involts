@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { AnimatedSection } from './AnimatedSection';
 import { Wrench, Store, MessageCircle, Phone, MapPin, ArrowRight, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useSpotlight } from '@/hooks/useSpotlight';
 
 const cards = [
   {
@@ -36,6 +37,7 @@ const cards = [
 
 export const CTASection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { onMouseMove } = useSpotlight();
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -125,7 +127,7 @@ export const CTASection = () => {
                       className={`absolute -inset-1 bg-gradient-to-br ${card.gradient} opacity-0 group-hover:opacity-30 blur-xl rounded-3xl transition-all duration-500`}
                     />
                     
-                    <div className="relative bg-card/80 backdrop-blur-xl border border-border rounded-3xl p-8 h-full flex flex-col text-center overflow-hidden">
+                    <div onMouseMove={onMouseMove} className="spotlight-card relative bg-card/80 backdrop-blur-xl border border-border rounded-3xl p-8 h-full flex flex-col text-center overflow-hidden">
                       {/* Top gradient line */}
                       <motion.div 
                         className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${card.gradient}`}
