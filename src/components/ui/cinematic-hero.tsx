@@ -36,7 +36,7 @@ const INJECTED_STYLES = `
   }
 
   .text-silver-matte {
-      background: linear-gradient(180deg, hsl(var(--foreground)) 0%, color-mix(in srgb, hsl(var(--foreground)) 40%, transparent) 100%);
+      background: linear-gradient(180deg, #FFFFFF 0%, hsl(var(--foreground)) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
