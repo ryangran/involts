@@ -622,6 +622,7 @@ const ProductDetail = () => {
                       src={protetorVideo}
                       controls
                       playsInline
+                      preload="none"
                       className="w-full max-h-[70vh] object-contain relative z-10 rounded-xl"
                     />
                   </div>

@@ -5,6 +5,15 @@ import { Wrench, Store, MessageCircle, Phone, MapPin, ArrowRight, Sparkles } fro
 import { Link } from 'react-router-dom';
 import { useSpotlight } from '@/hooks/useSpotlight';
 
+// Computed once at module load — never recalculated on re-render
+const PARTICLES = Array.from({ length: 15 }, (_, i) => ({
+  id: i,
+  left: `${Math.random() * 100}%`,
+  top: `${Math.random() * 100}%`,
+  duration: 3 + Math.random() * 2,
+  delay: Math.random() * 2,
+}));
+
 const cards = [
   {
     icon: Wrench,
@@ -57,24 +66,14 @@ export const CTASection = () => {
       <div className="absolute inset-0">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-gradient-radial" />
         
-        {/* Floating particles */}
-        {[...Array(15)].map((_, i) => (
+        {/* Floating particles — positions stable, no re-render jank */}
+        {PARTICLES.map((p) => (
           <motion.div
-            key={i}
+            key={p.id}
             className="absolute w-2 h-2 bg-primary/20 rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [0, -30, 0],
-              opacity: [0.2, 0.8, 0.2],
-            }}
-            transition={{
-              duration: 3 + Math.random() * 2,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-            }}
+            style={{ left: p.left, top: p.top }}
+            animate={{ y: [0, -30, 0], opacity: [0.2, 0.8, 0.2] }}
+            transition={{ duration: p.duration, repeat: Infinity, delay: p.delay }}
           />
         ))}
       </div>

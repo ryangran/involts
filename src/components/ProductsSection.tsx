@@ -30,7 +30,9 @@ const ProductCard = ({ product }: { product: typeof productsData[0] }) => {
             <img
               src={product.image}
               alt={product.name}
-              className="w-full aspect-square object-contain group-hover:scale-105 transition-transform duration-300"
+              loading="lazy"
+            decoding="async"
+            className="w-full aspect-square object-contain group-hover:scale-105 transition-transform duration-300"
             />
           </div>
 
