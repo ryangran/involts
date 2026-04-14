@@ -105,7 +105,11 @@ function validateResellerForm(data: unknown): { success: true; data: ResellerFor
     return { success: false, error: 'Telefone é obrigatório' };
   }
 
-  const sanitize = (str: string | undefined) => str?.trim().replace(/<[^>]*>/g, '') || '';
+  const escapeHtml = (str: string): string => {
+    const map: Record<string, string> = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#x27;', '/': '&#x2F;' };
+    return str.replace(/[&<>"'\/]/g, (c) => map[c]);
+  };
+  const sanitize = (str: string | undefined) => str ? escapeHtml(str.trim().replace(/<[^>]*>/g, '')) : '';
   const sanitizeOptional = (val: unknown) => typeof val === 'string' ? sanitize(val) : undefined;
 
   return {

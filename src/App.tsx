@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ScrollToTop } from "./components/ScrollToTop";
+import AdminProtectedRoute from "./components/AdminProtectedRoute";
 
 // Code-split every page — only the current route's JS is loaded
 const Index         = lazy(() => import('./pages/Index'));
@@ -43,7 +44,7 @@ const App = () => (
             <Route path="/assistencia"   element={<Assistencia />} />
             <Route path="/contato"       element={<Contato />} />
             <Route path="/admin/login"   element={<AdminLogin />} />
-            <Route path="/admin/leads"   element={<AdminLeads />} />
+            <Route path="/admin/leads"   element={<AdminProtectedRoute><AdminLeads /></AdminProtectedRoute>} />
             <Route path="*"             element={<NotFound />} />
           </Routes>
         </Suspense>
