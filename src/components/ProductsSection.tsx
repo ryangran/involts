@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { AnimatedSection } from './AnimatedSection';
 import { Shield, Zap, Cpu, Plug, ArrowRight, Sparkles } from 'lucide-react';
 import { productsData } from '@/data/products';
+import { GlowCard } from './spotlight-card';
 
 const categories = [
   { id: 'protetores', title: 'Protetores', icon: Shield },
@@ -13,33 +14,38 @@ const categories = [
 
 const ProductCard = ({ product }: { product: typeof productsData[0] }) => {
   return (
-    <Link to={`/produto/${product.slug}`}>
+    <Link to={`/produto/${product.slug}`} className="flex-shrink-0 block w-[180px] sm:w-[200px] md:w-[220px]">
       <motion.div
-        whileHover={{ y: -6, boxShadow: '0 20px 40px -15px rgba(0,0,0,0.15)' }}
+        whileHover={{ y: -6 }}
         transition={{ duration: 0.25 }}
-        className="group bg-card border border-border/50 rounded-xl overflow-hidden h-full hover:border-primary/30 w-[180px] sm:w-[200px] md:w-[220px] flex-shrink-0"
+        className="group h-full"
       >
-        {/* Image */}
-        <div className="aspect-square bg-gradient-to-br from-muted/80 to-muted p-5 relative">
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
-          />
-        </div>
-        
-        {/* Content */}
-        <div className="p-4">
-          <span className="text-xs text-primary font-medium">{product.category}</span>
-          <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors text-sm leading-tight mt-1">
-            {product.name}
-          </h4>
-          
-          <div className="flex items-center gap-1 text-primary text-xs font-medium mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-            Ver detalhes
-            <ArrowRight className="w-3 h-3" />
+        <GlowCard
+          glowColor="orange"
+          customSize
+          className="w-full h-full"
+        >
+          {/* Image */}
+          <div className="bg-gradient-to-br from-muted/80 to-muted rounded-xl overflow-hidden p-4">
+            <img
+              src={product.image}
+              alt={product.name}
+              className="w-full aspect-square object-contain group-hover:scale-105 transition-transform duration-300"
+            />
           </div>
-        </div>
+
+          {/* Content */}
+          <div className="space-y-1">
+            <span className="text-xs text-primary font-medium">{product.category}</span>
+            <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors text-sm leading-tight">
+              {product.name}
+            </h4>
+            <div className="flex items-center gap-1 text-primary text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity pt-1">
+              Ver detalhes
+              <ArrowRight className="w-3 h-3" />
+            </div>
+          </div>
+        </GlowCard>
       </motion.div>
     </Link>
   );
