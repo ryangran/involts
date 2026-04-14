@@ -176,6 +176,7 @@ export function CinematicHero({
   brandName = "Involts",
   tagline1 = "Veja o que nossos",
   tagline2 = "clientes dizem",
+  // taglines: line1 / line2
   cardHeading = "Avaliações reais de parceiros.",
   cardDescription = (
     <>
