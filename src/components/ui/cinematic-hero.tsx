@@ -22,28 +22,28 @@ const INJECTED_STYLES = `
   .bg-grid-theme {
       background-size: 60px 60px;
       background-image:
-          linear-gradient(to right, color-mix(in srgb, var(--color-foreground) 5%, transparent) 1px, transparent 1px),
-          linear-gradient(to bottom, color-mix(in srgb, var(--color-foreground) 5%, transparent) 1px, transparent 1px);
+          linear-gradient(to right, color-mix(in srgb, hsl(var(--foreground)) 5%, transparent) 1px, transparent 1px),
+          linear-gradient(to bottom, color-mix(in srgb, hsl(var(--foreground)) 5%, transparent) 1px, transparent 1px);
       mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
       -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
   }
 
   .text-3d-matte {
-      color: var(--color-foreground);
+      color: hsl(var(--foreground));
       text-shadow:
-          0 10px 30px color-mix(in srgb, var(--color-foreground) 20%, transparent),
-          0 2px 4px color-mix(in srgb, var(--color-foreground) 10%, transparent);
+          0 10px 30px color-mix(in srgb, hsl(var(--foreground)) 20%, transparent),
+          0 2px 4px color-mix(in srgb, hsl(var(--foreground)) 10%, transparent);
   }
 
   .text-silver-matte {
-      background: linear-gradient(180deg, var(--color-foreground) 0%, color-mix(in srgb, var(--color-foreground) 40%, transparent) 100%);
+      background: linear-gradient(180deg, hsl(var(--foreground)) 0%, color-mix(in srgb, hsl(var(--foreground)) 40%, transparent) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
       transform: translateZ(0);
       filter:
-          drop-shadow(0px 10px 20px color-mix(in srgb, var(--color-foreground) 15%, transparent))
-          drop-shadow(0px 2px 4px color-mix(in srgb, var(--color-foreground) 10%, transparent));
+          drop-shadow(0px 10px 20px color-mix(in srgb, hsl(var(--foreground)) 15%, transparent))
+          drop-shadow(0px 2px 4px color-mix(in srgb, hsl(var(--foreground)) 10%, transparent));
   }
 
   .text-card-silver-matte {
