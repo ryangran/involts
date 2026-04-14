@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { AnimatedSection } from './AnimatedSection';
-import { Phone, Mail, MapPin, Instagram, Facebook, Linkedin, Zap } from 'lucide-react';
+import { Zap, Phone, Mail, MapPin, Instagram, Facebook, Linkedin } from 'lucide-react';
 import logo2 from '@/assets/logo-2.svg';
 
 const footerLinks = {
@@ -16,93 +16,65 @@ const footerLinks = {
     { label: 'Rede de Assistência', href: '/assistencia' },
     { label: 'Seja Revendedor', href: '/revendedor' },
     { label: 'Contato', href: '/contato' },
-  ],
+  ]
 };
-
-const socialLinks = [
-  { icon: Instagram, href: 'https://www.instagram.com/involtsbrasil/', label: 'Instagram' },
-  { icon: Facebook, href: '#', label: 'Facebook' },
-  { icon: Linkedin, href: '#', label: 'LinkedIn' },
-];
-
-const contactItems = [
-  {
-    icon: Phone,
-    primary: '(11) 96846-9454',
-    secondary: '08h às 12h e 13h às 17h',
-    href: 'tel:+5511968469454',
-  },
-  {
-    icon: Mail,
-    primary: 'contato@involtsbrasil.com.br',
-    secondary: 'Resposta em até 24h',
-    href: 'mailto:contato@involtsbrasil.com.br',
-  },
-  {
-    icon: MapPin,
-    primary: 'São Paulo, SP',
-    secondary: 'Brasil',
-    href: null,
-  },
-];
-
+const socialLinks = [{
+  icon: Instagram,
+  href: 'https://www.instagram.com/involtsbrasil/',
+  label: 'Instagram'
+}, {
+  icon: Facebook,
+  href: '#',
+  label: 'Facebook'
+}, {
+  icon: Linkedin,
+  href: '#',
+  label: 'LinkedIn'
+}];
 export const Footer = () => {
-  return (
-    <footer className="relative bg-card border-t border-border overflow-hidden">
-      {/* Subtle grid */}
-      <div className="absolute inset-0 circuit-grid opacity-[0.012] pointer-events-none" />
+  return <footer id="contato" className="relative bg-muted/50 border-t border-border overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0">
+        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-secondary/5 rounded-full blur-3xl" />
+      </div>
 
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 relative z-10">
+      <div className="container mx-auto px-6 relative z-10">
+        {/* Main Footer */}
+        <div className="py-16 grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+          {/* Brand */}
+          <AnimatedSection delay={0} className="lg:col-span-1">
+            <div className="flex items-center gap-3 mb-6">
+              <img src={logo2} alt="Involts" className="h-12 w-auto" />
+              <span className="font-display font-bold text-2xl text-foreground">
+                ​
 
-        {/* Top divider accent */}
-        <div className="h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
-
-        {/* Main grid */}
-        <div className="py-14 grid md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1.5fr] gap-10 lg:gap-12">
-
-          {/* Brand column */}
-          <AnimatedSection animation="fadeUp" delay={0}>
-            <Link to="/" className="inline-block mb-6">
-              <img src={logo2} alt="Involts Brasil" className="h-10 w-auto" />
-            </Link>
-
-            <p className="text-muted-foreground text-sm leading-relaxed mb-6 max-w-[30ch]">
-              25 anos de know-how no segmento elétrico com presença em todo o Brasil.
+              </span>
+            </div>
+            <p className="text-foreground/60 mb-6">
+              25 anos de know-how no segmento com presença em todo Brasil. 
               Energia de qualidade em todos os momentos.
             </p>
-
-            {/* Social */}
-            <div className="flex gap-3">
-              {socialLinks.map((social) => (
-                <motion.a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ y: -2, borderColor: 'hsl(22, 76%, 42%)' }}
-                  whileTap={{ scale: 0.95 }}
-                  aria-label={social.label}
-                  className="w-9 h-9 border border-border flex items-center justify-center text-muted-foreground hover:text-primary transition-colors duration-200"
-                >
-                  <social.icon className="w-4 h-4" />
-                </motion.a>
-              ))}
+            {/* Social Links */}
+            <div className="flex gap-4">
+              {socialLinks.map(social => <motion.a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" whileHover={{
+              scale: 1.1,
+              y: -2
+            }} whileTap={{
+              scale: 0.95
+            }} className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-foreground/60 hover:text-primary hover:bg-primary/10 transition-colors" aria-label={social.label}>
+                  <social.icon className="w-5 h-5" />
+                </motion.a>)}
             </div>
           </AnimatedSection>
 
           {/* Products */}
-          <AnimatedSection animation="fadeUp" delay={0.08}>
-            <h4 className="font-mono text-[10px] text-muted-foreground tracking-widest uppercase mb-5">
-              Produtos
-            </h4>
+          <AnimatedSection delay={0.1}>
+            <h4 className="font-display font-semibold text-foreground mb-6">Produtos</h4>
             <ul className="space-y-3">
-              {footerLinks.produtos.map((link) => (
+              {footerLinks.produtos.map(link => (
                 <li key={link.label}>
-                  <Link
-                    to={link.href}
-                    className="text-muted-foreground text-sm hover:text-foreground transition-colors duration-200 flex items-center gap-2 group"
-                  >
-                    <span className="w-3 h-px bg-border group-hover:bg-primary group-hover:w-4 transition-all duration-200" />
+                  <Link to={link.href} className="text-foreground/60 hover:text-primary transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -111,18 +83,12 @@ export const Footer = () => {
           </AnimatedSection>
 
           {/* Company */}
-          <AnimatedSection animation="fadeUp" delay={0.16}>
-            <h4 className="font-mono text-[10px] text-muted-foreground tracking-widest uppercase mb-5">
-              Empresa
-            </h4>
+          <AnimatedSection delay={0.2}>
+            <h4 className="font-display font-semibold text-foreground mb-6">Empresa</h4>
             <ul className="space-y-3">
-              {footerLinks.empresa.map((link) => (
+              {footerLinks.empresa.map(link => (
                 <li key={link.label}>
-                  <Link
-                    to={link.href}
-                    className="text-muted-foreground text-sm hover:text-foreground transition-colors duration-200 flex items-center gap-2 group"
-                  >
-                    <span className="w-3 h-px bg-border group-hover:bg-primary group-hover:w-4 transition-all duration-200" />
+                  <Link to={link.href} className="text-foreground/60 hover:text-primary transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -131,53 +97,43 @@ export const Footer = () => {
           </AnimatedSection>
 
           {/* Contact */}
-          <AnimatedSection animation="fadeUp" delay={0.24}>
-            <h4 className="font-mono text-[10px] text-muted-foreground tracking-widest uppercase mb-5">
-              Contato
-            </h4>
+          <AnimatedSection delay={0.3}>
+            <h4 className="font-display font-semibold text-foreground mb-6">Contato</h4>
             <ul className="space-y-4">
-              {contactItems.map((item) => {
-                const content = (
-                  <div className="flex items-start gap-3 group">
-                    <div className="w-7 h-7 border border-border flex items-center justify-center shrink-0 mt-0.5 group-hover:border-primary/40 transition-colors duration-200">
-                      <item.icon className="w-3.5 h-3.5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-foreground text-sm font-medium group-hover:text-primary transition-colors duration-200">
-                        {item.primary}
-                      </p>
-                      <p className="text-muted-foreground text-xs font-mono mt-0.5">
-                        {item.secondary}
-                      </p>
-                    </div>
-                  </div>
-                );
-
-                return (
-                  <li key={item.primary}>
-                    {item.href ? (
-                      <a href={item.href}>{content}</a>
-                    ) : (
-                      content
-                    )}
-                  </li>
-                );
-              })}
+              <li className="flex items-start gap-3">
+                <Phone className="w-5 h-5 text-primary mt-0.5" />
+                <div>
+                  <p className="text-foreground/60">(11) 96846-9454</p>
+                  <p className="text-foreground/40 text-sm">08h às 12h e 13h às 17h</p>
+                </div>
+              </li>
+              <li className="flex items-center gap-3">
+                <Mail className="w-5 h-5 text-primary" />
+                <a href="mailto:contato@involtsbrasil.com.br" className="text-foreground/60 hover:text-primary transition-colors">
+                  contato@involtsbrasil.com.br
+                </a>
+              </li>
+              <li className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 text-primary mt-0.5" />
+                <p className="text-foreground/60">
+                  São Paulo, SP<br />
+                  Brasil
+                </p>
+              </li>
             </ul>
           </AnimatedSection>
         </div>
 
-        {/* Bottom bar */}
-        <div className="py-5 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-muted-foreground text-xs font-mono">
+        {/* Bottom Bar */}
+        <div className="py-6 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-foreground/40 text-sm">
             © {new Date().getFullYear()} Involts Brasil. Todos os direitos reservados.
           </p>
-          <div className="flex items-center gap-2 text-muted-foreground text-xs font-mono">
-            <Zap className="w-3.5 h-3.5 text-primary" />
+          <div className="flex items-center gap-2 text-foreground/40 text-sm">
+            <Zap className="w-4 h-4 text-primary" />
             <span>Energia de qualidade em todos os momentos</span>
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };

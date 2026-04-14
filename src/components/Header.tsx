@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import logo from '@/assets/logo.svg';
 
 const navItems = [
@@ -14,93 +14,73 @@ const navItems = [
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const location = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 40);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [location.pathname]);
-
   return (
     <>
       <motion.header
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-400 ${
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled
-            ? 'bg-background/90 backdrop-blur-xl border-b border-border shadow-[0_1px_0_rgba(255,255,255,0.04)]'
+            ? 'bg-background/90 backdrop-blur-xl border-b border-border'
             : 'bg-transparent'
         }`}
       >
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
-          <div className="flex items-center justify-between h-[68px]">
-
+        <div className="container mx-auto px-6">
+          <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link to="/" className="flex items-center shrink-0">
-              <img src={logo} alt="Involts" className="h-10 w-auto" />
-            </Link>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Link to="/" className="flex items-center">
+                <img src={logo} alt="Involts" className="h-12" />
+              </Link>
+            </motion.div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-0">
-              {navItems.map((item, index) => {
-                const isActive = location.pathname === item.href;
-                return (
-                  <motion.div
-                    key={item.label}
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.08 * index, duration: 0.4 }}
-                  >
-                    <Link
-                      to={item.href}
-                      className={`relative px-5 py-2 text-sm font-medium tracking-wide transition-colors duration-200 group ${
-                        isActive
-                          ? 'text-foreground'
-                          : 'text-muted-foreground hover:text-foreground'
-                      }`}
-                    >
-                      {item.label}
-                      <span
-                        className={`absolute bottom-0 left-5 right-5 h-px bg-primary transition-transform duration-200 origin-left ${
-                          isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
-                        }`}
-                      />
-                    </Link>
-                  </motion.div>
-                );
-              })}
+            <nav className="hidden md:flex items-center gap-8">
+              {navItems.map((item, index) => (
+                <motion.a
+                  key={item.label}
+                  href={item.href}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 * index }}
+                  className="text-foreground/70 hover:text-primary transition-colors font-medium relative group"
+                >
+                  {item.label}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
+                </motion.a>
+              ))}
+              <motion.a
+                href="/revendedor"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.5 }}
+                className="bg-gradient-primary text-primary-foreground px-6 py-2.5 rounded-full font-semibold hover:shadow-lg hover:shadow-primary/30 transition-all duration-300"
+              >
+                Seja um Revendedor
+              </motion.a>
             </nav>
 
-            {/* CTA + Mobile Toggle */}
-            <div className="flex items-center gap-3">
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4, duration: 0.5 }}
-                className="hidden md:block"
-              >
-                <Link
-                  to="/revendedor"
-                  className="btn-primary text-sm py-2.5 px-5 font-semibold"
-                >
-                  Seja Revendedor
-                </Link>
-              </motion.div>
-
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden p-2 text-muted-foreground hover:text-foreground transition-colors"
-                aria-label={isMobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
-              >
-                {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-              </button>
-            </div>
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden text-foreground p-2"
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
           </div>
         </div>
       </motion.header>
@@ -109,45 +89,29 @@ export const Header = () => {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -16 }}
+            initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-40 bg-background/98 backdrop-blur-xl pt-[68px] md:hidden"
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed inset-0 z-40 bg-background pt-24 md:hidden"
           >
-            <div className="h-px bg-border" />
-            <nav className="flex flex-col px-6 pt-8 gap-1">
-              {navItems.map((item, i) => (
-                <motion.div
+            <nav className="flex flex-col items-center gap-6 p-6">
+              {navItems.map((item) => (
+                <a
                   key={item.label}
-                  initial={{ opacity: 0, x: -16 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.06, duration: 0.3 }}
-                >
-                  <Link
-                    to={item.href}
-                    className="flex items-center justify-between py-4 border-b border-border text-lg font-medium text-muted-foreground hover:text-foreground transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {item.label}
-                    <span className="text-muted-foreground/40 text-sm font-mono">0{i + 1}</span>
-                  </Link>
-                </motion.div>
-              ))}
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.4 }}
-                className="pt-6"
-              >
-                <Link
-                  to="/revendedor"
-                  className="btn-primary w-full justify-center"
+                  href={item.href}
                   onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-foreground text-xl font-medium"
                 >
-                  Seja Revendedor
-                </Link>
-              </motion.div>
+                  {item.label}
+                </a>
+              ))}
+              <a
+                href="/revendedor"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="bg-gradient-primary text-primary-foreground px-8 py-3 rounded-full font-semibold mt-4"
+              >
+                Seja um Revendedor
+              </a>
             </nav>
           </motion.div>
         )}
