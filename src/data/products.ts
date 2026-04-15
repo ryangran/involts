@@ -228,7 +228,7 @@ export const productsData: ProductData[] = [
       { name: '1500B', type: 'bivolt' },
       { name: '2000B', type: 'bivolt' },
     ],
-    specSheet: undefined,
+    specSheet: '/protetor-bivolt-lamina-tecnica.pdf',
     highlight: true,
   },
   {
