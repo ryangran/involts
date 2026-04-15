@@ -105,7 +105,11 @@ src/
 3. Filtro de Linha ABS (Filtros de Linha)
 4. Filtro Metálico 20A (Filtros de Linha)
 5. Protetor Multifuncional (Protetores)
-6. Protetor Digital (Protetores)
+6. Protetor Bivolt (Protetores) — modelos 1000B, 1500B, 2000B
+7. Módulo Isolador (Transformadores) — modelos 500B 110V, 500B 220V, 1000B 110V, 1000B 220V
+8. Protetor Digital (Protetores)
+
+> Imagens dos produtos 6 e 7 são placeholders — substituir por imagens reais em `src/assets/products/`
 
 ## Comandos úteis
 ```bash
