@@ -5,6 +5,8 @@ import autoTransformadorImg from '@/assets/products/auto-transformador.png';
 import filtroLinhaAbsImg from '@/assets/products/filtro-linha-abs.png';
 import filtroMetalicoImg from '@/assets/products/filtro-metalico.png';
 import protetorMultifuncionalImg from '@/assets/products/protetor-multifuncional.png';
+import protetorBivoltImg from '@/assets/products/protetor-bivolt.png';
+import moduloIsoladorImg from '@/assets/products/modulo-isolador.png';
 
 export interface ProductIdeal {
   icon: string;
@@ -203,8 +205,8 @@ export const productsData: ProductData[] = [
     subtitle: 'Bivolt Universal',
     description: 'Protetor eletrônico bivolt com tecnologia SMD para máxima proteção em 110V e 220V',
     fullDescription: 'O Protetor Bivolt Involts oferece proteção completa contra surtos, sobretensão e variações de rede em qualquer tensão. Com tecnologia SMD e detecção automática de voltagem, protege seus equipamentos sem necessidade de ajuste manual.',
-    image: protetorMultifuncionalImg,
-    gallery: [protetorMultifuncionalImg],
+    image: protetorBivoltImg,
+    gallery: [protetorBivoltImg],
     features: ['Bivolt Automático', 'Tecnologia SMD', 'DPS Integrado'],
     characteristics: [
       'Detecção automática de tensão 110V/220V',
@@ -238,8 +240,8 @@ export const productsData: ProductData[] = [
     subtitle: 'Isolamento Total',
     description: 'Módulo isolador para separação galvânica e proteção contra ruídos e interferências elétricas',
     fullDescription: 'O Módulo Isolador Involts garante isolamento galvânico total entre a rede elétrica e os equipamentos conectados, eliminando ruídos, interferências e protegendo contra choques elétricos. Disponível em 110V e 220V para atender toda instalação.',
-    image: autoTransformadorImg,
-    gallery: [autoTransformadorImg],
+    image: moduloIsoladorImg,
+    gallery: [moduloIsoladorImg],
     features: ['Isolamento Galvânico', '110V e 220V', 'Anti-Ruído'],
     characteristics: [
       'Isolamento galvânico total',
