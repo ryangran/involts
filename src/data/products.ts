@@ -18,6 +18,11 @@ export interface ProductModel {
   type: 'mono' | 'bivolt';
 }
 
+export interface ProductSpecSheet {
+  label: string;
+  url: string;
+}
+
 export interface ProductData {
   id: string;
   slug: string;
@@ -34,6 +39,7 @@ export interface ProductData {
   idealFor: ProductIdeal[];
   models?: ProductModel[];
   specSheet?: string;
+  specSheets?: ProductSpecSheet[];
   highlight?: boolean;
 }
 
@@ -95,7 +101,7 @@ export const productsData: ProductData[] = [
       { icon: 'monitor', label: 'Computadores' },
       { icon: 'microwave', label: 'Eletrodomésticos' },
     ],
-    specSheet: undefined,
+    specSheet: '/autotransformador.pdf',
     highlight: false,
   },
   {
@@ -125,7 +131,7 @@ export const productsData: ProductData[] = [
       { icon: 'monitor', label: 'Computadores' },
       { icon: 'smartphone', label: 'Eletrônicos' },
     ],
-    specSheet: undefined,
+    specSheet: '/filtro-linha-abs.pdf',
     highlight: true,
   },
   {
@@ -193,7 +199,11 @@ export const productsData: ProductData[] = [
       { name: '500 Bivolt', type: 'bivolt' },
       { name: '600 Bivolt', type: 'bivolt' },
     ],
-    specSheet: undefined,
+    specSheets: [
+      { label: 'Lâmina 330 / 500 VA', url: '/protetor-multifuncional-330-500.pdf' },
+      { label: 'Lâmina 600M / 600B', url: '/protetor-multifuncional-600.pdf' },
+      { label: 'Lâmina 1000 VA', url: '/protetor-multifuncional-1000va.pdf' },
+    ],
     highlight: true,
   },
   {

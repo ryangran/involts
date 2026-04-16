@@ -534,7 +534,22 @@ const ProductDetail = () => {
                     <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
                   </motion.a>
                   
-                  {product.specSheet && (
+                  {product.specSheets && product.specSheets.length > 0 ? (
+                    product.specSheets.map((sheet) => (
+                      <motion.a
+                        key={sheet.url}
+                        href={sheet.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        className="flex-1 bg-muted text-foreground py-4 px-8 rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-muted/80 transition-all border border-border"
+                      >
+                        <Download className="w-5 h-5" />
+                        {sheet.label}
+                      </motion.a>
+                    ))
+                  ) : product.specSheet ? (
                     <motion.a
                       href={product.specSheet}
                       target="_blank"
@@ -546,7 +561,7 @@ const ProductDetail = () => {
                       <Download className="w-5 h-5" />
                       Especificações
                     </motion.a>
-                  )}
+                  ) : null}
                 </motion.div>
               </div>
             </div>
