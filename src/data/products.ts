@@ -308,6 +308,7 @@ export const productsData: ProductData[] = [
       { name: '110V', type: 'mono' },
       { name: '220V', type: 'mono' },
     ],
+    specSheet: '/protetor-digital.pdf',
     highlight: true,
   },
 ];
