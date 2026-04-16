@@ -273,7 +273,7 @@ export const productsData: ProductData[] = [
       { name: '1000B 110V', type: 'mono' },
       { name: '1000B 220V', type: 'mono' },
     ],
-    specSheet: undefined,
+    specSheet: '/modulo-isolador.pdf',
     highlight: false,
   },
   {
