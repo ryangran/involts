@@ -164,9 +164,10 @@ const ProductDetail = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const { rotateX, rotateY, handleMouseMove, handleMouseLeave } = use3DTilt();
   const isMobile = useIsMobile();
-  
+
   const product = slug ? getProductBySlug(slug) : undefined;
   const relatedProducts = slug ? getRelatedProducts(slug, 3) : [];
 
@@ -174,6 +175,24 @@ const ProductDetail = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [slug]);
+
+  // Autoplay/pause video on scroll visibility
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.4 }
+    );
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -625,10 +644,12 @@ const ProductDetail = () => {
                     ))}
                     
                     <video
+                      ref={videoRef}
                       src={protetorVideo}
                       controls
                       playsInline
-                      preload="none"
+                      muted
+                      preload="metadata"
                       className="w-full max-h-[70vh] object-contain relative z-10 rounded-xl"
                     />
                   </div>
