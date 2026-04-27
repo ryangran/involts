@@ -174,7 +174,7 @@ export const productsData: ProductData[] = [
     gallery: [
       protetorMultifuncionalImg,
     ],
-    features: ['Multifuncional', 'DPS Integrado', 'Indicador LED'],
+    features: ['Multifuncional', 'DPS Integrado', 'Botão com Led Luminoso'],
     characteristics: [
       'Proteger contra curto circuito na saída',
       'Proteger contra surtos e tensão',
