@@ -257,69 +257,63 @@ const ProductDetail = () => {
                   </span>
                 </motion.div>
 
-                {/* Main Image with 3D Tilt */}
+                {/* Main Image — Product Stage */}
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.8, rotateY: -30 }}
-                  animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-                  transition={{ duration: 0.8, type: 'spring' }}
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, ease: 'easeOut' }}
                   onMouseMove={handleMouseMove}
                   onMouseLeave={handleMouseLeave}
-                  style={{ 
-                    rotateX, 
-                    rotateY,
-                    transformStyle: 'preserve-3d',
-                  }}
-                  className="relative aspect-square bg-gradient-to-br from-secondary/20 via-primary/10 to-secondary/20 rounded-3xl overflow-hidden mb-6 cursor-pointer perspective-1000"
+                  style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+                  className="relative aspect-square mb-6 cursor-pointer perspective-1000"
                 >
-                  {/* Animated gradient overlay */}
-                  <motion.div
-                    animate={{
-                      background: [
-                        'radial-gradient(circle at 20% 20%, rgba(249,115,22,0.15) 0%, transparent 50%)',
-                        'radial-gradient(circle at 80% 80%, rgba(251,185,48,0.15) 0%, transparent 50%)',
-                        'radial-gradient(circle at 20% 20%, rgba(249,115,22,0.15) 0%, transparent 50%)',
-                      ],
-                    }}
-                    transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
-                    className="absolute inset-0"
-                  />
-                  
-                  {/* Grid pattern */}
-                  <div 
-                    className="absolute inset-0 opacity-5"
+                  {/* Outer gradient border frame */}
+                  <div
+                    className="absolute inset-0 rounded-2xl"
                     style={{
-                      backgroundImage: 'linear-gradient(hsl(var(--primary)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)',
-                      backgroundSize: '40px 40px',
+                      background:
+                        'linear-gradient(#000, #000) padding-box, linear-gradient(135deg, hsl(24,95%,53%), hsl(40,96%,65%)) border-box',
+                      border: '1.5px solid transparent',
                     }}
-                  />
-                  
-                  <motion.img
-                    key={selectedImage}
-                    initial={{ opacity: 0, scale: 0.8, rotateY: 90 }}
-                    animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-                    exit={{ opacity: 0, scale: 0.8, rotateY: -90 }}
-                    transition={{ duration: 0.5, type: 'spring' }}
-                    src={product.gallery[selectedImage]}
-                    alt={product.name}
-                    className="w-full h-full object-contain p-12 relative z-10"
-                    style={{ transform: 'translateZ(50px)' }}
                   />
 
-                  {/* Glow effects */}
-                  <motion.div 
-                    animate={{ 
-                      scale: [1, 1.2, 1],
-                      opacity: [0.3, 0.5, 0.3],
-                    }}
-                    transition={{ duration: 3, repeat: Infinity }}
-                    className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-primary/20 blur-3xl" 
-                  />
-                  
-                  {/* Corner accents */}
-                  <div className="absolute top-4 left-4 w-8 h-8 border-l-2 border-t-2 border-primary/30 rounded-tl-lg" />
-                  <div className="absolute top-4 right-4 w-8 h-8 border-r-2 border-t-2 border-primary/30 rounded-tr-lg" />
-                  <div className="absolute bottom-4 left-4 w-8 h-8 border-l-2 border-b-2 border-primary/30 rounded-bl-lg" />
-                  <div className="absolute bottom-4 right-4 w-8 h-8 border-r-2 border-b-2 border-primary/30 rounded-br-lg" />
+                  {/* Inner stage — black fill */}
+                  <div className="absolute inset-[1.5px] rounded-2xl bg-black overflow-hidden">
+                    {/* Dot grid */}
+                    <div
+                      className="absolute inset-0 opacity-[0.06]"
+                      style={{
+                        backgroundImage: 'radial-gradient(circle, hsl(var(--primary)) 1px, transparent 1px)',
+                        backgroundSize: '28px 28px',
+                      }}
+                    />
+
+                    {/* Center radial spotlight */}
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_50%_50%,hsl(24_95%_53%_/_0.08)_0%,transparent_70%)]" />
+
+                    {/* Product image */}
+                    <motion.img
+                      key={selectedImage}
+                      initial={{ opacity: 0, scale: 0.88 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.88 }}
+                      transition={{ duration: 0.35, ease: 'easeOut' }}
+                      src={product.gallery[selectedImage]}
+                      alt={product.name}
+                      className="absolute inset-0 w-full h-full object-contain p-10 relative z-10"
+                      style={{ filter: 'drop-shadow(0 20px 40px hsl(24 95% 53% / 0.18))' }}
+                    />
+
+                    {/* Floor reflection */}
+                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-8 bg-primary/10 blur-xl" />
+                  </div>
+
+                  {/* Corner brackets */}
+                  <div className="absolute top-3 left-3 w-5 h-5 border-l border-t border-primary/60" />
+                  <div className="absolute top-3 right-3 w-5 h-5 border-r border-t border-primary/60" />
+                  <div className="absolute bottom-3 left-3 w-5 h-5 border-l border-b border-primary/60" />
+                  <div className="absolute bottom-3 right-3 w-5 h-5 border-r border-b border-primary/60" />
                 </motion.div>
 
                 {/* Thumbnail Gallery */}
