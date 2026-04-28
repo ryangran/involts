@@ -1,4 +1,4 @@
-import React, { useId } from "react"
+import React from "react"
 import { motion } from "framer-motion"
 
 interface GradientTracingProps {
@@ -20,8 +20,7 @@ export const GradientTracing: React.FC<GradientTracingProps> = ({
   strokeWidth = 2,
   path = `M0,${height / 2} L${width},${height / 2}`,
 }) => {
-  const id = useId()
-  const gradientId = `pulse-${id.replace(/:/g, "")}`
+  const gradientId = `pulse-${Math.random().toString(36).substr(2, 9)}`
 
   return (
     <div className="relative" style={{ width, height }}>
