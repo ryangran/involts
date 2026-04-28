@@ -12,6 +12,7 @@ import {
 import { getProductBySlug, getRelatedProducts, ProductIdeal, ProductModel } from '@/data/products';
 import protetorVideo from '@/assets/protetor-eletronico-involts.mp4';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { FlickeringGrid } from '@/components/ui/flickering-grid';
 
 const iconMap: Record<string, React.ElementType> = {
   printer: Printer,
@@ -211,8 +212,23 @@ const ProductDetail = () => {
 
   return (
     <div ref={containerRef} className="min-h-screen bg-background overflow-x-hidden">
+      {/* Flickering grid background — covers full page */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <FlickeringGrid
+          color="rgb(249, 100, 6)"
+          maxOpacity={0.055}
+          flickerChance={0.08}
+          squareSize={3}
+          gridGap={7}
+          className="w-full h-full"
+        />
+        {/* fade out at top and bottom so it doesn't compete with content */}
+        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-background to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background to-transparent" />
+      </div>
+
       <Header />
-      
+
       <main className="pt-24">
         {/* Animated Background - simplified on mobile */}
         {!isMobile && (
