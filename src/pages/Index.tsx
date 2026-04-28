@@ -4,6 +4,7 @@ import { ProductsSection } from '@/components/ProductsSection';
 import { FeaturesSection } from '@/components/FeaturesSection';
 import { CinematicHero } from '@/components/ui/cinematic-hero';
 import { CTASection } from '@/components/CTASection';
+import { TerminalHero } from '@/components/TerminalHero';
 import { Footer } from '@/components/Footer';
 
 const Index = () => {
@@ -14,6 +15,7 @@ const Index = () => {
         <HeroSection />
         <ProductsSection />
         <FeaturesSection />
+        <TerminalHero />
         <CinematicHero />
         <CTASection />
       </main>
