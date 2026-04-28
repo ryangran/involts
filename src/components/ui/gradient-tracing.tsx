@@ -32,12 +32,6 @@ export const GradientTracing: React.FC<GradientTracingProps> = ({
       >
         <path
           d={path}
-          stroke={baseColor}
-          strokeOpacity="0.2"
-          strokeWidth={strokeWidth}
-        />
-        <path
-          d={path}
           stroke={`url(#${gradientId})`}
           strokeLinecap="round"
           strokeWidth={strokeWidth}
