@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Header } from '@/components/Header';
+import { PageBackground } from '@/components/PageBackground';
 import { Footer } from '@/components/Footer';
 import { 
   ArrowRight, 
@@ -254,6 +255,7 @@ export default function Revendedor() {
 
   return (
     <div className="min-h-screen bg-background overflow-hidden">
+      <PageBackground />
       <Header />
       
       {/* Background Effects */}

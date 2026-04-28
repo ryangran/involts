@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Header } from '@/components/Header';
+import { PageBackground } from '@/components/PageBackground';
 import { Footer } from '@/components/Footer';
 import { AnimatedSection } from '@/components/AnimatedSection';
 import { Phone, Mail, Clock, MessageCircle, Send, User, FileText } from 'lucide-react';
@@ -117,6 +118,7 @@ const Contato = () => {
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
+      <PageBackground />
       <Header />
       
       <main className="pt-20">

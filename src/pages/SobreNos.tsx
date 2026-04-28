@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { Header } from '@/components/Header';
+import { PageBackground } from '@/components/PageBackground';
 import { Footer } from '@/components/Footer';
 import { AnimatedSection, StaggerContainer, StaggerItem } from '@/components/AnimatedSection';
 import { 
@@ -134,6 +135,7 @@ const SobreNos = () => {
 
   return (
     <div className="min-h-screen bg-background" ref={containerRef}>
+      <PageBackground />
       <Header />
       
       {/* Hero Section */}

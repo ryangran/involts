@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Header } from '@/components/Header';
+import { PageBackground } from '@/components/PageBackground';
 import { Footer } from '@/components/Footer';
 import { AnimatedSection } from '@/components/AnimatedSection';
 import { BrazilMap } from '@/components/BrazilMap';
@@ -170,8 +171,9 @@ const Assistencia = () => {
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
+      <PageBackground />
       <Header />
-      
+
       <main className="pt-20">
         {/* Hero Section */}
         <section className="relative py-20 md:py-32 overflow-hidden">

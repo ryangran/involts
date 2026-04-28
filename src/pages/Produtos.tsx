@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { useRef, useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Header } from '@/components/Header';
+import { PageBackground } from '@/components/PageBackground';
 import { Footer } from '@/components/Footer';
 import { AnimatedSection, StaggerContainer, StaggerItem } from '@/components/AnimatedSection';
 import { Zap, Shield, Cpu, Plug, ArrowRight, Sparkles, ChevronDown } from 'lucide-react';
@@ -242,6 +243,7 @@ const Produtos = () => {
 
   return (
     <div ref={containerRef} className="min-h-screen bg-background overflow-x-hidden">
+      <PageBackground />
       <Header />
       
       <main className="pt-20">
