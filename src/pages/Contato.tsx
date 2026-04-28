@@ -199,7 +199,7 @@ const Contato = () => {
                         </div>
                         <div>
                           <p className="text-sm text-foreground/60 mb-1">Telefone</p>
-                          <p className="text-lg font-semibold text-foreground">(11) 96846-9454</p>
+                          <a href="https://wa.me/5511968469454" target="_blank" rel="noopener noreferrer" className="text-lg font-semibold text-foreground hover:text-primary transition-colors">(11) 96846-9454</a>
                         </div>
                       </motion.div>
 

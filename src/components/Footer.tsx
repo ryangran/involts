@@ -103,7 +103,7 @@ export const Footer = () => {
               <li className="flex items-start gap-3">
                 <Phone className="w-5 h-5 text-primary mt-0.5" />
                 <div>
-                  <p className="text-foreground/60">(11) 96846-9454</p>
+                  <a href="https://wa.me/5511968469454" target="_blank" rel="noopener noreferrer" className="text-foreground/60 hover:text-primary transition-colors">(11) 96846-9454</a>
                   <p className="text-foreground/40 text-sm">08h às 12h e 13h às 17h</p>
                 </div>
               </li>
