@@ -301,7 +301,7 @@ export default function Revendedor() {
 
                     <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
                       Seja um{' '}
-                      <span className="bg-gradient-primary bg-clip-text text-transparent">
+                      <span className="text-gradient-primary">
                         Revendedor Involts
                       </span>
                     </h1>
@@ -369,7 +369,7 @@ export default function Revendedor() {
                         whileHover={{ scale: 1.05, y: -5 }}
                         className="bg-card/50 backdrop-blur-sm border border-border rounded-2xl p-6 text-center hover:border-primary/50 transition-all duration-300"
                       >
-                        <div className="font-display text-4xl md:text-5xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-2">
+                        <div className="font-display text-4xl md:text-5xl font-bold text-gradient-primary mb-2">
                           {stat.number}
                         </div>
                         <div className="text-muted-foreground font-medium">{stat.label}</div>
@@ -860,7 +860,7 @@ export default function Revendedor() {
                 className="text-center mb-16"
               >
                 <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
-                  Por que ser um <span className="bg-gradient-primary bg-clip-text text-transparent">Revendedor Involts</span>?
+                  Por que ser um <span className="text-gradient-primary">Revendedor Involts</span>?
                 </h2>
                 <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
                   Oferecemos as melhores condições do mercado para você crescer conosco
@@ -903,7 +903,7 @@ export default function Revendedor() {
                 className="text-center mb-16"
               >
                 <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
-                  O que nossos <span className="bg-gradient-primary bg-clip-text text-transparent">revendedores dizem</span>
+                  O que nossos <span className="text-gradient-primary">revendedores dizem</span>
                 </h2>
               </motion.div>
 
@@ -952,7 +952,7 @@ export default function Revendedor() {
                 
                 <div className="relative z-10">
                   <h2 className="font-display text-3xl md:text-5xl font-bold text-foreground mb-4">
-                    Pronto para <span className="bg-gradient-primary bg-clip-text text-transparent">aumentar seus lucros</span>?
+                    Pronto para <span className="text-gradient-primary">aumentar seus lucros</span>?
                   </h2>
                   <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
                     Junte-se a mais de 500 revendedores que já estão lucrando com a Involts.
