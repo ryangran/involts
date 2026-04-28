@@ -70,7 +70,7 @@ export const productsData: ProductData[] = [
       { icon: 'gamepad', label: 'Games' },
       { icon: 'speaker', label: 'Sons/Amplificadores' },
       { icon: 'wifi', label: 'Modem e Roteador' },
-      { icon: 'smartphone', label: 'Celular e Telefones' },
+      { icon: 'microwave', label: 'Eletrodomésticos' },
     ],
     specSheet: undefined,
     highlight: true,
@@ -186,7 +186,7 @@ export const productsData: ProductData[] = [
       { icon: 'printer', label: 'Impressoras' },
       { icon: 'monitor', label: 'Computadores' },
       { icon: 'wifi', label: 'Modem e Roteador' },
-      { icon: 'smartphone', label: 'Celular e Telefones' },
+      { icon: 'microwave', label: 'Eletrodomésticos' },
     ],
     models: [
       { name: '330 Mono 110V', type: 'mono' },
@@ -230,7 +230,7 @@ export const productsData: ProductData[] = [
       { icon: 'monitor', label: 'Computadores' },
       { icon: 'printer', label: 'Impressoras' },
       { icon: 'wifi', label: 'Modem e Roteador' },
-      { icon: 'smartphone', label: 'Celular e Telefones' },
+      { icon: 'microwave', label: 'Eletrodomésticos' },
       { icon: 'gamepad', label: 'Games' },
     ],
     models: [
